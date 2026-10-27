@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Frontier Notes</title>
+    <link>https://wangbard.github.io/frontier_notes/</link>
+    <atom:link href="https://wangbard.github.io/frontier_notes/feed.xml" rel="self" type="application/rss+xml"/>
+    <description>A weekly briefing on AI-driven advances in mathematics and cryptography, with the best of physics and chemistry. Every claim carries a trust label.</description>
+    <language>en</language>
+    <itunes:author>wangbard</itunes:author>
+    <itunes:category text="Science"/>
+    <itunes:explicit>false</itunes:explicit>
+    <item>
+      <title>The Exponential Time Hypothesis falls, twice in one day</title>
+      <description>OpenAI and Anthropic both claim machine-checked refutations of ETH. Also: Kakeya in every dimension, the AI-vs-lattices debate, an existence claim for QCD, and a peer-reviewed CO₂-to-fuel reaction map. Full text: https://wangbard.github.io/frontier_notes/issues/2026-10-27.html</description>
+      <link>https://wangbard.github.io/frontier_notes/issues/2026-10-27.html</link>
+      <guid isPermaLink="false">frontier-notes-2026-10-27</guid>
+      <pubDate>Tue, 27 Oct 2026 07:00:00 +0000</pubDate>
+      <enclosure url="https://wangbard.github.io/frontier_notes/audio/2026-10-27.mp3" length="1153701" type="audio/mpeg"/>
+      <itunes:duration>00:03:12</itunes:duration>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
+  </channel>
+</rss>

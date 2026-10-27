@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Frontier Notes</title>
+<meta name="description" content="A weekly briefing on AI-driven advances in mathematics and cryptography, with the best of physics and chemistry.">
+<link rel="alternate" type="application/rss+xml" title="Frontier Notes" href="feed.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Literata:opsz,wght@7..72,400;7..72,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F2F4F6; --surface:#FFFFFF; --ink:#18212E; --muted:#576170; --rule:#D3D9E1; --cobalt:#2B54A0; --panel:#E9EDF2;
+  --serif:"Literata", Georgia, "Times New Roman", serif;
+  --sans:"Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme:light; box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){ --paper:#10151C; --surface:#18202A; --ink:#E4E9F0; --muted:#9AA5B4; --rule:#2B3542; --cobalt:#86A8EA; --panel:#1C2530; color-scheme:dark; }
+}
+:root[data-theme="dark"]{ --paper:#10151C; --surface:#18202A; --ink:#E4E9F0; --muted:#9AA5B4; --rule:#2B3542; --cobalt:#86A8EA; --panel:#1C2530; color-scheme:dark; }
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);line-height:1.6}
+.wrap{max-width:42rem;margin:0 auto;padding:0 1.25rem}
+header{padding:2.75rem 0 1.5rem}
+h1{font-family:var(--sans);font-weight:700;font-size:clamp(2.2rem,7vw,3rem);letter-spacing:-0.02em;line-height:1.05;margin:0}
+.dek{font-family:var(--sans);color:var(--muted);margin:.6rem 0 0;font-size:1.05rem;line-height:1.45}
+.sub{font-family:var(--sans);font-size:.9rem;background:var(--panel);border-radius:10px;padding:1rem 1.1rem;margin:1.5rem 0 0}
+.sub p{margin:0 0 .5rem}
+.feed{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+.feed code{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:.3rem .5rem;font-size:.8rem;overflow-x:auto;max-width:100%}
+button{font:inherit;font-size:.85rem;border:1px solid var(--rule);background:var(--surface);color:var(--ink);border-radius:8px;padding:.35rem .7rem;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px;border-radius:6px}
+h2{font-family:var(--sans);font-size:1rem;font-weight:600;color:var(--muted);margin:2.5rem 0 0;padding-top:.75rem;border-top:2px solid var(--ink)}
+ol{list-style:none;margin:0;padding:0}
+.item{display:block;padding:1.1rem 0;border-bottom:1px solid var(--rule);color:inherit;text-decoration:none}
+.item .d{display:block;font-family:var(--sans);font-size:.85rem;color:var(--muted)}
+.item .h{display:block;font-family:var(--sans);font-weight:700;font-size:1.25rem;line-height:1.25;margin:.2rem 0 .35rem}
+.item:hover .h{color:var(--cobalt)}
+.item .s{display:block;font-size:.98rem;color:var(--muted)}
+footer{font-family:var(--sans);font-size:.8rem;color:var(--muted);padding:2.5rem 0 3rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Frontier Notes</h1>
+    <p class="dek">A weekly briefing on AI-driven advances in mathematics and cryptography, with the best of physics and chemistry. Every claim carries a label saying how far it has been verified.</p>
+    <div class="sub">
+      <p>Listen in your podcast app: add this feed by URL in Apple Podcasts, Overcast, Pocket Casts or similar.</p>
+      <div class="feed"><code id="feedUrl">https://wangbard.github.io/frontier_notes/feed.xml</code><button id="copy">Copy feed URL</button></div>
+    </div>
+  </header>
+  <main>
+    <h2>Issues</h2>
+    <ol>
+<li><a class="item" href="issues/2026-10-27.html"><span class="d">Tuesday 27 October 2026</span><span class="h">The Exponential Time Hypothesis falls, twice in one day</span><span class="s">OpenAI and Anthropic both claim machine-checked refutations of ETH. Also: Kakeya in every dimension, the AI-vs-lattices debate, an existence claim for QCD, and a peer-reviewed CO₂-to-fuel reaction map. About 3 min to listen.</span></a></li>
+    </ol>
+  </main>
+  <footer>Compiled weekly by Claude from public announcements, preprints, journals and social media. Labels describe each claim’s status, not an endorsement.</footer>
+</div>
+<script>
+document.getElementById('copy').addEventListener('click', function(){
+  var b = this, t = document.getElementById('feedUrl').textContent;
+  function ok(){ b.textContent = 'Copied'; setTimeout(function(){ b.textContent = 'Copy feed URL'; }, 1800); }
+  function sel(){ var r = document.createRange(); r.selectNodeContents(document.getElementById('feedUrl')); var s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Selected'; }
+  try{ navigator.clipboard ? navigator.clipboard.writeText(t).then(ok, sel) : sel(); }catch(e){ sel(); }
+});
+</script>
+</body>
+</html>

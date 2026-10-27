@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Frontier Notes, 27 Oct 2026</title>
+<meta name="fn-date" content="2026-10-27">
+<meta name="fn-headline" content="The Exponential Time Hypothesis falls, twice in one day">
+<meta name="fn-summary" content="OpenAI and Anthropic both claim machine-checked refutations of ETH. Also: Kakeya in every dimension, the AI-vs-lattices debate, an existence claim for QCD, and a peer-reviewed CO₂-to-fuel reaction map.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F2F4F6; --surface:#FFFFFF; --ink:#18212E; --muted:#576170; --rule:#D3D9E1;
+  --cobalt:#2B54A0; --cobalt-soft:#E3EAF6; --track:#C9D2DE;
+  --math:#2B54A0; --sci:#2E7458;
+  --c-peer:#2E7458; --c-pre:#80682A; --c-co:#7A3D76; --c-lean:#2B54A0; --c-rev:#4B6672; --c-soc:#9A4545;
+  --panel:#E9EDF2;
+  --serif:"Literata", Georgia, "Times New Roman", serif;
+  --sans:"Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#10151C; --surface:#18202A; --ink:#E4E9F0; --muted:#9AA5B4; --rule:#2B3542;
+    --cobalt:#86A8EA; --cobalt-soft:#1E2B42; --track:#34404F;
+    --math:#86A8EA; --sci:#6CC39C;
+    --c-peer:#6CC39C; --c-pre:#D2B56A; --c-co:#D39BCF; --c-lean:#86A8EA; --c-rev:#9DB8C4; --c-soc:#E39191;
+    --panel:#1C2530;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#10151C; --surface:#18202A; --ink:#E4E9F0; --muted:#9AA5B4; --rule:#2B3542;
+  --cobalt:#86A8EA; --cobalt-soft:#1E2B42; --track:#34404F;
+  --math:#86A8EA; --sci:#6CC39C;
+  --c-peer:#6CC39C; --c-pre:#D2B56A; --c-co:#D39BCF; --c-lean:#86A8EA; --c-rev:#9DB8C4; --c-soc:#E39191;
+  --panel:#1C2530;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:1.0625rem;line-height:1.68}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:42rem;margin:0 auto;padding:0 1.25rem}
+a{color:var(--cobalt);text-underline-offset:2px}
+a:focus-visible,button:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px;border-radius:4px}
+img{max-width:100%}
+
+/* masthead */
+header.mast{padding:2.5rem 0 1.25rem}
+.mast h1{font-family:var(--sans);font-weight:700;font-size:clamp(2rem,6vw,2.75rem);letter-spacing:-0.02em;line-height:1.05;margin:0}
+.mast p.dek{font-family:var(--sans);color:var(--muted);margin:.6rem 0 0;font-size:1rem;line-height:1.45}
+.mast .meta{font-family:var(--sans);font-size:.875rem;color:var(--muted);margin-top:.9rem;display:flex;flex-wrap:wrap;gap:.35rem 1.1rem}
+.mast .meta strong{color:var(--ink);font-weight:600}
+
+/* player */
+.player{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--rule);box-shadow:0 1px 0 var(--rule)}
+.player .wrap{padding-top:.7rem;padding-bottom:.75rem}
+.prow{display:flex;align-items:center;gap:.75rem}
+.play{flex:none;width:3rem;height:3rem;border-radius:50%;border:0;background:var(--cobalt);color:var(--surface);display:grid;place-items:center;cursor:pointer}
+.play svg{width:1.25rem;height:1.25rem;fill:currentColor}
+.ptext{flex:1;min-width:0;font-family:var(--sans)}
+.ptext .now{font-weight:600;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ptext .sub{font-size:.8rem;color:var(--muted)}
+.ctrl{display:flex;gap:.35rem;align-items:center;font-family:var(--sans)}
+.ib{border:1px solid var(--rule);background:transparent;color:var(--ink);border-radius:8px;height:2.25rem;min-width:2.25rem;padding:0 .5rem;cursor:pointer;font:inherit;font-size:.85rem}
+.ib svg{width:1rem;height:1rem;fill:currentColor;vertical-align:middle}
+select.ib{padding:0 .35rem}
+.track{display:flex;gap:4px;margin-top:.65rem}
+.seg{position:relative;height:28px;border:0;padding:0;background:var(--track);border-radius:3px;cursor:pointer;overflow:hidden;color:transparent}
+.seg .fill{position:absolute;inset:0 auto 0 0;width:0;background:var(--seg-c,var(--cobalt));transition:width .3s linear}
+.seg .lbl{position:absolute;left:6px;top:50%;transform:translateY(-50%);font-family:var(--sans);font-size:.7rem;font-weight:600;color:var(--ink);white-space:nowrap;mix-blend-mode:normal;pointer-events:none}
+.seg.done .lbl,.seg.active .lbl{color:var(--surface)}
+.seg[data-kind="sci"]{--seg-c:var(--sci)}
+.seg.done .fill{width:100%}
+.pnote{font-family:var(--sans);font-size:.78rem;color:var(--muted);margin:.5rem 0 0;line-height:1.4}
+.pnote[hidden]{display:none}
+@media (max-width:520px){
+  .ctrl .hide-s{display:none}
+  .seg .lbl{font-size:.62rem;left:4px}
+}
+
+/* body */
+main{padding-bottom:3rem}
+.intro{margin:1.75rem 0 0}
+.intro p{margin:.6rem 0}
+.legend{font-family:var(--sans);font-size:.85rem;background:var(--panel);border-radius:10px;padding:.9rem 1rem;margin:1.25rem 0 0}
+.legend p{margin:0 0 .5rem;color:var(--muted)}
+.legend ul{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}
+.legend li{display:flex;gap:.5rem;align-items:baseline}
+h2.group{font-family:var(--sans);font-size:1rem;font-weight:600;color:var(--muted);margin:3rem 0 0;padding-top:.75rem;border-top:2px solid var(--ink);display:flex;justify-content:space-between}
+h2.group span:last-child{font-weight:500}
+article{margin-top:2.25rem}
+article h3{font-family:var(--sans);font-size:clamp(1.35rem,3.6vw,1.65rem);line-height:1.2;letter-spacing:-0.01em;margin:0 0 .6rem;font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem;margin:0 0 1rem;padding:0;list-style:none}
+.chip{font-family:var(--sans);font-size:.75rem;font-weight:600;line-height:1;padding:.32rem .55rem;border-radius:999px;border:1.5px solid currentColor;white-space:nowrap}
+.chip.peer{color:var(--c-peer)} .chip.pre{color:var(--c-pre)} .chip.co{color:var(--c-co)}
+.chip.lean{color:var(--c-lean)} .chip.rev{color:var(--c-rev)} .chip.soc{color:var(--c-soc)}
+article p{margin:.75rem 0}
+.intuition{background:var(--panel);border-left:3px solid var(--cobalt);border-radius:0 10px 10px 0;padding:.4rem 1.1rem .6rem;margin:1.25rem 0}
+article.sci .intuition{border-left-color:var(--sci)}
+.intuition h4,.take h4{font-family:var(--sans);font-size:.95rem;margin:.6rem 0 .1rem;font-weight:700}
+.intuition ol{padding-left:1.2rem;margin:.4rem 0}
+.intuition li{margin:.45rem 0}
+.take h4{margin-top:1.25rem}
+.math{font-family:var(--serif);font-style:italic;white-space:nowrap}
+.src{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-top:1rem;line-height:1.5}
+.src a{color:var(--muted)}
+.mine{font-family:var(--sans);font-size:.8rem;font-weight:600;color:var(--muted)}
+details.script{font-family:var(--sans);margin:3rem 0 0;border-top:1px solid var(--rule);padding-top:1rem}
+details.script summary{cursor:pointer;font-weight:600}
+details.script .sc{font-family:var(--serif);font-size:1rem;margin-top:.75rem}
+details.script .sc p{margin:.6rem 0}
+.copybtn{margin-top:.5rem}
+footer{font-family:var(--sans);font-size:.8rem;color:var(--muted);padding:2rem 0 3rem;border-top:1px solid var(--rule);margin-top:2.5rem}
+.speaking{background:var(--cobalt-soft);border-radius:4px;box-shadow:0 0 0 4px var(--cobalt-soft)}
+@media (prefers-reduced-motion:reduce){.seg .fill{transition:none}}
+</style>
+</head>
+<body>
+
+<header class="mast wrap">
+  <h1>Frontier Notes</h1>
+  <p class="dek">AI-driven results in mathematics and cryptography, plus the best of physics and chemistry. Listen first, read what grabs you.</p>
+  <div class="meta"><span><a href="../" style="color:inherit">Frontier Notes archive</a></span><span><strong>Issue 1</strong>, Tuesday 27 October 2026</span><span>Covers roughly 7–27 October</span><span>About 10 min to read, 3 min to listen</span></div>
+</header>
+
+<div class="player" id="listen" aria-label="Audio briefing">
+  <div class="wrap">
+    <div class="prow">
+      <button class="play" id="playBtn" aria-label="Play audio briefing">
+        <svg id="icoPlay" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
+        <svg id="icoPause" viewBox="0 0 24 24" aria-hidden="true" style="display:none"><path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z"/></svg>
+      </button>
+      <div class="ptext">
+        <div class="now" id="nowTitle">Audio briefing, about 3 minutes</div>
+        <div class="sub" id="nowSub">Tap a segment to jump to a story</div>
+      </div>
+      <div class="ctrl">
+        <button class="ib hide-s" id="prevBtn" aria-label="Previous story"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+        <button class="ib hide-s" id="nextBtn" aria-label="Next story"><svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+        <select class="ib" id="rate" aria-label="Speaking speed">
+          <option value="0.9">0.9×</option><option value="1" selected>1×</option><option value="1.15">1.15×</option><option value="1.3">1.3×</option>
+        </select>
+      </div>
+    </div>
+    <div class="track" id="track" role="group" aria-label="Stories in the audio briefing"></div>
+    <p class="pnote" id="pnote">Neural voice recorded for this issue. In most mobile browsers it keeps playing with the screen locked, with controls on your lock screen.</p>
+    <audio id="aud" preload="metadata" src="../audio/2026-10-27.mp3"></audio>
+    <script type="application/json" id="audio-meta">{"starts": [0.0, 14.82, 92.13, 114.39, 145.52, 167.38], "dur": 192.2}</script>
+  </div>
+</div>
+
+<main class="wrap">
+
+<section class="intro">
+  <p>This was a very unusual two weeks. Two AI labs independently claimed to refute one of the core working assumptions of complexity theory on the same day, and one of them also claimed proofs touching two famous problems in analysis and physics. That’s why this issue is weighted toward a single deep dive. The rest of the issue covers the live debate over whether AI will weaken lattice cryptography, plus one physics and one chemistry story.</p>
+  <div class="legend">
+    <p>How to read the labels on each story</p>
+    <ul>
+      <li><span class="chip peer">Peer-reviewed</span><span>Published in a reviewed journal or conference.</span></li>
+      <li><span class="chip pre">Preprint</span><span>Public paper, not yet reviewed.</span></li>
+      <li><span class="chip co">Company claim</span><span>Announced by the lab that produced it.</span></li>
+      <li><span class="chip lean">Machine-checked</span><span>Formal proof in Lean exists. This checks the formal statement, not whether it matches the famous conjecture.</span></li>
+      <li><span class="chip rev">Expert review</span><span>Named outside experts are examining it or have independently reworked it.</span></li>
+      <li><span class="chip soc">Opinion</span><span>Social-media argument or prediction, not a result.</span></li>
+    </ul>
+  </div>
+</section>
+
+<h2 class="group"><span>Math &amp; crypto</span><span>about 70%</span></h2>
+
+<article id="eth">
+  <h3>The Exponential Time Hypothesis falls, twice in one day</h3>
+  <ul class="chips"><li class="chip co">Company claim: OpenAI and Anthropic</li><li class="chip lean">Machine-checked</li><li class="chip pre">Preprint</li><li class="chip rev">Expert review, not yet endorsement</li></ul>
+
+  <p>On 26 October OpenAI announced that an internal model had proved the Exponential Time Hypothesis (ETH) false. It says the model wrote the disproof on 16 October and the Lean formalization was done the next day. A few hours later Anthropic posted a 49-page paper credited to Claude, “A 2<sup>o(n)</sup> Time Algorithm for 3-SAT”. It says an internal Claude model found the core algorithm, also on 16 October, using 14 million output tokens and no human input, with a Lean 4 proof of the main theorems. Anthropic’s paper acknowledges OpenAI’s concurrent claim.</p>
+  <p>The review setup is about as credible as it gets. OpenAI handed its result to Russell Impagliazzo and Ramamohan Paturi, who proposed ETH in the first place, and to Ryan Williams of MIT. In an open letter, the three said explicitly that taking part is not an endorsement. Separately, Shiva Kintali posted a shorter, human-readable proof the same day, based on OpenAI’s argument. He used AI to help simplify it and then expanded it by hand. An independent re-derivation like this is a good early sign.</p>
+  <p>ETH said that 3-SAT on <span class="math">n</span> variables needs time at least 2<sup>δn</sup> for some fixed δ&nbsp;&gt;&nbsp;0. Clever algorithms had shrunk the base from 2 to about 1.3, but nobody had pushed the exponent rate toward zero. Hundreds of hardness results depend on ETH, and Claude’s literature search counted more than 800 papers. The new claim is that for every ε&nbsp;&gt;&nbsp;0 there is an algorithm running in about 2<sup>εn</sup> time. Both versions actually <em>count</em> the solutions, which is a harder problem than deciding whether one exists. The stronger SETH falls with it.</p>
+
+  <div class="intuition">
+    <h4>The intuition: decouple, count, then extrapolate back</h4>
+    <ol>
+      <li><strong>The dream.</strong> If you could split the variables into <span class="math">r</span> groups with every clause touching only one group, you could count each group’s solutions separately and multiply. The cost would be about 2<sup>n/r</sup> instead of 2<sup>n</sup>. The obstacle is that real clauses cross groups.</li>
+      <li><strong>Turn logic into algebra.</strong> Write each clause as a polynomial that equals 1 when the clause is satisfied and 0 otherwise. The number of solutions is then a giant sum, over all assignments, of the product of these polynomials.</li>
+      <li><strong>Deform the problem.</strong> Add a dial <span class="math">T</span>. Replace each variable by a linear expression that depends on <span class="math">T</span>. At <span class="math">T&nbsp;=&nbsp;0</span> you get the original formula back. At a few chosen whole numbers <span class="math">T&nbsp;=&nbsp;1, 2, …, Q</span>, each clause sees only one group, plus a small number of shared “measurements” (integer sums of bits). Fix the values of those measurements and the groups really do separate, so you can count by multiplying.</li>
+      <li><strong>Interpolate back to zero.</strong> The count, viewed as a function <span class="math">H(T)</span>, is a polynomial, and the answer you want is <span class="math">H(0)</span>. You can’t compute it at 0 directly, but you can compute its value and first few derivatives at the friendly points 1 to <span class="math">Q</span>. A polynomial is pinned down exactly by enough such data (Hermite interpolation), so you reconstruct <span class="math">H(0)</span> with no approximation.</li>
+      <li><strong>Make every cost small at once.</strong> There are three exponential costs: the group sizes, the measurement values, and the low-order derivative terms. Each is controlled by a parameter <span class="math">s</span>, and the total exponent rate shrinks like (log&nbsp;s)/s. Turn <span class="math">s</span> up and the rate goes toward zero. The deformation itself is built from commuting “swap” matrices plus a low-degree polynomial correction. This is the genuinely new trick.</li>
+    </ol>
+    <h4>Why your SAT solver won’t get faster</h4>
+    <p>This is a “galactic” algorithm. <span class="mine">My back-of-envelope from Kintali’s parameters:</span> at his smallest allowed setting (<span class="math">s&nbsp;=&nbsp;64</span>) the exponent rate is about 0.36. That’s only slightly better than the roughly 0.39 of the best older algorithms. It also only switches on for formulas whose size exceeds a constant with tens of millions of digits.</p>
+  </div>
+
+  <div class="take">
+    <h4>What it means for cryptography</h4>
+    <p>For deployed cryptography, the answer is essentially nothing, and two reasons do most of the work. First, subexponential is still far from polynomial, so P versus NP stays open. Second, real cryptography rests on <em>average-case</em> hardness of specific functions, not worst-case 3-SAT. Ledger’s CTO Charles Guillemet put it bluntly in a widely shared post: “This has no impact on cryptography.” He notes that a faster worst-case formula algorithm doesn’t forge signatures, invert SHA-256, or touch discrete logs or lattices. A third reason is that the <span class="math">n</span> in ETH counts <em>every</em> variable. Writing a cipher as a formula adds a huge number of helper variables, so 2<sup>o(n)</sup> doesn’t translate into beating a 2<sup>128</sup> key search.</p>
+    <p><span class="mine">My read, which I haven’t yet seen experts discuss:</span> the places to watch are theory constructions whose security is stated directly as hardness of a constraint problem over the secret bits. Examples are Goldreich-style local one-way functions and PRGs built on random constraint problems, and “fine-grained” cryptography justified by SETH. Their stated justifications weaken in principle. Their practical security doesn’t change with constants like these.</p>
+  </div>
+
+  <p class="src">Sources: <a href="https://www.unite.ai/openai-says-its-models-produced-three-proofs-in-math-cs-and-physics/">Unite.AI summary of OpenAI’s announcement</a>, <a href="https://hexagonmath.org/2610.00577v1">Anthropic/Claude paper on Hexagon</a>, <a href="https://shivakintali.github.io/papers/ETH.pdf">Kintali’s simplified proof (PDF)</a>, <a href="https://www.aichatdaily.com/ai-models/openai-says-internal-model-disproved-exponential-time-hypothesis">review group’s non-endorsement</a>, <a href="https://x.com/P3b7_/status/2115021871242465593">Guillemet on X</a>, <a href="https://www.johndcook.com/blog/2026/10/27/eth-false/">John D. Cook’s explainer</a>.</p>
+</article>
+
+<article id="kakeya">
+  <h3>Kakeya in every dimension? OpenAI claims local smoothing</h3>
+  <ul class="chips"><li class="chip co">Company claim</li><li class="chip lean">Machine-checked (per OpenAI)</li><li class="chip pre">Preprint</li></ul>
+  <p>In the same announcement, OpenAI said its models proved Sogge’s 1991 local smoothing conjecture for the wave equation in every dimension. It says the proof relies on a new kind of auxiliary PDE. Because local smoothing implies the Kakeya conjecture and Stein’s restriction conjecture, OpenAI says those fall too. The model output is dated 18 October and the Lean proof 19 October. The paper and Lean files are public on GitHub. The previous milestones were human. Guth, Wang and Zhang proved the two-dimensional case in 2019, and Wang and Zahl settled three-dimensional Kakeya in 2025.</p>
+  <div class="intuition">
+    <h4>The intuition: focusing waves and crowded tubes</h4>
+    <p>Local smoothing says a wave can focus into a sharp peak, but only briefly. Averaged over a time window, it is much smoother than at its worst instant. To see why this connects to Kakeya, break a wave into “wave packets”, little beams travelling along thin tubes. Intense focusing means many tubes pile into a small region. The Kakeya conjecture is exactly about how much tubes pointing in different directions can overlap. It says a set containing a line segment in every direction can have zero volume, yet must still be “full-dimensional”. So a sharp bound on tube overlap becomes a bound on how long waves can stay focused, and the two problems are really one.</p>
+  </div>
+  <p><strong>Trust check.</strong> No outside expert has publicly vouched for the proof yet. Process is also contested: the Advisory Group on Mathematics and AI, whose members include Gowers, Hairer and Witten, issued a statement on 25 October criticizing the practice of routing AI output to designated mathematicians first. A Lean proof certifies the <em>formal</em> statement, so the first thing experts will check is whether that statement really matches the conjecture.</p>
+  <p class="src">Sources: <a href="https://www.unite.ai/openai-says-its-models-produced-three-proofs-in-math-cs-and-physics/">Unite.AI</a>, <a href="https://dev.to/976905690/openai-claims-three-scientific-breakthroughs-4in5">community reaction roundup</a>, <a href="https://tech-insider.org/openai-three-science-discoveries-eth-kakeya-qcd-2026/">exact scope of the claim</a>.</p>
+</article>
+
+<article id="lattices">
+  <h3>Will AI crack lattices before quantum computers do?</h3>
+  <ul class="chips"><li class="chip soc">Opinion</li><li class="chip rev">Background: designer-confirmed break (HAWK)</li><li class="chip pre">Preprint (CryptanalysisBench)</li></ul>
+  <p>The debate started with Vitalik Buterin. On 7 October he posted that there is a good chance the concrete security of lattices takes serious hits from the next two years of AI-driven math. He named ML-DSA signatures and fully homomorphic encryption. His advice was to prefer hash-based signatures such as WOTS and SPHINCS+ where feasible, and to use fresh addresses that haven’t revealed a public key. He also said Ethereum’s roadmap already leans “hash-only”. On 9 October Charles Hoskinson called this panic. He argued that decades of LLL, BKZ, enumeration and sieving improvements are already priced into today’s parameters, and dismissed Buterin’s suggested parameter increase as numerology. The same day Matthew Green posted that we “might lose public key cryptography”, and then spent a week explaining what he hadn’t meant.</p>
+  <p>The hard evidence so far comes from summer. In July, Anthropic disclosed that Claude Mythos had found a key-recovery attack on HAWK, a lattice signature in NIST’s additional-signatures round, and its designers withdrew it the next day. The CryptanalysisBench preprint found that frontier models break 65–86% of easier tasks. The models also produced two genuinely new results: a full key recovery on the SpoC cipher, and an error in the published security proof of KINDI. Neither of these touches a finalized NIST standard.</p>
+  <div class="intuition">
+    <h4>The intuition: structure is speed, and also attack surface</h4>
+    <p>Practical lattice schemes don’t use random lattices. They pack keys into polynomials over a ring, which gives small keys and fast arithmetic. But rings have symmetries, maps that scramble the ring while preserving its structure, and each symmetry is a potential lever for folding a big problem into a smaller one. Earlier attacks on HAWK’s problem all used one symmetry (complex conjugation). The AI found a different one: the map sending a root of unity to its negative. That map exposes a short vector computable from the public key, and the attack then needs only exact shortest-vector computations in roughly half the dimension. Systematically trying algebraic levers like this is exactly the kind of search AI is good at. Hash-based signatures rely on far fewer such assumptions, which is the core of Buterin’s argument.</p>
+  </div>
+  <p><span class="mine">My take:</span> HAWK was scheme-specific, and the flaw follows the particular ring choice. The signal that would change everything is any AI result against unstructured LWE, or against ML-KEM or ML-DSA at their standard parameters. Nothing like that exists yet.</p>
+  <p class="src">Sources: <a href="https://startupfortune.com/vitalik-buterin-warns-ai-could-break-lattice-cryptography-within-two-years/">Buterin’s post and context</a>, <a href="https://thecryptobasic.com/2026/10/09/cardano-founder-pushes-back-sharply-at-vitalik-buterin-over-ai-threat-to-lattice-cryptography/">Hoskinson’s rebuttal</a>, <a href="https://www.cybrsecmedia.com/ai-may-beat-quantum-to-the-first-cryptographic-surprise/">Green’s post and the wider debate</a>, <a href="https://postquantum.com/security-pqc/ai-cryptanalysis-hawk-aes/">HAWK attack, technical summary</a>, <a href="https://arxiv.org/pdf/2607.18538">CryptanalysisBench (arXiv)</a>.</p>
+</article>
+
+<article id="radar">
+  <h3>On the radar: digesting the October 6 math dump</h3>
+  <ul class="chips"><li class="chip co">Company claim</li><li class="chip pre">Preprint survey</li></ul>
+  <p>Three weeks ago OpenAI published 722 AI-written manuscripts on 372 problem families. They include a claimed zero-free half-plane for the Riemann zeta function beyond real part 7/8 (a “quasi-Riemann hypothesis”) and a claimed upper bound of 9/4 on the matrix-multiplication exponent. Human digestion has begun. Ying Xie at Kennesaw State posted an arXiv survey of 38 problem families. It catalogues the new lemmas and constructions (“instruments”) the proofs introduce and notes that no Lean was compiled for the survey. Treat the individual claims as unverified until specialists weigh in on each.</p>
+  <p class="src">Sources: <a href="https://arxiv.org/pdf/2610.17090">Xie, “What the Machine Invented” (arXiv)</a>, <a href="https://www.axios.com/2026/10/08/openai-math-proofs-ai-model">Axios on the reception</a>.</p>
+</article>
+
+<h2 class="group"><span>Physics &amp; chemistry</span><span>about 30%</span></h2>
+
+<article id="yangmills" class="sci">
+  <h3>An existence proof for QCD, with the proof held back</h3>
+  <ul class="chips"><li class="chip co">Company claim</li><li class="chip lean">Machine-checked: Yang–Mills part only</li><li class="chip rev">Expert group led by David Gross</li></ul>
+  <p>OpenAI’s third claim is a rigorous existence proof for interacting four-dimensional quantum field theories with gauge fields and fermions. This includes quantum chromodynamics (QCD), the theory of quarks and gluons, and a unified completion of the Standard Model. As a sub-step, it would show that pure Yang–Mills theory exists, which is part of a Clay Millennium Prize problem. The model’s proofs are dated September, and only the Yang–Mills part has been formalized in Lean, completed on 16 October. A group led by Nobel laureate David Gross, including Arthur Jaffe (who co-wrote the Millennium problem), has chosen to withhold the AI’s artifacts and write the result up themselves.</p>
+  <div class="intuition">
+    <h4>The intuition: physicists use QFT daily, but nobody had built one</h4>
+    <p>Particle physicists calculate with QCD to astonishing precision, but in four dimensions nobody had shown that an interacting quantum field theory exists as a mathematical object obeying the standard axioms. The route builds on Balaban’s constructive program from the 1980s. You put the theory on a grid, where everything is well-defined. Then you “zoom out” step by step, averaging fields over blocks and showing the effective theory stays under control at every scale, so a continuum limit exists. What makes this hopeful for QCD is asymptotic freedom (Gross’s Nobel work): the force gets weaker at short distances, so the finest scales are tame. The Standard Model on its own can’t be pushed to arbitrarily short distances, which is why the claim is about a grand-unified completion. One important caveat: the Millennium problem also asks for a <em>mass gap</em>, and this claim concerns existence.</p>
+  </div>
+  <p class="src">Sources: <a href="https://www.unite.ai/openai-says-its-models-produced-three-proofs-in-math-cs-and-physics/">Unite.AI</a>, <a href="https://aiweekly.co/alerts/openai-hands-eth-kakeya-yang-mills-proofs-to-reviewers">what’s public and what’s withheld</a>.</p>
+</article>
+
+<article id="co2" class="sci">
+  <h3>Machine learning maps 9,389 reactions and finds a hidden hydrogen shortcut</h3>
+  <ul class="chips"><li class="chip peer">Peer-reviewed: Nature Communications</li></ul>
+  <p>Researchers at the Indian Institute of Science in Bengaluru studied how copper catalysts turn CO<sub>2</sub> and hydrogen into fuels. They started from 152 reactions computed with quantum mechanics, then used machine learning to predict the energy barriers of many more. That expanded the network to 9,389 elementary reactions among 105 surface species. The small model got the chemistry wrong: it predicted formic acid as the main product and badly underestimated conversion. The full network predicted about 40 times more conversion, with methanol and CO as the main products, which matches experiments run with industrial partners. It also revealed a pathway where intact H<sub>2</sub> hands hydrogen directly to oxygen-containing intermediates without splitting into atoms first, and extra quantum calculations support it.</p>
+  <div class="intuition">
+    <h4>The intuition: leave out side streets and you predict the wrong traffic</h4>
+    <p>A catalytic surface is a road network for molecules, and each reaction’s energy barrier is a hill on one road. With only the main roads mapped, you predict the wrong destination for most of the traffic. Exact quantum calculations are like surveying each hill by hand, which is accurate but too slow for thousands of roads. The machine-learning model acts as a cheap estimator of hill heights, so you can map every road and only hand-check the ones that matter. Note that the “AI” here is a trained surrogate model, not a language model. The product predictions match experiment, while the new H<sub>2</sub> mechanism is supported by calculations rather than directly observed.</p>
+  </div>
+  <p class="src">Sources: <a href="https://sciencedaily.com/releases/2026/10/261013015758.htm">ScienceDaily</a>, <a href="https://hyper.ai/en/stories/02b5dc8bb95d0be94f7837abc55e5677">summary with partner details</a>. Paper DOI: 10.1038/s41467-026-77080-4.</p>
+</article>
+
+<details class="script" id="script">
+  <summary>Read the audio script</summary>
+  <p class="pnote">This is the text of the audio briefing, if you’d rather skim it.</p>
+  <button class="ib copybtn" id="copyBtn">Copy script</button>
+  <div class="sc" id="scriptText">
+    <div data-seg="0" data-title="Intro" data-kind="math" data-anchor="">
+      <p>Welcome to Frontier Notes, the sample issue for Tuesday, October twenty-seventh. It’s been a strange two weeks, so most of today is about a single result. After that, a fight about lattice cryptography, and then one story each from physics and chemistry.</p>
+    </div>
+    <div data-seg="1" data-title="ETH falls" data-kind="math" data-anchor="eth">
+      <p>The headline. On October twenty-sixth, OpenAI announced that an internal model had disproved the Exponential Time Hypothesis. That’s the long-standing belief that the classic satisfiability problem, three-SAT, needs truly exponential time. Hours later, Anthropic posted a paper credited to Claude, claiming the same thing, found independently on the same date, October sixteenth. Both labs released machine-checked proofs in Lean.</p>
+      <p>How does it work? The idea is to split the variables into small groups and count solutions in each group separately, then multiply. Clauses that cross groups would normally ruin that. So the trick is to deform the problem with a dial. At the dial’s zero setting you have the original problem. At a few other settings, the groups separate cleanly. You compute there, and then use polynomial interpolation to recover the exact answer back at zero.</p>
+      <p>How much to trust it? It’s a company claim, but with formal proofs, an independent simplified write-up by Shiva Kintali, and a review group that includes the two people who proposed the hypothesis. They stress that reviewing is not endorsing.</p>
+      <p>And for crypto: no practical impact. Subexponential is still far from polynomial, and real cryptography rests on average-case problems, not worst-case satisfiability. The algorithm is also galactic. The constants are astronomically large.</p>
+    </div>
+    <div data-seg="2" data-title="Kakeya" data-kind="math" data-anchor="kakeya">
+      <p>In the same announcement, OpenAI claimed a proof of the local smoothing conjecture in every dimension. That would also settle the Kakeya conjecture, about how much space you need to point a needle in every direction. The intuition is that focusing waves look like crowded tubes, and Kakeya is all about how much tubes can overlap. It’s a company claim with a Lean proof, and no outside expert verdict yet.</p>
+    </div>
+    <div data-seg="3" data-title="Lattices" data-kind="math" data-anchor="lattices">
+      <p>Cryptography’s big argument. Vitalik Buterin says there’s a good chance AI-driven math will dent lattice cryptography within two years, and he’s steering Ethereum toward hash-based signatures. Charles Hoskinson calls that panic, saying lattices already survived decades of attacks. The strongest evidence is still July’s AI-found break of the HAWK signature scheme, which exploited a hidden symmetry in its algebraic structure. The thing to watch for is any AI result against the standardized schemes, ML-KEM or ML-DSA. There isn’t one yet.</p>
+    </div>
+    <div data-seg="4" data-title="Yang–Mills" data-kind="sci" data-anchor="yangmills">
+      <p>Physics. OpenAI also claims a rigorous existence proof for quantum chromodynamics and pure Yang–Mills theory, part of a Millennium Prize problem. But note, the prize also asks for a mass gap, and this claim is about existence. A group led by Nobel laureate David Gross is reviewing it and has chosen to withhold the AI’s materials for now. Treat it as a company claim.</p>
+    </div>
+    <div data-seg="5" data-title="CO₂ to fuel" data-kind="sci" data-anchor="co2">
+      <p>And chemistry, the one peer-reviewed story today. A team in Bengaluru used machine learning to map more than nine thousand reactions for turning carbon dioxide into fuel on copper. The bigger map fixed wrong predictions and matched experiments. It also revealed a shortcut where whole hydrogen molecules hand off hydrogen directly.</p>
+      <p>That’s the briefing. The written version has the deep dive on how the satisfiability algorithm works.</p>
+    </div>
+  </div>
+</details>
+
+</main>
+
+<footer>
+  <div class="wrap" style="padding:0">Frontier Notes, issue 1. Compiled by Claude from public announcements, preprints, journals and social media, as of 27 October 2026. Labels describe the status of each claim, not my belief in it; items marked “my read” or “my take” are my own analysis.</div>
+</footer>
+
+<script>
+(function(){
+  var aud = document.getElementById('aud');
+  var meta = {starts:[], dur:0};
+  try{ meta = JSON.parse(document.getElementById('audio-meta').textContent); }catch(e){}
+  var segNodes = Array.prototype.slice.call(document.querySelectorAll('#scriptText [data-seg]'));
+  var titles = segNodes.map(function(n){ return n.getAttribute('data-title'); });
+  var kinds = segNodes.map(function(n){ return n.getAttribute('data-kind') || 'math'; });
+  var anchors = segNodes.map(function(n){ return n.getAttribute('data-anchor') || null; });
+  var dur = meta.dur || 1;
+  var starts = (meta.starts && meta.starts.length === titles.length) ? meta.starts : titles.map(function(_,i){ return i*dur/titles.length; });
+  if(!meta.dur){ document.getElementById('listen').style.display = 'none'; }
+  var track = document.getElementById('track');
+  var btns = [];
+  function segEnd(i){ return i+1 < starts.length ? starts[i+1] : (aud.duration || dur); }
+  titles.forEach(function(t,i){
+    var b = document.createElement('button');
+    b.className = 'seg'; b.setAttribute('data-kind', kinds[i]);
+    b.style.flex = String(Math.max((segEnd(i)-starts[i])/dur, 0.07));
+    b.setAttribute('aria-label','Play from: '+t);
+    b.innerHTML = '<span class="fill"></span><span class="lbl"></span>';
+    b.querySelector('.lbl').textContent = t;
+    b.addEventListener('click', function(){ aud.currentTime = starts[i] + 0.01; play(); });
+    track.appendChild(b); btns.push(b);
+  });
+  var playBtn = document.getElementById('playBtn');
+  var icoPlay = document.getElementById('icoPlay'), icoPause = document.getElementById('icoPause');
+  var nowTitle = document.getElementById('nowTitle'), nowSub = document.getElementById('nowSub');
+  var rateSel = document.getElementById('rate');
+  function store(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  function load(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  var r = load('fn-rate'); if(r){ rateSel.value = r; }
+  function applyRate(){ aud.playbackRate = parseFloat(rateSel.value) || 1; }
+  applyRate();
+  function cur(){ var t = aud.currentTime, i = 0; for(var k=0;k<starts.length;k++){ if(t >= starts[k]) i = k; } return i; }
+  function fmt(s){ s = Math.max(0, Math.floor(s)); return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2); }
+  function paint(){
+    var i = cur(), t = aud.currentTime, playing = !aud.paused && !aud.ended;
+    btns.forEach(function(b,k){
+      var f = b.querySelector('.fill');
+      var pct = k < i ? 100 : (k > i ? 0 : Math.min(100, 100*(t-starts[k])/(segEnd(k)-starts[k])));
+      f.style.width = pct + '%';
+      b.classList.toggle('done', k < i);
+      b.classList.toggle('active', k === i && t > 0.05);
+    });
+    if(t < 0.05 && !playing){ nowTitle.textContent = 'Audio briefing, about 3 minutes'; nowSub.textContent = 'Tap a segment to jump to a story'; }
+    else { nowTitle.textContent = (playing ? 'Playing: ' : 'Paused: ') + titles[i]; nowSub.textContent = 'Story ' + (i+1) + ' of ' + titles.length + ', ' + fmt(t) + ' / ' + fmt(aud.duration || dur); }
+    icoPlay.style.display = playing ? 'none' : ''; icoPause.style.display = playing ? '' : 'none';
+    playBtn.setAttribute('aria-label', playing ? 'Pause audio briefing' : 'Play audio briefing');
+  }
+  function play(){ applyRate(); var p = aud.play(); if(p && p.catch) p.catch(function(){ nowSub.textContent = 'Tap play again to start audio'; }); }
+  playBtn.addEventListener('click', function(){ if(aud.paused) play(); else aud.pause(); });
+  document.getElementById('prevBtn').addEventListener('click', function(){
+    var i = cur(); var target = (aud.currentTime - starts[i] > 3) ? i : Math.max(0, i-1);
+    aud.currentTime = starts[target] + 0.01; paint();
+  });
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    var i = Math.min(starts.length-1, cur()+1); aud.currentTime = starts[i] + 0.01; paint();
+  });
+  rateSel.addEventListener('change', function(){ store('fn-rate', rateSel.value); applyRate(); });
+  ['timeupdate','play','pause','ended','seeked','loadedmetadata'].forEach(function(e){ aud.addEventListener(e, paint); });
+  aud.addEventListener('ended', function(){ nowTitle.textContent = 'Finished. Thanks for listening'; });
+  if('mediaSession' in navigator){
+    try{
+      navigator.mediaSession.metadata = new MediaMetadata({title:document.title, artist:'Frontier Notes', album:'Audio briefing'});
+      navigator.mediaSession.setActionHandler('play', play);
+      navigator.mediaSession.setActionHandler('pause', function(){ aud.pause(); });
+      navigator.mediaSession.setActionHandler('nexttrack', function(){ document.getElementById('nextBtn').click(); });
+      navigator.mediaSession.setActionHandler('previoustrack', function(){ document.getElementById('prevBtn').click(); });
+      navigator.mediaSession.setActionHandler('seekbackward', function(){ aud.currentTime = Math.max(0, aud.currentTime-15); });
+      navigator.mediaSession.setActionHandler('seekforward', function(){ aud.currentTime = Math.min(aud.duration||dur, aud.currentTime+15); });
+    }catch(e){}
+  }
+  document.getElementById('copyBtn').addEventListener('click', function(){
+    var text = document.getElementById('scriptText').innerText; var btn = this;
+    function ok(){ btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent='Copy script'; }, 1800); }
+    function fallback(){ var rg = document.createRange(); rg.selectNodeContents(document.getElementById('scriptText')); var s = window.getSelection(); s.removeAllRanges(); s.addRange(rg); btn.textContent = 'Selected. Copy it from the menu'; }
+    try{ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(ok, fallback); } else fallback(); }catch(e){ fallback(); }
+  });
+  paint();
+  var hsh = (location.hash||'').replace('#','');
+  if(hsh){ var el = document.getElementById(hsh); if(el){ if(hsh==='script') el.open = true; setTimeout(function(){ el.scrollIntoView(); }, 50); } }
+})();
+</script>
+</body>
+</html>

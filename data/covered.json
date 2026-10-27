@@ -1,0 +1,18 @@
+{
+  "issues": ["2026-10-27"],
+  "items": [
+    {"title": "ETH refuted by OpenAI and Anthropic models", "url": "https://hexagonmath.org/2610.00577v1", "date": "2026-10-26", "labels": ["Company claim", "Machine-checked", "Preprint", "Expert review"]},
+    {"title": "OpenAI claims local smoothing / Kakeya in all dimensions", "url": "https://www.unite.ai/openai-says-its-models-produced-three-proofs-in-math-cs-and-physics/", "date": "2026-10-26", "labels": ["Company claim", "Machine-checked", "Preprint"]},
+    {"title": "Buterin vs Hoskinson on AI and lattice cryptography; HAWK background", "url": "https://startupfortune.com/vitalik-buterin-warns-ai-could-break-lattice-cryptography-within-two-years/", "date": "2026-10-07", "labels": ["Opinion"]},
+    {"title": "OpenAI October 6 release of 722 manuscripts; Xie survey", "url": "https://arxiv.org/pdf/2610.17090", "date": "2026-10-06", "labels": ["Company claim", "Preprint"]},
+    {"title": "OpenAI claims existence proof for QCD and Yang-Mills", "url": "https://www.unite.ai/openai-says-its-models-produced-three-proofs-in-math-cs-and-physics/", "date": "2026-10-26", "labels": ["Company claim", "Machine-checked", "Expert review"]},
+    {"title": "IISc ML reaction network for CO2 hydrogenation (Nature Communications)", "url": "https://sciencedaily.com/releases/2026/10/261013015758.htm", "date": "2026-10-13", "labels": ["Peer-reviewed"]}
+  ],
+  "open_claims": [
+    {"claim": "ETH is false (OpenAI and Anthropic)", "status": "Lean-checked; review group Impagliazzo, Paturi, Williams examining, explicitly not endorsing; Kintali simplified proof posted", "watch": "review group statement, errors found, conference announcement"},
+    {"claim": "Local smoothing, Kakeya and Stein restriction in all dimensions (OpenAI)", "status": "Lean proof per OpenAI; no outside expert verdict", "watch": "harmonic analysts' comments (Guth, Wang, Zahl, Tao), whether formal statement matches the conjecture"},
+    {"claim": "Existence of QCD and pure Yang-Mills in 4D (OpenAI)", "status": "Lean for Yang-Mills part only; artifacts withheld; Gross-led group writing it up", "watch": "group's write-up, any mass gap claims"},
+    {"claim": "October 6 release, incl. quasi-Riemann zero-free region and omega <= 9/4", "status": "unverified individually", "watch": "specialist verdicts on individual claims"},
+    {"claim": "AI will weaken lattice crypto within two years (Buterin)", "status": "prediction; no attack on ML-KEM/ML-DSA/unstructured LWE known", "watch": "any AI result on standardized lattice schemes"}
+  ]
+}
