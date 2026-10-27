@@ -29,6 +29,17 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install audio tools
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          pip install -q piper-tts
+
+      - name: Cache Piper voice
+        uses: actions/cache@v4
+        with:
+          path: voices
+          key: piper-en-us-lessac-medium
+
       - name: Configure git
         run: |
           git config user.name "github-actions[bot]"
