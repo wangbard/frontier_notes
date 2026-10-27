@@ -1,0 +1,61 @@
+name: Weekly issue
+
+on:
+  schedule:
+    # Mondays 06:17 UTC = 07:17 Amsterdam (winter) / 08:17 (summer)
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+  id-token: write
+
+concurrency:
+  group: weekly-issue
+  cancel-in-progress: false
+
+jobs:
+  issue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Write this week's issue with Claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          prompt: |
+            Follow TASK.md in this repository to produce this week's issue.
+            You are running in GitHub Actions on the main branch.
+            Commit your changes on main with the message format from TASK.md,
+            but do not push; the workflow pushes after you finish.
+          claude_args: >-
+            --model opus
+            --max-turns 300
+            --allowedTools Bash,Read,Write,Edit,Glob,Grep,WebSearch,WebFetch
+
+      - name: Commit leftovers and push
+        run: |
+          git add -A
+          git diff --cached --quiet || git commit -m "Issue $(date -u +%F): automated commit"
+          git push origin main
+
+      - name: Deploy site
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run deploy.yml --ref main
