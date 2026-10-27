@@ -32,7 +32,7 @@ Always open the primary source (paper, announcement, repo) rather than relying o
 ## 5. Fill in the page
 - Update the `<title>` and the `fn-date`, `fn-headline` and `fn-summary` meta tags, the issue number and date in the header, the intro, the articles, and the footer issue number.
 - Give each article a short plain id (letters only).
-- Write the audio script inside `#scriptText`: **450–550 words** (about 3 minutes), one `<div data-seg="N" data-title="..." data-kind="math|sci" data-anchor="article-id">` per story plus an intro (anchor empty). Write it for the ear: no symbols or formulas, numbers spelled out, short sentences, and the trust status said in words ("this is a company claim with a machine-checked proof").
+- Write the audio script inside `#scriptText`: **450–550 words** (about 3 minutes), one `<div data-seg="N" data-title="..." data-kind="math|sci" data-anchor="article-id">` per story plus an intro (anchor empty). Write it for the ear: no symbols or formulas, numbers spelled out, short sentences, and the trust status said in words ("this is a company claim with a machine-checked proof"). Introduce it as "issue N", never as a sample.
 - Leave `<script type="application/json" id="audio-meta">` for the script to fill.
 
 ## 6. Build audio and site
@@ -41,9 +41,9 @@ Run:
 python3 scripts/make_audio.py issues/YYYY-MM-DD.html
 python3 scripts/build_site.py
 ```
-The first script installs Piper, downloads the voice if needed, writes the MP3 and fills in the segment timings. The second rebuilds `index.html` and `feed.xml`. If audio fails, keep the issue, leave `audio-meta` empty (the player hides itself), add one sentence at the top of the intro saying audio is missing this week, and still run `build_site.py`.
+The first script uses Piper (installed, with the voice cached, by the workflow), writes the MP3 and fills in the segment timings. The second rebuilds `index.html` and `feed.xml`. If audio fails, keep the issue, leave `audio-meta` empty (the player hides itself), add one sentence at the top of the intro saying audio is missing this week, and still run `build_site.py`.
 
-## 7. Record and publish
+## 7. Record and commit
 - Update `data/covered.json`: add today's date to `issues`, one entry per story (title, primary URL, date, labels), and update `open_claims` (add new unverified claims, update statuses, and remove ones that are settled).
-- Commit everything with the message `Issue YYYY-MM-DD: <headline>` and push. The repository's workflows merge your branch into main and deploy the site.
+- Commit everything on the current branch with the message `Issue YYYY-MM-DD: <headline>`. Do not push: the workflow that runs you pushes and deploys the site.
 - Finish with a 3-line summary: the headline story, the number of stories, and any claim whose status changed.
