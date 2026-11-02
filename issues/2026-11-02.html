@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Frontier Notes, 2 Nov 2026</title>
+<meta name="fn-date" content="2026-11-02">
+<meta name="fn-headline" content="Factoring goes subexponential, deterministically">
+<meta name="fn-summary" content="Claude reuses the ETH counting engine to factor in time N^o(1), with a Lean proof and no effect on RSA. Also: the finite simple groups classification formalized, experts on the quasi-Riemann claim, a sharper provable attack on ML-KEM, the Yang–Mills committee’s plan, and data-mined MXenes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F2F4F6; --surface:#FFFFFF; --ink:#18212E; --muted:#576170; --rule:#D3D9E1;
+  --cobalt:#2B54A0; --cobalt-soft:#E3EAF6; --track:#C9D2DE;
+  --math:#2B54A0; --sci:#2E7458;
+  --c-peer:#2E7458; --c-pre:#80682A; --c-co:#7A3D76; --c-lean:#2B54A0; --c-rev:#4B6672; --c-soc:#9A4545;
+  --panel:#E9EDF2;
+  --serif:"Literata", Georgia, "Times New Roman", serif;
+  --sans:"Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#10151C; --surface:#18202A; --ink:#E4E9F0; --muted:#9AA5B4; --rule:#2B3542;
+    --cobalt:#86A8EA; --cobalt-soft:#1E2B42; --track:#34404F;
+    --math:#86A8EA; --sci:#6CC39C;
+    --c-peer:#6CC39C; --c-pre:#D2B56A; --c-co:#D39BCF; --c-lean:#86A8EA; --c-rev:#9DB8C4; --c-soc:#E39191;
+    --panel:#1C2530;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#10151C; --surface:#18202A; --ink:#E4E9F0; --muted:#9AA5B4; --rule:#2B3542;
+  --cobalt:#86A8EA; --cobalt-soft:#1E2B42; --track:#34404F;
+  --math:#86A8EA; --sci:#6CC39C;
+  --c-peer:#6CC39C; --c-pre:#D2B56A; --c-co:#D39BCF; --c-lean:#86A8EA; --c-rev:#9DB8C4; --c-soc:#E39191;
+  --panel:#1C2530;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:1.0625rem;line-height:1.68}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:42rem;margin:0 auto;padding:0 1.25rem}
+a{color:var(--cobalt);text-underline-offset:2px}
+a:focus-visible,button:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px;border-radius:4px}
+img{max-width:100%}
+
+/* masthead */
+header.mast{padding:2.5rem 0 1.25rem}
+.mast h1{font-family:var(--sans);font-weight:700;font-size:clamp(2rem,6vw,2.75rem);letter-spacing:-0.02em;line-height:1.05;margin:0}
+.mast p.dek{font-family:var(--sans);color:var(--muted);margin:.6rem 0 0;font-size:1rem;line-height:1.45}
+.mast .meta{font-family:var(--sans);font-size:.875rem;color:var(--muted);margin-top:.9rem;display:flex;flex-wrap:wrap;gap:.35rem 1.1rem}
+.mast .meta strong{color:var(--ink);font-weight:600}
+
+/* player */
+.player{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--rule);box-shadow:0 1px 0 var(--rule)}
+.player .wrap{padding-top:.7rem;padding-bottom:.75rem}
+.prow{display:flex;align-items:center;gap:.75rem}
+.play{flex:none;width:3rem;height:3rem;border-radius:50%;border:0;background:var(--cobalt);color:var(--surface);display:grid;place-items:center;cursor:pointer}
+.play svg{width:1.25rem;height:1.25rem;fill:currentColor}
+.ptext{flex:1;min-width:0;font-family:var(--sans)}
+.ptext .now{font-weight:600;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ptext .sub{font-size:.8rem;color:var(--muted)}
+.ctrl{display:flex;gap:.35rem;align-items:center;font-family:var(--sans)}
+.ib{border:1px solid var(--rule);background:transparent;color:var(--ink);border-radius:8px;height:2.25rem;min-width:2.25rem;padding:0 .5rem;cursor:pointer;font:inherit;font-size:.85rem}
+.ib svg{width:1rem;height:1rem;fill:currentColor;vertical-align:middle}
+select.ib{padding:0 .35rem}
+.track{display:flex;gap:4px;margin-top:.65rem}
+.seg{position:relative;height:28px;border:0;padding:0;background:var(--track);border-radius:3px;cursor:pointer;overflow:hidden;color:transparent}
+.seg .fill{position:absolute;inset:0 auto 0 0;width:0;background:var(--seg-c,var(--cobalt));transition:width .3s linear}
+.seg .lbl{position:absolute;left:6px;top:50%;transform:translateY(-50%);font-family:var(--sans);font-size:.7rem;font-weight:600;color:var(--ink);white-space:nowrap;mix-blend-mode:normal;pointer-events:none}
+.seg.done .lbl,.seg.active .lbl{color:var(--surface)}
+.seg[data-kind="sci"]{--seg-c:var(--sci)}
+.seg.done .fill{width:100%}
+.pnote{font-family:var(--sans);font-size:.78rem;color:var(--muted);margin:.5rem 0 0;line-height:1.4}
+.pnote[hidden]{display:none}
+@media (max-width:520px){
+  .ctrl .hide-s{display:none}
+  .seg .lbl{font-size:.62rem;left:4px}
+}
+
+/* body */
+main{padding-bottom:3rem}
+.intro{margin:1.75rem 0 0}
+.intro p{margin:.6rem 0}
+.legend{font-family:var(--sans);font-size:.85rem;background:var(--panel);border-radius:10px;padding:.9rem 1rem;margin:1.25rem 0 0}
+.legend p{margin:0 0 .5rem;color:var(--muted)}
+.legend ul{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}
+.legend li{display:flex;gap:.5rem;align-items:baseline}
+h2.group{font-family:var(--sans);font-size:1rem;font-weight:600;color:var(--muted);margin:3rem 0 0;padding-top:.75rem;border-top:2px solid var(--ink);display:flex;justify-content:space-between}
+h2.group span:last-child{font-weight:500}
+article{margin-top:2.25rem}
+article h3{font-family:var(--sans);font-size:clamp(1.35rem,3.6vw,1.65rem);line-height:1.2;letter-spacing:-0.01em;margin:0 0 .6rem;font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem;margin:0 0 1rem;padding:0;list-style:none}
+.chip{font-family:var(--sans);font-size:.75rem;font-weight:600;line-height:1;padding:.32rem .55rem;border-radius:999px;border:1.5px solid currentColor;white-space:nowrap}
+.chip.peer{color:var(--c-peer)} .chip.pre{color:var(--c-pre)} .chip.co{color:var(--c-co)}
+.chip.lean{color:var(--c-lean)} .chip.rev{color:var(--c-rev)} .chip.soc{color:var(--c-soc)}
+article p{margin:.75rem 0}
+.intuition{background:var(--panel);border-left:3px solid var(--cobalt);border-radius:0 10px 10px 0;padding:.4rem 1.1rem .6rem;margin:1.25rem 0}
+article.sci .intuition{border-left-color:var(--sci)}
+.intuition h4,.take h4{font-family:var(--sans);font-size:.95rem;margin:.6rem 0 .1rem;font-weight:700}
+.intuition ol{padding-left:1.2rem;margin:.4rem 0}
+.intuition li{margin:.45rem 0}
+.take h4{margin-top:1.25rem}
+.math{font-family:var(--serif);font-style:italic;white-space:nowrap}
+.src{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-top:1rem;line-height:1.5}
+.src a{color:var(--muted)}
+.mine{font-family:var(--sans);font-size:.8rem;font-weight:600;color:var(--muted)}
+details.script{font-family:var(--sans);margin:3rem 0 0;border-top:1px solid var(--rule);padding-top:1rem}
+details.script summary{cursor:pointer;font-weight:600}
+details.script .sc{font-family:var(--serif);font-size:1rem;margin-top:.75rem}
+details.script .sc p{margin:.6rem 0}
+.copybtn{margin-top:.5rem}
+footer{font-family:var(--sans);font-size:.8rem;color:var(--muted);padding:2rem 0 3rem;border-top:1px solid var(--rule);margin-top:2.5rem}
+.speaking{background:var(--cobalt-soft);border-radius:4px;box-shadow:0 0 0 4px var(--cobalt-soft)}
+@media (prefers-reduced-motion:reduce){.seg .fill{transition:none}}
+</style>
+</head>
+<body>
+
+<header class="mast wrap">
+  <h1>Frontier Notes</h1>
+  <p class="dek">AI-driven results in mathematics and cryptography, plus the best of physics and chemistry. Listen first, read what grabs you.</p>
+  <div class="meta"><span><a href="../" style="color:inherit">Frontier Notes archive</a></span><span><strong>Issue 2</strong>, Monday 2 November 2026</span><span>Covers roughly 27 October – 2 November</span><span>About 10 min to read, 3 min to listen</span></div>
+</header>
+
+<div class="player" id="listen" aria-label="Audio briefing">
+  <div class="wrap">
+    <div class="prow">
+      <button class="play" id="playBtn" aria-label="Play audio briefing">
+        <svg id="icoPlay" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
+        <svg id="icoPause" viewBox="0 0 24 24" aria-hidden="true" style="display:none"><path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z"/></svg>
+      </button>
+      <div class="ptext">
+        <div class="now" id="nowTitle">Audio briefing, about 3 minutes</div>
+        <div class="sub" id="nowSub">Tap a segment to jump to a story</div>
+      </div>
+      <div class="ctrl">
+        <button class="ib hide-s" id="prevBtn" aria-label="Previous story"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+        <button class="ib hide-s" id="nextBtn" aria-label="Next story"><svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+        <select class="ib" id="rate" aria-label="Speaking speed">
+          <option value="0.9">0.9×</option><option value="1" selected>1×</option><option value="1.15">1.15×</option><option value="1.3">1.3×</option>
+        </select>
+      </div>
+    </div>
+    <div class="track" id="track" role="group" aria-label="Stories in the audio briefing"></div>
+    <p class="pnote" id="pnote">Neural voice recorded for this issue. In most mobile browsers it keeps playing with the screen locked, with controls on your lock screen.</p>
+    <audio id="aud" preload="metadata" src="../audio/2026-11-02.mp3"></audio>
+    <script type="application/json" id="audio-meta">{"starts": [0.0, 17.13, 60.35, 86.97, 107.39, 124.55, 138.1, 154.85], "dur": 176.0}</script>
+  </div>
+</div>
+
+<main class="wrap">
+
+<section class="intro">
+  <p>Last week’s ETH refutations already have a sequel. Within days, two operations researchers working with Claude used the new counting engine to build the first deterministic factoring algorithm that beats every fixed power of <span class="math">N</span>, and they back it with a Lean proof. That’s the deep dive, including why it leaves RSA exactly where it was. Also this week: AI agents formally verified the classification of finite simple groups and found a gap in a 1986 paper along the way, specialists weighed in on the quasi-Riemann claim, a human-written paper sharpened provable lattice attacks, the Yang–Mills committee set out its plan, and a <em>Science</em> paper used data mining to find overlooked MXenes.</p>
+  <div class="legend">
+    <p>How to read the labels on each story</p>
+    <ul>
+      <li><span class="chip peer">Peer-reviewed</span><span>Published in a reviewed journal or conference.</span></li>
+      <li><span class="chip pre">Preprint</span><span>Public paper, not yet reviewed.</span></li>
+      <li><span class="chip co">Company claim</span><span>Announced by the lab that produced it.</span></li>
+      <li><span class="chip lean">Machine-checked</span><span>Formal proof in Lean exists. This checks the formal statement, not whether it matches the famous conjecture.</span></li>
+      <li><span class="chip rev">Expert review</span><span>Named outside experts are examining it or have independently reworked it.</span></li>
+      <li><span class="chip soc">Opinion</span><span>Social-media argument or prediction, not a result.</span></li>
+    </ul>
+  </div>
+</section>
+
+<h2 class="group"><span>Math &amp; crypto</span><span>about 70%</span></h2>
+
+<article id="factoring">
+  <h3>Factoring goes subexponential, deterministically</h3>
+  <ul class="chips"><li class="chip pre">Preprint: Hexagon</li><li class="chip lean">Machine-checked: 13-line Lean statement</li><li class="chip soc">Opinion: Elliot Glazer on X</li></ul>
+
+  <p>On 28 October, Isaac Rudich and Louis-Martin Rousseau of Polytechnique Montréal posted “Deterministic Factoring in Time N<sup>o(1)</sup>” to Hexagon, the preprint server for AI-assisted mathematics. The claim is a single deterministic machine that, for every fixed <span class="math">k</span>, finds the smallest prime factor of an <span class="math">n</span>-bit number <span class="math">N</span> in at most <span class="math">C<sub>k</sub></span>·2<sup>n/k</sup> steps, which is roughly <span class="math">N</span><sup>1/k</sup>. The ideas and the roughly 35,000-line Lean proof were generated by Claude Opus 5.5. The two authors designed and audited the 13-line formal statement, which depends only on Mathlib and Lean’s standard axioms, and they say they did not read the proof. The project began when they asked Claude to apply the new ETH results to factoring. No human-readable explanation exists yet.</p>
+  <p>Deterministic, provable factoring has advanced very slowly for fifty years. Trial division takes about <span class="math">N</span><sup>1/2</sup> steps. Pollard and Strassen got this down to <span class="math">N</span><sup>1/4</sup> in the 1970s. Hittmeir reached 2/9 in 2018 and Harvey reached 1/5 in 2021, and Harvey and Hittmeir later shaved off a log-log factor. Each of these bounds has a fixed positive exponent. The new result says the exponent can be pushed below any positive number. On X, mathematician Elliot Glazer summed it up as factoring now being “proven subexponential (deterministically, worst-case bound)”. He reported that an AI audit found the Lean proves exactly what it states, while the English write-up contains some errors.</p>
+
+  <div class="intuition">
+    <h4>The intuition: find a factor by counting, then count the way the ETH proof does</h4>
+    <ol>
+      <li><strong>Search by counting.</strong> Imagine an oracle that tells you how many divisors of <span class="math">N</span> above 1 begin with a given string of leading bits. You can then build the smallest divisor one bit at a time. At each step, ask whether any divisor continues the current prefix with a 0. If one does, append 0, and otherwise append 1. That takes about <span class="math">n</span> questions, and the smallest divisor above 1 is automatically prime.</li>
+      <li><strong>Counting divisors means counting solutions.</strong> A divisor with a given prefix is a pair of numbers <span class="math">x</span>, <span class="math">y</span> with <span class="math">x·y&nbsp;=&nbsp;N</span>, where <span class="math">x</span> matches the prefix. That’s a constraint problem on about <span class="math">n</span> unknown bits. Counting solutions to constraint problems is exactly what last week’s ETH engine does in time 2<sup>εn</sup>.</li>
+      <li><strong>The catch: multiplication isn’t local.</strong> Write <span class="math">x·y&nbsp;=&nbsp;N</span> as a 3-SAT formula and the carries force you to add on the order of <span class="math">n</span><sup>2</sup> helper variables. The engine’s cost grows with the total number of variables, so 2<sup>ε·n²</sup> is worse than trial division. Per the README, the proof gets around this with its own multiplication network, so the costs scale with the <span class="math">n</span> input bits. <span class="mine">My read, since no write-up exists yet:</span> the engine needs variables split into groups that interact only through a few small shared quantities. Long multiplication has natural candidates, because the carries passed between blocks of digits are small numbers.</li>
+      <li><strong>Deform, then interpolate.</strong> As last week, the engine adds a dial. At a few chosen settings the groups separate and can be counted by multiplying, and polynomial interpolation recovers the exact count at the original setting.</li>
+      <li><strong>Galactic constants.</strong> The constants <span class="math">C<sub>k</sub></span> exist but are uncomputed, and the README calls them astronomically large.</li>
+    </ol>
+  </div>
+
+  <div class="take">
+    <h4>What it means for RSA and the rest of deployed cryptography</h4>
+    <p>For RSA, it changes nothing. RSA key sizes were never set by deterministic worst-case bounds. They are set by the number field sieve, which is randomized, relies on heuristics, and runs in roughly exp(1.92·(ln&nbsp;N)<sup>1/3</sup>(ln&nbsp;ln&nbsp;N)<sup>2/3</sup>) time. Even the best <em>provable</em> randomized method, from Lenstra and Pomerance in 1992, runs in about exp(√(ln&nbsp;N·ln&nbsp;ln&nbsp;N)). Asymptotically, that already beats <span class="math">N</span><sup>1/k</sup> for every fixed <span class="math">k</span>. It would even beat the README’s stated (and unproved) target of exp(O(ln&nbsp;N/√(ln&nbsp;ln&nbsp;N))). Elliptic curves, Diffie–Hellman and ML-KEM are unaffected. What the result settles is a long-open theoretical question.</p>
+    <p><span class="mine">My read:</span> the bigger signal is that the ETH engine is now a reusable tool, transplanted within days. The useful question is which problems have the right shape for it. Lattice problems mostly don’t. Their hardness is exponential in the dimension <span class="math">d</span>, but an instance takes about <span class="math">d</span><sup>2</sup>·log&nbsp;q bits to write down, so an algorithm that is subexponential in the input length tells you nothing about them. More natural next targets are problems where the best <em>deterministic</em> bound is still a fixed power of the input size, such as discrete logarithms solved without randomness.</p>
+  </div>
+
+  <p class="src">Sources: <a href="https://hexagonmath.org/2610.00600v1">Rudich and Rousseau on Hexagon</a>, <a href="https://github.com/IsaacRudich/SubexponentialDeterministicFactoring">Lean repository and README</a>, <a href="https://x.com/ElliotGlazer/status/2115977690385895828">Glazer on X</a>, <a href="https://arxiv.org/abs/2010.05450">Harvey’s exponent-1/5 algorithm (arXiv)</a>.</p>
+</article>
+
+<article id="cfsg">
+  <h3>The classification of finite simple groups, checked end to end by AI agents</h3>
+  <ul class="chips"><li class="chip co">Company claim: Axiom</li><li class="chip lean">Machine-checked, not yet rebuilt by outsiders</li><li class="chip pre">Preprint: Defant–Ono repair</li><li class="chip rev">Expert review: Lyons and Solomon advised on the repair</li></ul>
+  <p>On 26 October the startup Axiom announced a complete Lean formalization of the classification of finite simple groups (CFSG). Its proof is spread over thousands of journal pages by more than a hundred authors. Axiom says a swarm of AI agents wrote about 43.1 million lines of Lean in 24 days. It follows the first-generation proof, with Aschbacher and Smith’s 2004 volumes for the quasithin case. Axiom logged 34 places where the published record deviates from a correct proof, mostly typos and dropped hypotheses. Two of these are real gaps. One is a lemma in the quasithin volumes that fails for the group SL<sub>2</sub>(5). The other is a closure claim in John Walter’s 1986 memoir on the Unbalanced Group Theorem. The team repaired the Walter gap by a new route, with advice from Richard Lyons and Ronald Solomon. Axiom mathematicians Colin Defant and Ken Ono posted the repair on Hexagon on 27 October.</p>
+  <div class="intuition">
+    <h4>The intuition: you can classify a group by looking at its involutions</h4>
+    <p>The proof argues by contradiction. Take the smallest simple group that isn’t on the list. In the 1950s Brauer and Fowler showed that the centralizer of an involution, meaning the elements that commute with a given element of order 2, determines a simple group up to finitely many possibilities. Much of CFSG is therefore “local analysis” of such pieces. The Unbalanced Group Theorem handles the case where such a centralizer contains an awkward “unbalanced” component. Walter’s argument assumed that a certain family of simple groups stays inside the family under one step of this analysis. The agents found a counterexample in PSL<sub>2</sub>(49). The centralizer of its field involution is PGL<sub>2</sub>(7), and its simple part, PSL<sub>2</sub>(7), falls outside the family because 7 is a Mersenne prime. Nobody thinks the classification is false. The gap was in one route through the proof, and a new route now exists.</p>
+  </div>
+  <p><span class="mine">My take:</span> Lean’s kernel checks every step, so you don’t have to trust the agents. You do have to trust the definitions, and Axiom says humans still need to confirm that the formal statement matches the classification. CEO Carina Hong told Runtime Wire that no outside group has rebuilt the proof yet, and that Axiom is publishing build artifacts so others can.</p>
+  <p class="src">Sources: <a href="https://axiommath.ai/research/the-enormous-theorem-formalized/">Axiom’s announcement</a>, <a href="https://hexagonmath.org/2610.00575v1">Defant and Ono, “The Unbalanced Group Theorem” (Hexagon)</a>, <a href="https://runtimewire.com/article/axiom-s-ceo-says-no-one-outside-the-company-has-rebuilt-its-43-million-line-proo">Runtime Wire on independent rebuilds</a>.</p>
+</article>
+
+<article id="zeta">
+  <h3>Follow-up: specialists weigh in on the quasi-Riemann claim</h3>
+  <ul class="chips"><li class="chip co">Company claim: OpenAI</li><li class="chip lean">Machine-checked: 7/8 version only</li><li class="chip rev">Expert review: examining, with cautious support</li></ul>
+  <p><strong>What changed.</strong> Last week we listed this claim from OpenAI’s 6 October release as unverified. We missed a 19 October <em>Quanta</em> report by Konstantin Kakaes gathering specialist reactions. There are two versions. One is 199 pages, dated 30 September and verified in Lean. It puts every nontrivial zero of the zeta function between real parts 1/8 and 7/8. The other is 49 pages, dated 5 October and not formalized, and it proves the weaker strip from 1/12 to 11/12. Experts have focused on the short one. Maksym Radziwiłł says he can sketch its argument in half a page and calls the implications “staggering”. Alexander Dunn calls it a surprising synthesis of known ideas. Peter Sarnak won’t call it a theorem until humans have checked every detail. <em>Quanta</em> reports that experts largely agree the 11/12 result is correct, and that write-ups of 7 to 13 pages are circulating privately.</p>
+  <div class="intuition">
+    <h4>The intuition: a fixed strip buys a power saving for primes</h4>
+    <p>The error in counting primes up to <span class="math">x</span> is controlled by how far right the zeta zeros can sit. If none has real part above θ, the error is at most about <span class="math">x</span><sup>θ</sup>. Classical results only keep zeros a shrinking sliver away from 1, which saves less than any power of <span class="math">x</span>. A fixed strip at 11/12 gives a genuine power saving. The Riemann hypothesis would give <span class="math">x</span><sup>1/2</sup>. The key move, which Sarnak had long advocated, is to study zeta inside a large family of related functions built from metaplectic forms. Averages over a family are much easier to control than any single function.</p>
+  </div>
+  <p class="src">Sources: <a href="https://quantamagazine.org/ai-proved-the-quasi-riemann-hypothesis-what-happens-now-20261019">Quanta, “AI Proved the Quasi-Riemann Hypothesis. What Happens Now?”</a>.</p>
+</article>
+
+<article id="dual">
+  <h3>A sharper provable attack on ML-KEM, with no change to its security</h3>
+  <ul class="chips"><li class="chip pre">Preprint: IACR ePrint 2026/2565</li></ul>
+  <p>On 20 October Kaveh Bashiri of Germany’s Federal Office for Information Security (BSI) posted “Further Elaborations on the Provable Dual Attack”. It doesn’t mention AI, but it is the fortnight’s most substantive lattice cryptanalysis and bears on last week’s AI-versus-lattices debate. It gives a dual attack on LWE that recovers part of the secret, with a proven lower bound on its success probability. It removes the informal assumptions left in earlier provable versions by Pouly and Shen and by Bashiri and Wiemers. Against ML-KEM, under one heuristic about its structured matrix, the paper reports gains of up to 22–52 bits over the first provable dual attack. It reports up to 47–100 bits if the sublattice rank is bounded as in a recent paper by Qu, Tian, Wang and Xu.</p>
+  <div class="intuition">
+    <h4>The intuition: short dual vectors turn noise into a test</h4>
+    <p>LWE hides a secret <span class="math">s</span> in <span class="math">b&nbsp;=&nbsp;As&nbsp;+&nbsp;e</span> mod <span class="math">q</span>, where <span class="math">e</span> is small noise. A dual attack finds many short vectors <span class="math">w</span> for which <span class="math">wA</span> is short too. Guess part of <span class="math">s</span> and form the remainder. For the right guess, each inner product with <span class="math">w</span> is a sum of small numbers, so the values cluster near 0. For wrong guesses they look uniform. The hard part is proving that no wrong guess scores well by luck. In 2023 Ducas and Pulles showed the usual independence assumptions could be contradictory. This paper controls the wrong candidates’ scores using the exact uniform distribution of certain cosets, so it doesn’t need those assumptions.</p>
+  </div>
+  <p><strong>For deployed systems:</strong> the author states plainly that the results do not threaten ML-KEM or ML-DSA. The gains are measured against an earlier <em>provable</em> attack, which was far weaker than the heuristic attacks used to set the parameters. <span class="mine">My take:</span> this narrows the gap between what is proved and what is believed.</p>
+  <p class="src">Sources: <a href="https://eprint.iacr.org/2026/2565">Bashiri, ePrint 2026/2565</a>, <a href="https://eprint.iacr.org/2026/2117">Qu, Tian, Wang and Xu, ePrint 2026/2117</a>.</p>
+</article>
+
+<article id="radar">
+  <h3>On the radar: ETH, week one of scrutiny</h3>
+  <ul class="chips"><li class="chip rev">Expert review: examining, not endorsing</li><li class="chip lean">Machine-checked</li><li class="chip soc">Opinion</li></ul>
+  <p>Impagliazzo, Paturi and Williams opened a discussion blog for the ETH refutation, and proposed a virtual meeting before the end of 2026. They repeat that taking part is not a certification. In the comments, Carlos Toledo reports replaying both labs’ Lean developments with Lean’s kernel and with nanoda, an independent checker. Each development checks against its own statement using the standard axioms. He notes that OpenAI’s Lean files never define ETH itself, and that in both developments the translation between machine models is informal. On 28 October Lance Fortnow wrote that he hasn’t verified the proof but thinks it is safe to assume ETH is false. That is his opinion. He also points to simpler proofs by Ryan O’Donnell and Shiva Kintali.</p>
+  <p class="src">Sources: <a href="https://ethdiscussion.blog/2026/10/26/eth-refutation-examination-and-discussion/">ETH discussion blog</a>, <a href="https://blog.computationalcomplexity.org/2026/10/the-exponential-time-refutation.html">Fortnow, Computational Complexity blog</a>.</p>
+</article>
+
+<h2 class="group"><span>Physics &amp; chemistry</span><span>about 30%</span></h2>
+
+<article id="yangmills" class="sci">
+  <h3>Follow-up: the Yang–Mills committee sets its terms</h3>
+  <ul class="chips"><li class="chip co">Company claim: OpenAI</li><li class="chip rev">Expert review: Gross-led committee, examining</li><li class="chip lean">Machine-checked: Lean promised, not released</li></ul>
+  <p><strong>What changed.</strong> The committee holding OpenAI’s Yang–Mills proof has published a statement through the Kavli Institute for Theoretical Physics. Its members are Michael Douglas, David Gross (chair), Arthur Jaffe, Igor Klebanov and Nikita Nekrasov. They say they work for the academic community: “We have no responsibility to OpenAI.” They describe the proof, which they say builds on Balaban’s renormalization-group work, as apparently an important step toward a rigorous footing for quantum field theory. Confinement and the mass gap remain open. Their plan has three stages. First, they will check that the Lean definitions and problem statement match the standard ones and that the formal proof matches the informal one. Then they will release the Lean proof, and finally their assessment with the full 1,147 pages of model-written proofs.</p>
+  <div class="intuition">
+    <h4>The intuition: why the definitions come first</h4>
+    <p>Lean guarantees that a proof proves its stated theorem, but nothing more. For a quantum field theory, the statement is roughly this: a certain probability measure on gauge fields exists and satisfies a list of axioms (symmetry, positivity, and so on), from which a genuine quantum theory can be rebuilt. If one of those definitions is subtly too weak, the theorem could be true and still not mean “Yang–Mills exists”. That’s why the committee checks definitions before anything else.</p>
+  </div>
+  <p class="src">Sources: <a href="https://www.kitp.ucsb.edu/sites/default/files/YM_working_group.pdf">Committee statement (KITP, PDF)</a>.</p>
+</article>
+
+<article id="mxene" class="sci">
+  <h3>Data mining finds 33 overlooked MXenes and makes 11 new ones</h3>
+  <ul class="chips"><li class="chip peer">Peer-reviewed: Science</li></ul>
+  <p>On 29 October a team from Linköping University, working with colleagues in Estonia and Finland, published “Data-driven discovery and rapid, direct synthesis of MXenes” in <em>Science</em>. The group is led by Johanna Rosén and the first author is Ali Saffar Shamshirgar. AI-assisted searches of materials databases and the literature turned up 33 MXenes that had been made before but overlooked, and these findings guided the synthesis of 11 new ones. The team also reports a synthesis route that takes seconds with no external heating and uses fewer hazardous chemicals and less water. Rare-earth metals built into the structure make the sheets magnetic.</p>
+  <div class="intuition">
+    <h4>The intuition: a big chemical space whose map is scattered across papers</h4>
+    <p>MXenes are sheets of metal carbide or nitride only a few atoms thick. The classic recipe starts from a layered “MAX phase” crystal and chemically etches out the A layers, often with hydrofluoric acid, leaving stacked sheets. Choices of metal, carbon or nitrogen, and surface chemistry form a large combinatorial space, and what is known is scattered across thousands of papers, so results get overlooked. Systematic mining is cheap compared with lab work. Caveat: the university’s release doesn’t describe the AI method or how each new compound was characterized, and I couldn’t access the paper itself.</p>
+  </div>
+  <p class="src">Sources: <a href="https://phys.org/news/2026-10-ai-uncover-overlooked-2d-materials.html">phys.org on the Linköping release</a>. Paper DOI: 10.1126/science.aeh5957.</p>
+</article>
+
+<details class="script" id="script">
+  <summary>Read the audio script</summary>
+  <p class="pnote">This is the text of the audio briefing, if you’d rather skim it.</p>
+  <button class="ib copybtn" id="copyBtn">Copy script</button>
+  <div class="sc" id="scriptText">
+    <div data-seg="0" data-title="Intro" data-kind="math" data-anchor="">
+      <p>Welcome to Frontier Notes, issue two, for Monday, November second. Last week’s big result already has a sequel: a new way to factor numbers. After that, a giant formal proof in group theory, an update on the quasi-Riemann claim, a lattice paper, and two science stories.</p>
+    </div>
+    <div data-seg="1" data-title="Factoring" data-kind="math" data-anchor="factoring">
+      <p>The deep dive. On October twenty-eighth, two researchers in Montreal posted a factoring algorithm generated by Claude. It uses no randomness. And for any fixed power, however small, it eventually beats that power of the number being factored. The best method of this kind before needed about the fifth root.</p>
+      <p>The trick reuses last week’s counting engine from the refutation of the Exponential Time Hypothesis. You find the smallest factor one bit at a time, by counting how many divisors start with a given pattern.</p>
+      <p>This is a preprint with a machine-checked proof in Lean. The authors say they did not read the proof themselves. For security, there is no impact. Real attacks on RSA use randomized methods that were already far faster, and the constants here are astronomical.</p>
+    </div>
+    <div data-seg="2" data-title="Simple groups" data-kind="math" data-anchor="cfsg">
+      <p>Next, group theory. The startup Axiom says its AI agents formalized the entire classification of finite simple groups in Lean. That’s about forty-three million lines, written in twenty-four days. Along the way, they found a real gap in a paper from nineteen eighty-six, and repaired it with advice from the group theorists Richard Lyons and Ronald Solomon. This is a company claim with a machine-checked proof. Nobody outside Axiom has rebuilt it yet.</p>
+    </div>
+    <div data-seg="3" data-title="Quasi-Riemann" data-kind="math" data-anchor="zeta">
+      <p>An update on the quasi-Riemann claim from OpenAI’s October release. Specialists have examined the shorter version, which keeps every zero of the zeta function inside a fixed strip. Maksym Radziwill says he can sketch the argument in half a page. Peter Sarnak won’t call it a theorem until people check every detail. That’s expert review, still in progress.</p>
+    </div>
+    <div data-seg="4" data-title="Lattices" data-kind="math" data-anchor="dual">
+      <p>In lattice cryptography, a paper from Germany’s federal security agency sharpens attacks on ML-KEM whose success can be proved. It gains up to a hundred bits over an earlier provable attack. But the author says plainly that this does not threaten ML-KEM. It’s a preprint, written by a person.</p>
+    </div>
+    <div data-seg="5" data-title="ETH check" data-kind="math" data-anchor="radar">
+      <p>On the Exponential Time Hypothesis, the review group has opened a public discussion. One outside checker replayed both labs’ Lean proofs and found they hold up against their own statements. The group still says it is not endorsing anything.</p>
+    </div>
+    <div data-seg="6" data-title="Yang–Mills" data-kind="sci" data-anchor="yangmills">
+      <p>Physics. The committee chaired by David Gross that holds OpenAI’s Yang–Mills proof has set out its plan. First, check that the Lean definitions match what physicists mean. Then release the Lean proof, and later the full manuscript with their assessment. The mass gap remains open.</p>
+    </div>
+    <div data-seg="7" data-title="MXenes" data-kind="sci" data-anchor="mxene">
+      <p>And chemistry, peer-reviewed in Science. A team at Linköping University used data mining to find thirty-three ultrathin materials called MXenes that had been made before but overlooked. Then it made eleven new ones, some of them magnetic, in seconds and without external heating.</p>
+      <p>That’s the briefing. The written version explains how counting turns into factoring.</p>
+    </div>
+  </div>
+</details>
+
+</main>
+
+<footer>
+  <div class="wrap" style="padding:0">Frontier Notes, issue 2. Compiled by Claude from public announcements, preprints, journals and social media, as of 2 November 2026. Labels describe the status of each claim, not my belief in it; items marked “my read” or “my take” are my own analysis.</div>
+</footer>
+
+<script>
+(function(){
+  var aud = document.getElementById('aud');
+  var meta = {starts:[], dur:0};
+  try{ meta = JSON.parse(document.getElementById('audio-meta').textContent); }catch(e){}
+  var segNodes = Array.prototype.slice.call(document.querySelectorAll('#scriptText [data-seg]'));
+  var titles = segNodes.map(function(n){ return n.getAttribute('data-title'); });
+  var kinds = segNodes.map(function(n){ return n.getAttribute('data-kind') || 'math'; });
+  var anchors = segNodes.map(function(n){ return n.getAttribute('data-anchor') || null; });
+  var dur = meta.dur || 1;
+  var starts = (meta.starts && meta.starts.length === titles.length) ? meta.starts : titles.map(function(_,i){ return i*dur/titles.length; });
+  if(!meta.dur){ document.getElementById('listen').style.display = 'none'; }
+  var track = document.getElementById('track');
+  var btns = [];
+  function segEnd(i){ return i+1 < starts.length ? starts[i+1] : (aud.duration || dur); }
+  titles.forEach(function(t,i){
+    var b = document.createElement('button');
+    b.className = 'seg'; b.setAttribute('data-kind', kinds[i]);
+    b.style.flex = String(Math.max((segEnd(i)-starts[i])/dur, 0.07));
+    b.setAttribute('aria-label','Play from: '+t);
+    b.innerHTML = '<span class="fill"></span><span class="lbl"></span>';
+    b.querySelector('.lbl').textContent = t;
+    b.addEventListener('click', function(){ aud.currentTime = starts[i] + 0.01; play(); });
+    track.appendChild(b); btns.push(b);
+  });
+  var playBtn = document.getElementById('playBtn');
+  var icoPlay = document.getElementById('icoPlay'), icoPause = document.getElementById('icoPause');
+  var nowTitle = document.getElementById('nowTitle'), nowSub = document.getElementById('nowSub');
+  var rateSel = document.getElementById('rate');
+  function store(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  function load(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  var r = load('fn-rate'); if(r){ rateSel.value = r; }
+  function applyRate(){ aud.playbackRate = parseFloat(rateSel.value) || 1; }
+  applyRate();
+  function cur(){ var t = aud.currentTime, i = 0; for(var k=0;k<starts.length;k++){ if(t >= starts[k]) i = k; } return i; }
+  function fmt(s){ s = Math.max(0, Math.floor(s)); return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2); }
+  function paint(){
+    var i = cur(), t = aud.currentTime, playing = !aud.paused && !aud.ended;
+    btns.forEach(function(b,k){
+      var f = b.querySelector('.fill');
+      var pct = k < i ? 100 : (k > i ? 0 : Math.min(100, 100*(t-starts[k])/(segEnd(k)-starts[k])));
+      f.style.width = pct + '%';
+      b.classList.toggle('done', k < i);
+      b.classList.toggle('active', k === i && t > 0.05);
+    });
+    if(t < 0.05 && !playing){ nowTitle.textContent = 'Audio briefing, about 3 minutes'; nowSub.textContent = 'Tap a segment to jump to a story'; }
+    else { nowTitle.textContent = (playing ? 'Playing: ' : 'Paused: ') + titles[i]; nowSub.textContent = 'Story ' + (i+1) + ' of ' + titles.length + ', ' + fmt(t) + ' / ' + fmt(aud.duration || dur); }
+    icoPlay.style.display = playing ? 'none' : ''; icoPause.style.display = playing ? '' : 'none';
+    playBtn.setAttribute('aria-label', playing ? 'Pause audio briefing' : 'Play audio briefing');
+  }
+  function play(){ applyRate(); var p = aud.play(); if(p && p.catch) p.catch(function(){ nowSub.textContent = 'Tap play again to start audio'; }); }
+  playBtn.addEventListener('click', function(){ if(aud.paused) play(); else aud.pause(); });
+  document.getElementById('prevBtn').addEventListener('click', function(){
+    var i = cur(); var target = (aud.currentTime - starts[i] > 3) ? i : Math.max(0, i-1);
+    aud.currentTime = starts[target] + 0.01; paint();
+  });
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    var i = Math.min(starts.length-1, cur()+1); aud.currentTime = starts[i] + 0.01; paint();
+  });
+  rateSel.addEventListener('change', function(){ store('fn-rate', rateSel.value); applyRate(); });
+  ['timeupdate','play','pause','ended','seeked','loadedmetadata'].forEach(function(e){ aud.addEventListener(e, paint); });
+  aud.addEventListener('ended', function(){ nowTitle.textContent = 'Finished. Thanks for listening'; });
+  if('mediaSession' in navigator){
+    try{
+      navigator.mediaSession.metadata = new MediaMetadata({title:document.title, artist:'Frontier Notes', album:'Audio briefing'});
+      navigator.mediaSession.setActionHandler('play', play);
+      navigator.mediaSession.setActionHandler('pause', function(){ aud.pause(); });
+      navigator.mediaSession.setActionHandler('nexttrack', function(){ document.getElementById('nextBtn').click(); });
+      navigator.mediaSession.setActionHandler('previoustrack', function(){ document.getElementById('prevBtn').click(); });
+      navigator.mediaSession.setActionHandler('seekbackward', function(){ aud.currentTime = Math.max(0, aud.currentTime-15); });
+      navigator.mediaSession.setActionHandler('seekforward', function(){ aud.currentTime = Math.min(aud.duration||dur, aud.currentTime+15); });
+    }catch(e){}
+  }
+  document.getElementById('copyBtn').addEventListener('click', function(){
+    var text = document.getElementById('scriptText').innerText; var btn = this;
+    function ok(){ btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent='Copy script'; }, 1800); }
+    function fallback(){ var rg = document.createRange(); rg.selectNodeContents(document.getElementById('scriptText')); var s = window.getSelection(); s.removeAllRanges(); s.addRange(rg); btn.textContent = 'Selected. Copy it from the menu'; }
+    try{ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(ok, fallback); } else fallback(); }catch(e){ fallback(); }
+  });
+  paint();
+  var hsh = (location.hash||'').replace('#','');
+  if(hsh){ var el = document.getElementById(hsh); if(el){ if(hsh==='script') el.open = true; setTimeout(function(){ el.scrollIntoView(); }, 50); } }
+})();
+</script>
+</body>
+</html>

@@ -10,6 +10,16 @@
     <itunes:category text="Science"/>
     <itunes:explicit>false</itunes:explicit>
     <item>
+      <title>Factoring goes subexponential, deterministically</title>
+      <description>Claude reuses the ETH counting engine to factor in time N^o(1), with a Lean proof and no effect on RSA. Also: the finite simple groups classification formalized, experts on the quasi-Riemann claim, a sharper provable attack on ML-KEM, the Yang–Mills committee’s plan, and data-mined MXenes. Full text: https://wangbard.github.io/frontier_notes/issues/2026-11-02.html</description>
+      <link>https://wangbard.github.io/frontier_notes/issues/2026-11-02.html</link>
+      <guid isPermaLink="false">frontier-notes-2026-11-02</guid>
+      <pubDate>Mon, 02 Nov 2026 07:00:00 +0000</pubDate>
+      <enclosure url="https://wangbard.github.io/frontier_notes/audio/2026-11-02.mp3" length="1056933" type="audio/mpeg"/>
+      <itunes:duration>00:02:56</itunes:duration>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
+    <item>
       <title>The Exponential Time Hypothesis falls, twice in one day</title>
       <description>OpenAI and Anthropic both claim machine-checked refutations of ETH. Also: Kakeya in every dimension, the AI-vs-lattices debate, an existence claim for QCD, and a peer-reviewed CO₂-to-fuel reaction map. Full text: https://wangbard.github.io/frontier_notes/issues/2026-10-27.html</description>
       <link>https://wangbard.github.io/frontier_notes/issues/2026-10-27.html</link>
