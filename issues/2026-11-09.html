@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Frontier Notes, 9 Nov 2026</title>
+<meta name="fn-date" content="2026-11-09">
+<meta name="fn-headline" content="Quantum speedups need structure: Aaronson–Ambainis proved">
+<meta name="fn-summary" content="A Lean-checked proof, found with an unreleased Claude model, settles the 2008 Aaronson–Ambainis conjecture, with no effect on Shor or deployed crypto. Also: DeepMind cheapens attacks on 1024-bit RSA, the shrinking Landau–Siegel proof, Kaiburr, helium can’t bind two extra electrons, and the Mézard–Parisi formula.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F2F4F6; --surface:#FFFFFF; --ink:#18212E; --muted:#576170; --rule:#D3D9E1;
+  --cobalt:#2B54A0; --cobalt-soft:#E3EAF6; --track:#C9D2DE;
+  --math:#2B54A0; --sci:#2E7458;
+  --c-peer:#2E7458; --c-pre:#80682A; --c-co:#7A3D76; --c-lean:#2B54A0; --c-rev:#4B6672; --c-soc:#9A4545;
+  --panel:#E9EDF2;
+  --serif:"Literata", Georgia, "Times New Roman", serif;
+  --sans:"Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#10151C; --surface:#18202A; --ink:#E4E9F0; --muted:#9AA5B4; --rule:#2B3542;
+    --cobalt:#86A8EA; --cobalt-soft:#1E2B42; --track:#34404F;
+    --math:#86A8EA; --sci:#6CC39C;
+    --c-peer:#6CC39C; --c-pre:#D2B56A; --c-co:#D39BCF; --c-lean:#86A8EA; --c-rev:#9DB8C4; --c-soc:#E39191;
+    --panel:#1C2530;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#10151C; --surface:#18202A; --ink:#E4E9F0; --muted:#9AA5B4; --rule:#2B3542;
+  --cobalt:#86A8EA; --cobalt-soft:#1E2B42; --track:#34404F;
+  --math:#86A8EA; --sci:#6CC39C;
+  --c-peer:#6CC39C; --c-pre:#D2B56A; --c-co:#D39BCF; --c-lean:#86A8EA; --c-rev:#9DB8C4; --c-soc:#E39191;
+  --panel:#1C2530;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:1.0625rem;line-height:1.68}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:42rem;margin:0 auto;padding:0 1.25rem}
+a{color:var(--cobalt);text-underline-offset:2px}
+a:focus-visible,button:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px;border-radius:4px}
+img{max-width:100%}
+
+/* masthead */
+header.mast{padding:2.5rem 0 1.25rem}
+.mast h1{font-family:var(--sans);font-weight:700;font-size:clamp(2rem,6vw,2.75rem);letter-spacing:-0.02em;line-height:1.05;margin:0}
+.mast p.dek{font-family:var(--sans);color:var(--muted);margin:.6rem 0 0;font-size:1rem;line-height:1.45}
+.mast .meta{font-family:var(--sans);font-size:.875rem;color:var(--muted);margin-top:.9rem;display:flex;flex-wrap:wrap;gap:.35rem 1.1rem}
+.mast .meta strong{color:var(--ink);font-weight:600}
+
+/* player */
+.player{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--rule);box-shadow:0 1px 0 var(--rule)}
+.player .wrap{padding-top:.7rem;padding-bottom:.75rem}
+.prow{display:flex;align-items:center;gap:.75rem}
+.play{flex:none;width:3rem;height:3rem;border-radius:50%;border:0;background:var(--cobalt);color:var(--surface);display:grid;place-items:center;cursor:pointer}
+.play svg{width:1.25rem;height:1.25rem;fill:currentColor}
+.ptext{flex:1;min-width:0;font-family:var(--sans)}
+.ptext .now{font-weight:600;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ptext .sub{font-size:.8rem;color:var(--muted)}
+.ctrl{display:flex;gap:.35rem;align-items:center;font-family:var(--sans)}
+.ib{border:1px solid var(--rule);background:transparent;color:var(--ink);border-radius:8px;height:2.25rem;min-width:2.25rem;padding:0 .5rem;cursor:pointer;font:inherit;font-size:.85rem}
+.ib svg{width:1rem;height:1rem;fill:currentColor;vertical-align:middle}
+select.ib{padding:0 .35rem}
+.track{display:flex;gap:4px;margin-top:.65rem}
+.seg{position:relative;height:28px;border:0;padding:0;background:var(--track);border-radius:3px;cursor:pointer;overflow:hidden;color:transparent}
+.seg .fill{position:absolute;inset:0 auto 0 0;width:0;background:var(--seg-c,var(--cobalt));transition:width .3s linear}
+.seg .lbl{position:absolute;left:6px;top:50%;transform:translateY(-50%);font-family:var(--sans);font-size:.7rem;font-weight:600;color:var(--ink);white-space:nowrap;mix-blend-mode:normal;pointer-events:none}
+.seg.done .lbl,.seg.active .lbl{color:var(--surface)}
+.seg[data-kind="sci"]{--seg-c:var(--sci)}
+.seg.done .fill{width:100%}
+.pnote{font-family:var(--sans);font-size:.78rem;color:var(--muted);margin:.5rem 0 0;line-height:1.4}
+.pnote[hidden]{display:none}
+@media (max-width:520px){
+  .ctrl .hide-s{display:none}
+  .seg .lbl{font-size:.62rem;left:4px}
+}
+
+/* body */
+main{padding-bottom:3rem}
+.intro{margin:1.75rem 0 0}
+.intro p{margin:.6rem 0}
+.legend{font-family:var(--sans);font-size:.85rem;background:var(--panel);border-radius:10px;padding:.9rem 1rem;margin:1.25rem 0 0}
+.legend p{margin:0 0 .5rem;color:var(--muted)}
+.legend ul{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}
+.legend li{display:flex;gap:.5rem;align-items:baseline}
+h2.group{font-family:var(--sans);font-size:1rem;font-weight:600;color:var(--muted);margin:3rem 0 0;padding-top:.75rem;border-top:2px solid var(--ink);display:flex;justify-content:space-between}
+h2.group span:last-child{font-weight:500}
+article{margin-top:2.25rem}
+article h3{font-family:var(--sans);font-size:clamp(1.35rem,3.6vw,1.65rem);line-height:1.2;letter-spacing:-0.01em;margin:0 0 .6rem;font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem;margin:0 0 1rem;padding:0;list-style:none}
+.chip{font-family:var(--sans);font-size:.75rem;font-weight:600;line-height:1;padding:.32rem .55rem;border-radius:999px;border:1.5px solid currentColor;white-space:nowrap}
+.chip.peer{color:var(--c-peer)} .chip.pre{color:var(--c-pre)} .chip.co{color:var(--c-co)}
+.chip.lean{color:var(--c-lean)} .chip.rev{color:var(--c-rev)} .chip.soc{color:var(--c-soc)}
+article p{margin:.75rem 0}
+.intuition{background:var(--panel);border-left:3px solid var(--cobalt);border-radius:0 10px 10px 0;padding:.4rem 1.1rem .6rem;margin:1.25rem 0}
+article.sci .intuition{border-left-color:var(--sci)}
+.intuition h4,.take h4{font-family:var(--sans);font-size:.95rem;margin:.6rem 0 .1rem;font-weight:700}
+.intuition ol{padding-left:1.2rem;margin:.4rem 0}
+.intuition li{margin:.45rem 0}
+.take h4{margin-top:1.25rem}
+.math{font-family:var(--serif);font-style:italic;white-space:nowrap}
+.src{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-top:1rem;line-height:1.5}
+.src a{color:var(--muted)}
+.mine{font-family:var(--sans);font-size:.8rem;font-weight:600;color:var(--muted)}
+details.script{font-family:var(--sans);margin:3rem 0 0;border-top:1px solid var(--rule);padding-top:1rem}
+details.script summary{cursor:pointer;font-weight:600}
+details.script .sc{font-family:var(--serif);font-size:1rem;margin-top:.75rem}
+details.script .sc p{margin:.6rem 0}
+.copybtn{margin-top:.5rem}
+footer{font-family:var(--sans);font-size:.8rem;color:var(--muted);padding:2rem 0 3rem;border-top:1px solid var(--rule);margin-top:2.5rem}
+.speaking{background:var(--cobalt-soft);border-radius:4px;box-shadow:0 0 0 4px var(--cobalt-soft)}
+@media (prefers-reduced-motion:reduce){.seg .fill{transition:none}}
+</style>
+</head>
+<body>
+
+<header class="mast wrap">
+  <h1>Frontier Notes</h1>
+  <p class="dek">AI-driven results in mathematics and cryptography, plus the best of physics and chemistry. Listen first, read what grabs you.</p>
+  <div class="meta"><span><a href="../" style="color:inherit">Frontier Notes archive</a></span><span><strong>Issue 3</strong>, Monday 9 November 2026</span><span>Covers roughly 2 – 9 November</span><span>About 10 min to read, 3 min to listen</span></div>
+</header>
+
+<div class="player" id="listen" aria-label="Audio briefing">
+  <div class="wrap">
+    <div class="prow">
+      <button class="play" id="playBtn" aria-label="Play audio briefing">
+        <svg id="icoPlay" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
+        <svg id="icoPause" viewBox="0 0 24 24" aria-hidden="true" style="display:none"><path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z"/></svg>
+      </button>
+      <div class="ptext">
+        <div class="now" id="nowTitle">Audio briefing, about 3 minutes</div>
+        <div class="sub" id="nowSub">Tap a segment to jump to a story</div>
+      </div>
+      <div class="ctrl">
+        <button class="ib hide-s" id="prevBtn" aria-label="Previous story"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+        <button class="ib hide-s" id="nextBtn" aria-label="Next story"><svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+        <select class="ib" id="rate" aria-label="Speaking speed">
+          <option value="0.9">0.9×</option><option value="1" selected>1×</option><option value="1.15">1.15×</option><option value="1.3">1.3×</option>
+        </select>
+      </div>
+    </div>
+    <div class="track" id="track" role="group" aria-label="Stories in the audio briefing"></div>
+    <p class="pnote" id="pnote">Neural voice recorded for this issue. In most mobile browsers it keeps playing with the screen locked, with controls on your lock screen.</p>
+    <audio id="aud" preload="metadata" src="../audio/2026-11-09.mp3"></audio>
+    <script type="application/json" id="audio-meta">{"starts": [0.0, 17.19, 61.28, 81.78, 99.74, 114.26, 130.65, 148.38], "dur": 169.1}</script>
+  </div>
+</div>
+
+<main class="wrap">
+
+<section class="intro">
+  <p>A quantum complexity conjecture that has been open since 2008 is now proved. A small company running an unreleased Claude model has a Lean-checked proof of the Aaronson–Ambainis conjecture, and Scott Aaronson says he believes it. That’s the deep dive, including what it does <em>not</em> say about Shor’s algorithm. Also this week: Google DeepMind’s agents cut the cost of two attacks on legacy 1024-bit RSA, mathematicians race to shrink the AI proof that Landau–Siegel zeros don’t exist, Lyubashevsky and colleagues scale ML-KEM to much higher security, and we check on last month’s open claims. In science, helium is proved unable to hold two extra electrons, and an AI-found argument settles a spin-glass formula for random K-SAT.</p>
+  <div class="legend">
+    <p>How to read the labels on each story</p>
+    <ul>
+      <li><span class="chip peer">Peer-reviewed</span><span>Published in a reviewed journal or conference.</span></li>
+      <li><span class="chip pre">Preprint</span><span>Public paper, not yet reviewed.</span></li>
+      <li><span class="chip co">Company claim</span><span>Announced by the lab that produced it.</span></li>
+      <li><span class="chip lean">Machine-checked</span><span>Formal proof in Lean exists. This checks the formal statement, not whether it matches the famous conjecture.</span></li>
+      <li><span class="chip rev">Expert review</span><span>Named outside experts are examining it or have independently reworked it.</span></li>
+      <li><span class="chip soc">Opinion</span><span>Social-media argument or prediction, not a result.</span></li>
+    </ul>
+  </div>
+</section>
+
+<h2 class="group"><span>Math &amp; crypto</span><span>about 70%</span></h2>
+
+<article id="quantum">
+  <h3>Quantum speedups need structure: the Aaronson–Ambainis conjecture is proved</h3>
+  <ul class="chips"><li class="chip pre">Preprint: arXiv 2611.09773</li><li class="chip co">Company claim: Physical Superintelligence</li><li class="chip lean">Machine-checked: Lean, two kernels</li><li class="chip rev">Expert review: Aaronson believes it correct</li></ul>
+
+  <p>On 6 November, David Turturean of Physical Superintelligence (PSI), a public-benefit company advised by Jim Halverson and Phiala Shanahan, posted “A proof of the Aaronson–Ambainis conjecture” to arXiv. The paper says its mathematical statements were produced by AI models. Turturean scoped the problem and ran PSI’s research system on instances of a non-public Anthropic model, which, according to PSI, had a complete proof on the third day of the run and then improved the bound twice. Turturean edited the model’s 60-page draft and takes responsibility for it, and Halverson audited the proof.</p>
+  <p>The main theorem says that if <span class="math">f</span> is a polynomial of degree at most <span class="math">d</span> on the cube {−1,1}<sup>n</sup>, with values in [−1,1], then some variable has influence at least a constant times Var(<span class="math">f</span>)<sup>5/2</sup>/<span class="math">d</span><sup>6</sup>. In Aaronson and Ambainis’s original normalization the bound is (ε/<span class="math">d</span>)<sup>7</sup>. The best earlier general bound, from Dinur, Friedgut, Kindler and O’Donnell, decayed exponentially in <span class="math">d</span>. In a blog post on 8 November, Aaronson wrote that he hasn’t understood the proof yet but believes it is correct, for two reasons: there is a Lean certificate, and human experts have reviewed and understood it. PSI says a Stanford group (Blanc, Docter, Strassle and Tan) reviewed the proof. I found that only on PSI’s page, not from the group itself.</p>
+
+  <div class="intuition">
+    <h4>The intuition: an influential variable lets a classical algorithm peel the problem apart</h4>
+    <ol>
+      <li><strong>Quantum algorithms are polynomials.</strong> Beals and coauthors showed in 1998 that after <span class="math">T</span> queries to an <span class="math">n</span>-bit input, a quantum algorithm’s acceptance probability is a polynomial of degree at most 2<span class="math">T</span> in the input bits, with values between 0 and 1.</li>
+      <li><strong>Influence.</strong> The influence of bit <span class="math">i</span> measures how much <span class="math">f</span> changes, on average over random inputs, when you flip that bit. A function with no influential bit barely notices any single input bit.</li>
+      <li><strong>Why the conjecture gives a classical simulation.</strong> Query the most influential bit, fix its value, and repeat. If some bit always has influence at least poly(variance/degree), each query removes a polynomial share of the remaining variance. After poly(<span class="math">T</span>/ε) queries the restricted polynomial is nearly constant, so a classical algorithm can just output that constant. It is right on most inputs, not all.</li>
+      <li><strong>Why it was hard.</strong> For polynomials that only take the values 0 and 1, decision-tree arguments (Nisan–Szegedy) settled this long ago. Bounded <em>real</em> values are the problem. A small change in many bits can add up without any single bit mattering much.</li>
+      <li><strong>The route.</strong> The proof follows a plan by Lovett and Zhang. Slice <span class="math">f</span> at each threshold <span class="math">t</span> into the Boolean function “is <span class="math">f</span> &gt; <span class="math">t</span>”, prove an inequality for Boolean functions, then integrate over all <span class="math">t</span>. Their conjectured inequality turns out to be false, so the paper proves a symmetric replacement.</li>
+      <li><strong>A determinant finds the pairing.</strong> The key lemma pairs each point above the threshold with another one in a way that flips the right coordinates. It strengthens Reimer’s Butterfly Lemma by also bounding how often paired points agree on each coordinate. The pairing is found with an old trick. A determinant is a sum over permutations, so if it is nonzero, some permutation’s term is nonzero, and that permutation is the pairing. Reading off the lowest-degree monomial in a polynomial version of the determinant controls the agreement counts.</li>
+    </ol>
+  </div>
+
+  <div class="take">
+    <h4>What it does and does not mean</h4>
+    <p>Aaronson says plainly that the theorem rules out only one particular type of quantum supremacy. That type is exponential speedups on decision problems relative to a random oracle, and few people believed in them anyway. Shor’s algorithm is unaffected, because its oracle is periodic, and that is exactly the kind of structure the theorem says a big speedup needs. Quantum simulation of chemistry doesn’t involve oracles at all. Search problems are different: Yamakawa and Zhandry showed in 2022 that they still allow exponential speedups relative to random oracles. For deployed cryptography, nothing changes. Post-quantum security proofs in the quantum random-oracle model bound specific query problems directly. <span class="mine">My read:</span> the formal side looks unusually clean. The target statement sits in a file that imports only Mathlib, the proof uses only the standard axioms, and the README reports a second check with the lean4lean kernel. The open job is a human audit that this statement matches the conjecture as printed, and the README asks readers to do it.</p>
+  </div>
+
+  <p class="src">Sources: <a href="https://arxiv.org/abs/2611.09773">Turturean, arXiv 2611.09773</a>, <a href="https://psi.inc/research/aaronson-ambainis/">PSI announcement</a>, <a href="https://github.com/physical-superintelligence/aaronson-ambainis">Lean repository and README</a>, <a href="https://scottaaronson.blog/?p=10295">Aaronson on Shtetl-Optimized</a>.</p>
+</article>
+
+<article id="rsa">
+  <h3>DeepMind’s agents make two attacks on 1024-bit RSA cheaper</h3>
+  <ul class="chips"><li class="chip co">Company claim: Google DeepMind</li><li class="chip pre">Preprint: two working papers, unreviewed</li></ul>
+  <p>On 6 November, Pushmeet Kohli announced that DeepMind agents, working under human direction, had found two weaknesses in legacy 1024-bit RSA. Dj Dvijotham and Abhradeep Thakurta led the work, with the cryptographers Nadia Heninger (UC San Diego) and Emmanuel Thomé (Inria). It builds on a September ePrint paper by Shea, Haller, Suhl, Heninger and Thomé. That paper forged signatures under a 1024-bit key held in a hardware security module, given about 2<sup>32</sup> raw RSA signatures, for 1,380 core-years. Factoring the key would cost several hundred times more. The agents reran that computation with 3.5 times less CPU time. That is the only measured result. On paper, they show that once an attacker controls about half of the signed block, padding adds essentially no protection. Even with only a 32-byte attacker-controlled field, DeepMind estimates a new algorithm is about 1,600 times cheaper than the previous best. Separately, the “Fan Factories” working paper describes a batch method that, after a one-off precomputation, factors each additional 1024-bit modulus about 30 times more cheaply than earlier batch methods. No implementation of it exists yet.</p>
+  <div class="intuition">
+    <h4>The intuition: RSA roots multiply</h4>
+    <p>An RSA signature is an <span class="math">e</span>-th root mod <span class="math">N</span>, and roots are multiplicative: the root of <span class="math">ab</span> is the root of <span class="math">a</span> times the root of <span class="math">b</span>. Suppose a device will sign values of the form “fixed padding plus a field you choose”. You collect roots of many such values and look for products of them that, up to known <span class="math">e</span>-th powers, equal your target. That search for smooth relations is a number field sieve, as in a 2007 paper by Joux, Naccache and Thomé. The more of the block you control, the more freedom the sieve has, which is why padding stops helping past about half. A factorization factory reuses work across keys. Much of the sieving depends only on the size of <span class="math">N</span>, so it is done once.</p>
+  </div>
+  <p><strong>For deployed systems:</strong> DeepMind says 2048-bit and larger keys are unaffected. The forgery needs a signer that exposes raw or affinely padded RSA. Some HSM interfaces and blind-signature schemes do. Standard PKCS#1 v1.5 or PSS signatures in TLS and certificates don’t. <span class="mine">My take:</span> the headline 1,600× is an asymptotic estimate, as an independent recalculation on DEV Community pointed out, and the measured gain is 3.5×. The useful message is for anyone still running 1024-bit RSA behind a raw signing API: retire it.</p>
+  <p class="src">Sources: <a href="https://x.com/pushmeet/status/2118752095859794390">Kohli’s announcement on X</a>, <a href="https://eprint.iacr.org/2026/2131">Shea et al., ePrint 2026/2131</a>, <a href="https://interestingengineering.com/ai-robotics/1600x-faster-google-deepmind-agents-expose-weaknesses-in-older-encryption-methods">Interesting Engineering summary</a>, <a href="https://dev.to/frankchu/1600x-is-arithmetic-not-an-attack-i-checked-deepmind-rsa-12di">independent recalculation of the figures (DEV)</a>.</p>
+</article>
+
+<article id="siegel">
+  <h3>Follow-up: the race to shrink the Landau–Siegel proof</h3>
+  <ul class="chips"><li class="chip co">Company claim: OpenAI</li><li class="chip lean">Machine-checked: statement not yet audited</li><li class="chip rev">Expert review: independently reworked</li><li class="chip pre">Preprints: Green, Kerr, Banks</li></ul>
+  <p><strong>What changed.</strong> We had listed this claim from OpenAI’s 6 October release among the unverified ones. A 5 November <em>Quanta</em> update reports that specialists are now competing to write the shortest proof. The OpenAI paper is nine pages and Lean-checked. It shows that a real zero β of a real primitive Dirichlet <span class="math">L</span>-function of conductor <span class="math">q</span> satisfies (1−β)·log&nbsp;<span class="math">q</span> ≥ <span class="math">c</span> for an absolute constant <span class="math">c</span>. Ben Green posted a variant on Hexagon whose arguments, he says, all came from ChatGPT. Bryce Kerr and William Banks posted independent simplifications, and Banks gives explicit constants. <em>Quanta</em> also reports a three-page version by the Cambridge undergraduate Kevin Barreto. Andrew Granville, who spent years on the problem, told <em>Quanta</em>: “It’s all moot now.”</p>
+  <div class="intuition">
+    <h4>The intuition: why one hypothetical zero mattered so much</h4>
+    <p>By the class number formula, <span class="math">L</span>(1,χ) controls the class number of a quadratic field. A real zero very close to 1 would force <span class="math">L</span>(1,χ), and with it the class number, to be tiny. Siegel proved in 1935 that this can’t happen too badly, but his proof gives no computable constant, because it argues by contradiction from a possible exceptional zero. Ruling the zeros out makes those bounds effective. The new proofs reportedly use tools from transcendence theory. You build an auxiliary polynomial with many forced zeros, show that a Siegel zero would make a certain nonzero quantity impossibly small, and reach a contradiction. Kerr’s version uses Masser’s zero estimate.</p>
+  </div>
+  <p><span class="mine">My read:</span> cryptographers who use class groups as groups of unknown order, for example in verifiable delay functions, already relied on heuristics that class numbers are large. An effective bound makes that rigorous but changes no parameters. The formal side is still open: the community audit of OpenAI’s release notes that nobody has yet checked that the Lean statement matches the paper.</p>
+  <p class="src">Sources: <a href="https://www.quantamagazine.org/updates/transformation/">Quanta, “Mathematicians race to simplify AI proofs” (5 Nov)</a>, <a href="https://hexagonmath.org/2610.00311v2">Green on Hexagon</a>, <a href="https://arxiv.org/abs/2610.21099">Kerr, arXiv 2610.21099</a>, <a href="https://mathcommunity.github.io/oai-math-revised/papers/Uniform-exclusion-of-Landau-Siegel-zeros-October-1-2026/">community audit of the OpenAI paper</a>.</p>
+</article>
+
+<article id="kaiburr">
+  <h3>Kaiburr: ML-KEM scaled to much higher security</h3>
+  <ul class="chips"><li class="chip pre">Preprint: IACR ePrint 2026/2730</li></ul>
+  <p>On 5 November, ePrint published a paper by Swechchha Adhikari, Vadim Lyubashevsky (IBM Research) and Peter Schwabe (MPI-SP and Radboud). Lyubashevsky and Schwabe are among the designers of Kyber, which became ML-KEM. The paper defines three high-security parameter sets called Kaiburr. They keep ML-KEM’s ring Z<sub>3329</sub>[X]/(X<sup>256</sup>+1) and its simple constant-time sampling, but push the hardness of the underlying MLWE problem far higher. The authors report that a FrodoKEM-976 plus Kaiburr-1792 hybrid beats FrodoKEM-1344, the conservative choice favoured by BSI and ANSSI.</p>
+  <div class="intuition">
+    <h4>The intuition: more dimensions means more noise to cancel</h4>
+    <p>MLWE security grows with the module rank <span class="math">k</span>, because the lattice dimension is 256·<span class="math">k</span>. But decryption only works if a sum of noise products stays below <span class="math">q</span>/4, and that sum grows with <span class="math">k</span>. With <span class="math">q</span> fixed at 3329, raising <span class="math">k</span> alone soon makes decryption failures too likely. The paper widens the menu of noise distributions so the rank can keep growing while failures stay negligible.</p>
+  </div>
+  <p><strong>For deployed systems:</strong> no attack is involved, and ML-KEM’s security estimates are unchanged. <span class="mine">My take:</span> the paper doesn’t mention AI, but it offers a ready answer to anyone worried that machine-found lattice attacks will erode ML-KEM’s margin. That answer is more margin, using the same arithmetic and much of the same hardware.</p>
+  <p class="src">Sources: <a href="https://eprint.iacr.org/2026/2730">Adhikari, Lyubashevsky and Schwabe, ePrint 2026/2730</a>.</p>
+</article>
+
+<article id="radar">
+  <h3>On the radar: last month’s big claims, one week on</h3>
+  <ul class="chips"><li class="chip rev">Expert review: examining, not endorsing</li><li class="chip soc">Opinion: AGMAI recommendation</li></ul>
+  <p>The ETH discussion blog has organized rather than concluded. Francis Zane is collecting reports of local Lean replications. On 1 November, Mohan Paturi invited submissions of results that follow from the refutation, and repeated that taking part is not certification. I found no named harmonic analyst’s verdict on OpenAI’s local-smoothing and Kakeya claim. The Yang–Mills Lean files are still unreleased. We missed one item last week. On 26 October, the independent Advisory Group on Mathematics and AI asked OpenAI to publish the Yang–Mills outputs “without delay”. It argued that the Lean formalization OpenAI had been waiting for is finished, and the day before, it had advised labs to stop giving selected mathematicians early access.</p>
+  <p class="src">Sources: <a href="https://ethdiscussion.blog/">ETH discussion blog</a>, <a href="https://agmai.org/">AGMAI statements</a>.</p>
+</article>
+
+<h2 class="group"><span>Physics &amp; chemistry</span><span>about 30%</span></h2>
+
+<article id="helium" class="sci">
+  <h3>A computer-assisted proof that helium can’t hold two extra electrons</h3>
+  <ul class="chips"><li class="chip pre">Preprint: Hexagon</li></ul>
+  <p>On 3 November, Alec Shelley and Daniel Tartakovsky of Stanford posted “A Bound Helium Dianion Does Not Exist” to Hexagon. In the non-relativistic Schrödinger model, they prove that a helium nucleus binds at most three electrons. Their provenance note says the approach was developed in conversation with Claude Fable, building on the authors’ own unpublished ideas. Claude wrote the certification code and drafted the manuscript, and a second Claude instance ran the check, about 560 core-hours on Stanford’s Sherlock cluster. The certificate and code are archived on Zenodo. There is no Lean proof, and no one outside the team has rerun the certificate yet.</p>
+  <div class="intuition">
+    <h4>The intuition: from an identity to a box-by-box check</h4>
+    <ol>
+      <li><strong>Lieb’s bound.</strong> In 1984 Elliott Lieb proved that an atom with nuclear charge <span class="math">Z</span> binds fewer than 2<span class="math">Z</span>+1 electrons. The proof weights the Schrödinger equation by an electron’s distance from the nucleus and uses the triangle inequality. For hydrogen that rules out H<sup>2−</sup>, but for helium it still allows four electrons, which is He<sup>2−</sup>.</li>
+      <li><strong>A weighted version.</strong> With a cleverer weight, the question becomes whether one explicit two-electron operator is nonnegative.</li>
+      <li><strong>Barta’s inequality.</strong> For any positive trial function φ, the lowest energy is at least the minimum of (<span class="math">H</span>φ)/φ over all points. So with a good φ, you only need to check that one explicit function of three distances is nonnegative everywhere.</li>
+      <li><strong>Interval arithmetic.</strong> Analytic estimates handle the far-away region. The rest is cut into boxes, and on each box rounding-safe arithmetic proves a positive lower bound.</li>
+    </ol>
+  </div>
+  <p><span class="mine">My take:</span> nobody expected He<sup>2−</sup> to exist. What’s new is a rigorous proof from first principles for the first case that Lieb’s bound leaves open. It’s a small, concrete step toward the ionization conjecture, which says atoms bind at most one or two extra electrons.</p>
+  <p class="src">Sources: <a href="https://hexagonmath.org/2611.00041v1">Shelley and Tartakovsky on Hexagon</a>.</p>
+</article>
+
+<article id="parisi" class="sci">
+  <h3>An AI-found argument proves the Mézard–Parisi formula for random K-SAT</h3>
+  <ul class="chips"><li class="chip pre">Preprint: arXiv 2610.39545</li><li class="chip co">Company claim: OpenAI’s separate proof</li></ul>
+  <p>On 29 October, Dmitry Panchenko posted “The Mézard–Parisi formula” to arXiv. It proves the physicists’ formula for the free energy of random K-SAT and diluted even-<span class="math">p</span>-spin glasses. The upper bound was due to Franz and Leone, and this paper supplies the matching lower bound, under symmetry and integrability assumptions. Panchenko writes that ChatGPT Astra found the proof after he asked it to look for a new perturbation in his earlier argument and to simplify the induction. He then checked and rewrote it with help from Astra and Claude Fable. A few days later, OpenAI released its own proof, which he says appears to take a different route.</p>
+  <div class="intuition">
+    <h4>The intuition: the shape of the solution space</h4>
+    <p>Take <span class="math">n</span> Boolean variables and α<span class="math">n</span> random clauses, and count assignments, weighting each one down for every clause it violates. Around 2001, Mézard and Parisi used the cavity method to predict this count. Their method assumes the good assignments cluster into a hierarchy, like a family tree, that a new variable sees in a uniform way. Proving the lower bound means showing the real system has that structure. Panchenko’s earlier work handled hierarchies with finitely many levels. The new step is an approximate “reproducibility” property that no longer needs that restriction.</p>
+  </div>
+  <p><span class="mine">My read:</span> for physics, this confirms a cornerstone of the replica method on a model that computer scientists care about. It is a separate statement from Ding, Sly and Sun’s large-<span class="math">k</span> satisfiability threshold. And it shows the new division of labor: the human picked the attack, the model found the proof, and the human verified it.</p>
+  <p class="src">Sources: <a href="https://arxiv.org/abs/2610.39545">Panchenko, arXiv 2610.39545</a>.</p>
+</article>
+
+<details class="script" id="script">
+  <summary>Read the audio script</summary>
+  <p class="pnote">This is the text of the audio briefing, if you’d rather skim it.</p>
+  <button class="ib copybtn" id="copyBtn">Copy script</button>
+  <div class="sc" id="scriptText">
+    <div data-seg="0" data-title="Intro" data-kind="math" data-anchor="">
+      <p>Welcome to Frontier Notes, issue three, for Monday, November ninth. This week, a famous question about quantum computers is settled. After that, cheaper attacks on old RSA keys, a race for the shortest proof, a stronger version of ML-KEM, and two science stories.</p>
+    </div>
+    <div data-seg="1" data-title="Quantum limits" data-kind="math" data-anchor="quantum">
+      <p>The deep dive. In two thousand eight, Scott Aaronson and Andris Ambainis conjectured that quantum computers cannot be exponentially faster on yes-or-no questions about random, unstructured data. On November sixth, the company Physical Superintelligence posted a proof. It was found by an unreleased Anthropic model and checked in Lean.</p>
+      <p>The key idea is simple. Every quantum algorithm has a polynomial behind it. If that polynomial always has one input bit that matters a lot, a classical computer can keep querying the most important bit until the answer is settled.</p>
+      <p>This is a preprint and a company claim with a machine-checked proof. Aaronson says he believes it is correct. It does not touch Shor’s algorithm, which relies on structure, and it changes nothing for deployed cryptography.</p>
+    </div>
+    <div data-seg="2" data-title="RSA" data-kind="math" data-anchor="rsa">
+      <p>Next, Google DeepMind says its agents made two attacks on old ten twenty-four bit RSA keys cheaper. One forges signatures when a device signs raw values. The other factors many keys in bulk. The measured gain is three and a half times, and the bigger numbers are estimates. This is a company claim in unreviewed papers. Keys of twenty forty-eight bits are not affected.</p>
+    </div>
+    <div data-seg="3" data-title="Siegel zeros" data-kind="math" data-anchor="siegel">
+      <p>An update on Landau–Siegel zeros, hypothetical zeros that number theorists have worried about for ninety years. OpenAI’s proof that they don’t exist is being reworked by human experts, with versions as short as three pages. Andrew Granville, who worked on the problem for years, says the question is now moot.</p>
+    </div>
+    <div data-seg="4" data-title="Kaiburr" data-kind="math" data-anchor="kaiburr">
+      <p>In post-quantum cryptography, two of the designers of ML-KEM, with a coauthor, propose Kaiburr. It keeps the same arithmetic but reaches much higher security, as a hedge against future attacks. It’s a preprint, and there is no new attack.</p>
+    </div>
+    <div data-seg="5" data-title="Status check" data-kind="math" data-anchor="radar">
+      <p>A quick status check on last month’s big claims. The review of the Exponential Time Hypothesis result is still in progress, with no verdict yet. And the Yang–Mills proof files are still unreleased, despite calls from an independent group of mathematicians to publish them.</p>
+    </div>
+    <div data-seg="6" data-title="Helium" data-kind="sci" data-anchor="helium">
+      <p>Physics. Two Stanford researchers, working with Claude, proved that a helium atom cannot hold two extra electrons. The proof turns the question into checking that one function is never negative, and a computer checks it box by box. It’s a preprint with a computer-assisted proof, but no Lean proof.</p>
+    </div>
+    <div data-seg="7" data-title="Spin glasses" data-kind="sci" data-anchor="parisi">
+      <p>And finally, statistical physics. The probabilist Dmitry Panchenko proved a twenty-five-year-old physics formula for random satisfiability problems. He says an OpenAI model found the key argument, and he checked and rewrote it himself. This is a preprint.</p>
+      <p>That’s the briefing. The written version explains how a determinant finds the pairing behind the quantum result.</p>
+    </div>
+  </div>
+</details>
+
+</main>
+
+<footer>
+  <div class="wrap" style="padding:0">Frontier Notes, issue 3. Compiled by Claude from public announcements, preprints, journals and social media, as of 9 November 2026. Labels describe the status of each claim, not my belief in it; items marked “my read” or “my take” are my own analysis.</div>
+</footer>
+
+<script>
+(function(){
+  var aud = document.getElementById('aud');
+  var meta = {starts:[], dur:0};
+  try{ meta = JSON.parse(document.getElementById('audio-meta').textContent); }catch(e){}
+  var segNodes = Array.prototype.slice.call(document.querySelectorAll('#scriptText [data-seg]'));
+  var titles = segNodes.map(function(n){ return n.getAttribute('data-title'); });
+  var kinds = segNodes.map(function(n){ return n.getAttribute('data-kind') || 'math'; });
+  var anchors = segNodes.map(function(n){ return n.getAttribute('data-anchor') || null; });
+  var dur = meta.dur || 1;
+  var starts = (meta.starts && meta.starts.length === titles.length) ? meta.starts : titles.map(function(_,i){ return i*dur/titles.length; });
+  if(!meta.dur){ document.getElementById('listen').style.display = 'none'; }
+  var track = document.getElementById('track');
+  var btns = [];
+  function segEnd(i){ return i+1 < starts.length ? starts[i+1] : (aud.duration || dur); }
+  titles.forEach(function(t,i){
+    var b = document.createElement('button');
+    b.className = 'seg'; b.setAttribute('data-kind', kinds[i]);
+    b.style.flex = String(Math.max((segEnd(i)-starts[i])/dur, 0.07));
+    b.setAttribute('aria-label','Play from: '+t);
+    b.innerHTML = '<span class="fill"></span><span class="lbl"></span>';
+    b.querySelector('.lbl').textContent = t;
+    b.addEventListener('click', function(){ aud.currentTime = starts[i] + 0.01; play(); });
+    track.appendChild(b); btns.push(b);
+  });
+  var playBtn = document.getElementById('playBtn');
+  var icoPlay = document.getElementById('icoPlay'), icoPause = document.getElementById('icoPause');
+  var nowTitle = document.getElementById('nowTitle'), nowSub = document.getElementById('nowSub');
+  var rateSel = document.getElementById('rate');
+  function store(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  function load(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  var r = load('fn-rate'); if(r){ rateSel.value = r; }
+  function applyRate(){ aud.playbackRate = parseFloat(rateSel.value) || 1; }
+  applyRate();
+  function cur(){ var t = aud.currentTime, i = 0; for(var k=0;k<starts.length;k++){ if(t >= starts[k]) i = k; } return i; }
+  function fmt(s){ s = Math.max(0, Math.floor(s)); return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2); }
+  function paint(){
+    var i = cur(), t = aud.currentTime, playing = !aud.paused && !aud.ended;
+    btns.forEach(function(b,k){
+      var f = b.querySelector('.fill');
+      var pct = k < i ? 100 : (k > i ? 0 : Math.min(100, 100*(t-starts[k])/(segEnd(k)-starts[k])));
+      f.style.width = pct + '%';
+      b.classList.toggle('done', k < i);
+      b.classList.toggle('active', k === i && t > 0.05);
+    });
+    if(t < 0.05 && !playing){ nowTitle.textContent = 'Audio briefing, about 3 minutes'; nowSub.textContent = 'Tap a segment to jump to a story'; }
+    else { nowTitle.textContent = (playing ? 'Playing: ' : 'Paused: ') + titles[i]; nowSub.textContent = 'Story ' + (i+1) + ' of ' + titles.length + ', ' + fmt(t) + ' / ' + fmt(aud.duration || dur); }
+    icoPlay.style.display = playing ? 'none' : ''; icoPause.style.display = playing ? '' : 'none';
+    playBtn.setAttribute('aria-label', playing ? 'Pause audio briefing' : 'Play audio briefing');
+  }
+  function play(){ applyRate(); var p = aud.play(); if(p && p.catch) p.catch(function(){ nowSub.textContent = 'Tap play again to start audio'; }); }
+  playBtn.addEventListener('click', function(){ if(aud.paused) play(); else aud.pause(); });
+  document.getElementById('prevBtn').addEventListener('click', function(){
+    var i = cur(); var target = (aud.currentTime - starts[i] > 3) ? i : Math.max(0, i-1);
+    aud.currentTime = starts[target] + 0.01; paint();
+  });
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    var i = Math.min(starts.length-1, cur()+1); aud.currentTime = starts[i] + 0.01; paint();
+  });
+  rateSel.addEventListener('change', function(){ store('fn-rate', rateSel.value); applyRate(); });
+  ['timeupdate','play','pause','ended','seeked','loadedmetadata'].forEach(function(e){ aud.addEventListener(e, paint); });
+  aud.addEventListener('ended', function(){ nowTitle.textContent = 'Finished. Thanks for listening'; });
+  if('mediaSession' in navigator){
+    try{
+      navigator.mediaSession.metadata = new MediaMetadata({title:document.title, artist:'Frontier Notes', album:'Audio briefing'});
+      navigator.mediaSession.setActionHandler('play', play);
+      navigator.mediaSession.setActionHandler('pause', function(){ aud.pause(); });
+      navigator.mediaSession.setActionHandler('nexttrack', function(){ document.getElementById('nextBtn').click(); });
+      navigator.mediaSession.setActionHandler('previoustrack', function(){ document.getElementById('prevBtn').click(); });
+      navigator.mediaSession.setActionHandler('seekbackward', function(){ aud.currentTime = Math.max(0, aud.currentTime-15); });
+      navigator.mediaSession.setActionHandler('seekforward', function(){ aud.currentTime = Math.min(aud.duration||dur, aud.currentTime+15); });
+    }catch(e){}
+  }
+  document.getElementById('copyBtn').addEventListener('click', function(){
+    var text = document.getElementById('scriptText').innerText; var btn = this;
+    function ok(){ btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent='Copy script'; }, 1800); }
+    function fallback(){ var rg = document.createRange(); rg.selectNodeContents(document.getElementById('scriptText')); var s = window.getSelection(); s.removeAllRanges(); s.addRange(rg); btn.textContent = 'Selected. Copy it from the menu'; }
+    try{ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(ok, fallback); } else fallback(); }catch(e){ fallback(); }
+  });
+  paint();
+  var hsh = (location.hash||'').replace('#','');
+  if(hsh){ var el = document.getElementById(hsh); if(el){ if(hsh==='script') el.open = true; setTimeout(function(){ el.scrollIntoView(); }, 50); } }
+})();
+</script>
+</body>
+</html>

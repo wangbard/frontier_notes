@@ -1,7 +1,8 @@
 {
   "issues": [
     "2026-10-27",
-    "2026-11-02"
+    "2026-11-02",
+    "2026-11-09"
   ],
   "items": [
     {
@@ -125,22 +126,87 @@
       "labels": [
         "Peer-reviewed"
       ]
+    },
+    {
+      "title": "Aaronson-Ambainis conjecture proved (Turturean / Physical Superintelligence, non-public Anthropic model)",
+      "url": "https://arxiv.org/abs/2611.09773",
+      "date": "2026-11-06",
+      "labels": [
+        "Preprint",
+        "Company claim",
+        "Machine-checked",
+        "Expert review"
+      ]
+    },
+    {
+      "title": "Google DeepMind agents: cheaper affine-root signature forgery and Fan Factories batch NFS for 1024-bit RSA",
+      "url": "https://x.com/pushmeet/status/2118752095859794390",
+      "date": "2026-11-06",
+      "labels": [
+        "Company claim",
+        "Preprint"
+      ]
+    },
+    {
+      "title": "Follow-up: simplification race for OpenAI's no-Landau-Siegel-zeros proof (Green, Kerr, Banks, Barreto; Granville)",
+      "url": "https://www.quantamagazine.org/updates/transformation/",
+      "date": "2026-11-05",
+      "labels": [
+        "Company claim",
+        "Machine-checked",
+        "Expert review",
+        "Preprint"
+      ]
+    },
+    {
+      "title": "Kaiburr: ML-KEM at much higher security (Adhikari, Lyubashevsky, Schwabe)",
+      "url": "https://eprint.iacr.org/2026/2730",
+      "date": "2026-11-05",
+      "labels": [
+        "Preprint"
+      ]
+    },
+    {
+      "title": "Status check: ETH discussion blog, Kakeya, AGMAI call to release Yang-Mills outputs",
+      "url": "https://agmai.org/",
+      "date": "2026-11-01",
+      "labels": [
+        "Expert review",
+        "Opinion"
+      ]
+    },
+    {
+      "title": "A bound helium dianion does not exist (Shelley, Tartakovsky, with Claude; interval-arithmetic certificate)",
+      "url": "https://hexagonmath.org/2611.00041v1",
+      "date": "2026-11-03",
+      "labels": [
+        "Preprint"
+      ]
+    },
+    {
+      "title": "Panchenko, The Mezard-Parisi formula for random K-SAT and diluted spin glasses (proof found by ChatGPT Astra)",
+      "url": "https://arxiv.org/abs/2610.39545",
+      "date": "2026-10-29",
+      "labels": [
+        "Preprint",
+        "Company claim"
+      ]
     }
   ],
   "open_claims": [
     {
       "claim": "ETH is false (OpenAI and Anthropic)",
-      "status": "Lean-checked; both developments independently replayed (Toledo, kernel + nanoda), machine-model translation informal; review group (Impagliazzo, Paturi, Williams) running a discussion blog, not endorsing; simpler proofs by Kintali and O'Donnell; Fortnow: safe to assume (opinion)",
+      "status": "Lean-checked; both developments independently replayed (Toledo, kernel + nanoda), machine-model translation informal; review group (Impagliazzo, Paturi, Williams) running a discussion blog, not endorsing; simpler proofs by Kintali and O'Donnell; Fortnow: safe to assume (opinion); as of 2026-11-09 blog collecting Lean replications (Zane) and consequences (Paturi, 1 Nov), still no verdict",
       "watch": "review group statement or virtual meeting, errors found, conference announcement"
     },
     {
       "claim": "Local smoothing, Kakeya and Stein restriction in all dimensions (OpenAI)",
-      "status": "Lean proof per OpenAI; no outside expert verdict found as of 2026-11-02",
+      "status": "Lean proof per OpenAI; no outside expert verdict found as of 2026-11-09",
       "watch": "harmonic analysts' comments (Guth, Wang, Zahl, Tao), whether formal statement matches the conjecture"
     },
     {
       "claim": "Existence of QCD and pure Yang-Mills in 4D (OpenAI)",
-      "status": "Committee (Gross chair, Douglas, Jaffe, Klebanov, Nekrasov) says it 'appears to be an important step'; plans to validate Lean definitions, then release Lean proof, then assessment with 1,147-page proofs; mass gap and confinement open",
+      "status": "Committee (Gross chair, Douglas, Jaffe, Klebanov, Nekrasov) says it 'appears to be an important step'; plans to validate Lean definitions, then release Lean proof, then assessment with 1,147-page proofs; mass gap and confinement open; still unreleased as of 2026-11-09; AGMAI (26 Oct) recommended immediate release",
       "watch": "Lean release, committee assessment"
     },
     {
@@ -150,7 +216,7 @@
     },
     {
       "claim": "Other October 6 release claims, incl. omega <= 9/4",
-      "status": "unverified individually",
+      "status": "unverified individually, except Landau-Siegel (now separate entry)",
       "watch": "specialist verdicts on individual claims"
     },
     {
@@ -167,6 +233,31 @@
       "claim": "AI will weaken lattice crypto within two years (Buterin)",
       "status": "prediction; no attack on ML-KEM/ML-DSA/unstructured LWE known; Bashiri's provable dual attack (human) explicitly does not threaten them",
       "watch": "any AI result on standardized lattice schemes"
+    },
+    {
+      "claim": "No Landau-Siegel zeros: (1-beta) log q >= c (OpenAI, Oct 6 release)",
+      "status": "Lean-checked (statement fidelity not audited); independently reworked and simplified by Green, Kerr, Banks (explicit constants), Barreto (3 pages); Granville: 'It's all moot now'; no peer review yet",
+      "watch": "peer-reviewed version, audit of Lean statement"
+    },
+    {
+      "claim": "Aaronson-Ambainis conjecture: influence >= c Var^{5/2}/d^6 (PSI, non-public Anthropic model)",
+      "status": "Lean-checked (standard axioms, lean4lean second check); Aaronson believes it correct (blog, 8 Nov); PSI says Stanford group (Blanc, Docter, Strassle, Tan) reviewed it, not confirmed by them directly",
+      "watch": "Stanford exposition, audit of PrintedConjecture statement, peer review"
+    },
+    {
+      "claim": "DeepMind: ~1,600x cheaper affine-root RSA-1024 forgery (theoretical), ~30x cheaper batch factoring per key",
+      "status": "company claim in unreviewed working papers; only measured gain 3.5x on rerun of ePrint 2026/2131 computation; no Fan Factories implementation",
+      "watch": "papers on ePrint/peer review, implementation, cryptographers' assessment"
+    },
+    {
+      "claim": "No bound helium dianion (Shelley-Tartakovsky, with Claude)",
+      "status": "interval-arithmetic certificate on Zenodo; not rerun by outsiders; no Lean",
+      "watch": "independent rerun of certificate, extensions (He-, lithium)"
+    },
+    {
+      "claim": "Mezard-Parisi formula for random K-SAT / diluted even p-spin (Panchenko via ChatGPT Astra; separate OpenAI proof)",
+      "status": "preprint, human-checked by author; no outside review found",
+      "watch": "specialist reaction, comparison with OpenAI's proof"
     }
   ]
 }
