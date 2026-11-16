@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Frontier Notes, 16 Nov 2026</title>
+<meta name="fn-date" content="2026-11-16">
+<meta name="fn-headline" content="The integers are Diophantine in the rationals, say a week of human proofs">
+<meta name="fn-summary" content="After OpenAI’s unreviewed claim on Hilbert’s tenth problem over ℚ, human mathematicians post proofs that ℤ is Diophantine in ℚ. Also: Fermat reproved in a day, Faltings and Weil in Lean, ternary Goldbach formalized, 39-step SHA-256 collisions, nonlinearity 492, the public Yang–Mills Lean code, and verified quantum programs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F2F4F6; --surface:#FFFFFF; --ink:#18212E; --muted:#576170; --rule:#D3D9E1;
+  --cobalt:#2B54A0; --cobalt-soft:#E3EAF6; --track:#C9D2DE;
+  --math:#2B54A0; --sci:#2E7458;
+  --c-peer:#2E7458; --c-pre:#80682A; --c-co:#7A3D76; --c-lean:#2B54A0; --c-rev:#4B6672; --c-soc:#9A4545;
+  --panel:#E9EDF2;
+  --serif:"Literata", Georgia, "Times New Roman", serif;
+  --sans:"Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#10151C; --surface:#18202A; --ink:#E4E9F0; --muted:#9AA5B4; --rule:#2B3542;
+    --cobalt:#86A8EA; --cobalt-soft:#1E2B42; --track:#34404F;
+    --math:#86A8EA; --sci:#6CC39C;
+    --c-peer:#6CC39C; --c-pre:#D2B56A; --c-co:#D39BCF; --c-lean:#86A8EA; --c-rev:#9DB8C4; --c-soc:#E39191;
+    --panel:#1C2530;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#10151C; --surface:#18202A; --ink:#E4E9F0; --muted:#9AA5B4; --rule:#2B3542;
+  --cobalt:#86A8EA; --cobalt-soft:#1E2B42; --track:#34404F;
+  --math:#86A8EA; --sci:#6CC39C;
+  --c-peer:#6CC39C; --c-pre:#D2B56A; --c-co:#D39BCF; --c-lean:#86A8EA; --c-rev:#9DB8C4; --c-soc:#E39191;
+  --panel:#1C2530;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:1.0625rem;line-height:1.68}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:42rem;margin:0 auto;padding:0 1.25rem}
+a{color:var(--cobalt);text-underline-offset:2px}
+a:focus-visible,button:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px;border-radius:4px}
+img{max-width:100%}
+
+/* masthead */
+header.mast{padding:2.5rem 0 1.25rem}
+.mast h1{font-family:var(--sans);font-weight:700;font-size:clamp(2rem,6vw,2.75rem);letter-spacing:-0.02em;line-height:1.05;margin:0}
+.mast p.dek{font-family:var(--sans);color:var(--muted);margin:.6rem 0 0;font-size:1rem;line-height:1.45}
+.mast .meta{font-family:var(--sans);font-size:.875rem;color:var(--muted);margin-top:.9rem;display:flex;flex-wrap:wrap;gap:.35rem 1.1rem}
+.mast .meta strong{color:var(--ink);font-weight:600}
+
+/* player */
+.player{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--rule);box-shadow:0 1px 0 var(--rule)}
+.player .wrap{padding-top:.7rem;padding-bottom:.75rem}
+.prow{display:flex;align-items:center;gap:.75rem}
+.play{flex:none;width:3rem;height:3rem;border-radius:50%;border:0;background:var(--cobalt);color:var(--surface);display:grid;place-items:center;cursor:pointer}
+.play svg{width:1.25rem;height:1.25rem;fill:currentColor}
+.ptext{flex:1;min-width:0;font-family:var(--sans)}
+.ptext .now{font-weight:600;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ptext .sub{font-size:.8rem;color:var(--muted)}
+.ctrl{display:flex;gap:.35rem;align-items:center;font-family:var(--sans)}
+.ib{border:1px solid var(--rule);background:transparent;color:var(--ink);border-radius:8px;height:2.25rem;min-width:2.25rem;padding:0 .5rem;cursor:pointer;font:inherit;font-size:.85rem}
+.ib svg{width:1rem;height:1rem;fill:currentColor;vertical-align:middle}
+select.ib{padding:0 .35rem}
+.track{display:flex;gap:4px;margin-top:.65rem}
+.seg{position:relative;height:28px;border:0;padding:0;background:var(--track);border-radius:3px;cursor:pointer;overflow:hidden;color:transparent}
+.seg .fill{position:absolute;inset:0 auto 0 0;width:0;background:var(--seg-c,var(--cobalt));transition:width .3s linear}
+.seg .lbl{position:absolute;left:6px;top:50%;transform:translateY(-50%);font-family:var(--sans);font-size:.7rem;font-weight:600;color:var(--ink);white-space:nowrap;mix-blend-mode:normal;pointer-events:none}
+.seg.done .lbl,.seg.active .lbl{color:var(--surface)}
+.seg[data-kind="sci"]{--seg-c:var(--sci)}
+.seg.done .fill{width:100%}
+.pnote{font-family:var(--sans);font-size:.78rem;color:var(--muted);margin:.5rem 0 0;line-height:1.4}
+.pnote[hidden]{display:none}
+@media (max-width:520px){
+  .ctrl .hide-s{display:none}
+  .seg .lbl{font-size:.62rem;left:4px}
+}
+
+/* body */
+main{padding-bottom:3rem}
+.intro{margin:1.75rem 0 0}
+.intro p{margin:.6rem 0}
+.legend{font-family:var(--sans);font-size:.85rem;background:var(--panel);border-radius:10px;padding:.9rem 1rem;margin:1.25rem 0 0}
+.legend p{margin:0 0 .5rem;color:var(--muted)}
+.legend ul{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}
+.legend li{display:flex;gap:.5rem;align-items:baseline}
+h2.group{font-family:var(--sans);font-size:1rem;font-weight:600;color:var(--muted);margin:3rem 0 0;padding-top:.75rem;border-top:2px solid var(--ink);display:flex;justify-content:space-between}
+h2.group span:last-child{font-weight:500}
+article{margin-top:2.25rem}
+article h3{font-family:var(--sans);font-size:clamp(1.35rem,3.6vw,1.65rem);line-height:1.2;letter-spacing:-0.01em;margin:0 0 .6rem;font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem;margin:0 0 1rem;padding:0;list-style:none}
+.chip{font-family:var(--sans);font-size:.75rem;font-weight:600;line-height:1;padding:.32rem .55rem;border-radius:999px;border:1.5px solid currentColor;white-space:nowrap}
+.chip.peer{color:var(--c-peer)} .chip.pre{color:var(--c-pre)} .chip.co{color:var(--c-co)}
+.chip.lean{color:var(--c-lean)} .chip.rev{color:var(--c-rev)} .chip.soc{color:var(--c-soc)}
+article p{margin:.75rem 0}
+.intuition{background:var(--panel);border-left:3px solid var(--cobalt);border-radius:0 10px 10px 0;padding:.4rem 1.1rem .6rem;margin:1.25rem 0}
+article.sci .intuition{border-left-color:var(--sci)}
+.intuition h4,.take h4{font-family:var(--sans);font-size:.95rem;margin:.6rem 0 .1rem;font-weight:700}
+.intuition ol{padding-left:1.2rem;margin:.4rem 0}
+.intuition li{margin:.45rem 0}
+.take h4{margin-top:1.25rem}
+.math{font-family:var(--serif);font-style:italic;white-space:nowrap}
+.src{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-top:1rem;line-height:1.5}
+.src a{color:var(--muted)}
+.mine{font-family:var(--sans);font-size:.8rem;font-weight:600;color:var(--muted)}
+details.script{font-family:var(--sans);margin:3rem 0 0;border-top:1px solid var(--rule);padding-top:1rem}
+details.script summary{cursor:pointer;font-weight:600}
+details.script .sc{font-family:var(--serif);font-size:1rem;margin-top:.75rem}
+details.script .sc p{margin:.6rem 0}
+.copybtn{margin-top:.5rem}
+footer{font-family:var(--sans);font-size:.8rem;color:var(--muted);padding:2rem 0 3rem;border-top:1px solid var(--rule);margin-top:2.5rem}
+.speaking{background:var(--cobalt-soft);border-radius:4px;box-shadow:0 0 0 4px var(--cobalt-soft)}
+@media (prefers-reduced-motion:reduce){.seg .fill{transition:none}}
+</style>
+</head>
+<body>
+
+<header class="mast wrap">
+  <h1>Frontier Notes</h1>
+  <p class="dek">AI-driven results in mathematics and cryptography, plus the best of physics and chemistry. Listen first, read what grabs you.</p>
+  <div class="meta"><span><a href="../" style="color:inherit">Frontier Notes archive</a></span><span><strong>Issue 4</strong>, Monday 16 November 2026</span><span>Covers roughly 9 – 16 November</span><span>About 10 min to read, 3 min to listen</span></div>
+</header>
+
+<div class="player" id="listen" aria-label="Audio briefing">
+  <div class="wrap">
+    <div class="prow">
+      <button class="play" id="playBtn" aria-label="Play audio briefing">
+        <svg id="icoPlay" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
+        <svg id="icoPause" viewBox="0 0 24 24" aria-hidden="true" style="display:none"><path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z"/></svg>
+      </button>
+      <div class="ptext">
+        <div class="now" id="nowTitle">Audio briefing, about 3 minutes</div>
+        <div class="sub" id="nowSub">Tap a segment to jump to a story</div>
+      </div>
+      <div class="ctrl">
+        <button class="ib hide-s" id="prevBtn" aria-label="Previous story"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+        <button class="ib hide-s" id="nextBtn" aria-label="Next story"><svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+        <select class="ib" id="rate" aria-label="Speaking speed">
+          <option value="0.9">0.9×</option><option value="1" selected>1×</option><option value="1.15">1.15×</option><option value="1.3">1.3×</option>
+        </select>
+      </div>
+    </div>
+    <div class="track" id="track" role="group" aria-label="Stories in the audio briefing"></div>
+    <p class="pnote" id="pnote">Neural voice recorded for this issue. In most mobile browsers it keeps playing with the screen locked, with controls on your lock screen.</p>
+    <audio id="aud" preload="metadata" src="../audio/2026-11-16.mp3"></audio>
+    <script type="application/json" id="audio-meta">{"starts": [0.0, 19.49, 59.22, 83.06, 101.93, 114.16, 126.89, 146.99], "dur": 169.2}</script>
+  </div>
+</div>
+
+<main class="wrap">
+
+<section class="intro">
+  <p>Six weeks ago, OpenAI claimed in an unreviewed manuscript that Hilbert’s tenth problem has a negative answer over the rationals. This week, human mathematicians posted their own proofs of something stronger: the integers can be carved out of the rationals by a single polynomial equation. That’s the deep dive. Also this week: Anthropic reproves Fermat in about a day, Axiom formalizes Faltings’ theorem and the Weil conjectures, and ternary Goldbach gets a Lean proof that rests on two published computations. On the crypto side, step-reduced SHA-256 collisions now reach 39 of 64 steps below the birthday bound, and a classic question about balanced Boolean functions is settled. In science, the Yang–Mills Lean proof is finally public, and DeepMind’s agents write quantum programs whose cost is checked in Lean.</p>
+  <div class="legend">
+    <p>How to read the labels on each story</p>
+    <ul>
+      <li><span class="chip peer">Peer-reviewed</span><span>Published in a reviewed journal or conference.</span></li>
+      <li><span class="chip pre">Preprint</span><span>Public paper, not yet reviewed.</span></li>
+      <li><span class="chip co">Company claim</span><span>Announced by the lab that produced it.</span></li>
+      <li><span class="chip lean">Machine-checked</span><span>Formal proof in Lean exists. This checks the formal statement, not whether it matches the famous conjecture.</span></li>
+      <li><span class="chip rev">Expert review</span><span>Named outside experts are examining it or have independently reworked it.</span></li>
+      <li><span class="chip soc">Opinion</span><span>Social-media argument or prediction, not a result.</span></li>
+    </ul>
+  </div>
+</section>
+
+<h2 class="group"><span>Math &amp; crypto</span><span>about 70%</span></h2>
+
+<article id="hilbert">
+  <h3>The integers are Diophantine in the rationals, say a week of human proofs</h3>
+  <ul class="chips"><li class="chip pre">Preprints: Burungale, Sun, Kozachinskiy–Pasten–Vidaux, Glazer et al.</li><li class="chip co">Company claim: OpenAI’s undecidability manuscript</li><li class="chip rev">Expert review: independent proofs, no verdict yet</li></ul>
+
+  <p>OpenAI’s 6 October release of 722 machine-written manuscripts included a 62-page paper claiming a negative answer to Hilbert’s tenth problem over ℚ: no algorithm decides whether an integer polynomial has a rational zero. It has no Lean proof and no outside review. On 5 November, two AI-generated preprints went further and claimed that ℤ itself is <em>Diophantine</em> in ℚ. One, by Sohail Farhangi, is conditional on three OpenAI papers. The other, by Elliot Glazer, is self-contained. Glazer credits OpenAI’s Astra model and Claude, and his defining polynomial had 292,890,231,905 variables.</p>
+  <p>This week the polynomial shrank and human proofs appeared. In Glazer’s public repository, collaborators including Gabriel Conant, Jose Brox, Cameron Freer, James Freitag and Caroline Terry cut it to 299 variables by 9 November, then 214, and now 196 in Brox’s version, all at degree four. On 10 November, Zhi-Wei Sun posted a 26-unknown version, improving on a 221-unknown count by Conant and coauthors. He says 16 unknowns suffice if the abc conjecture holds. On 12 November, the number theorist Ashay Burungale posted an unconditional proof. He credits OpenAI’s work as inspiration but says his proof does not use the new inputs OpenAI announced, a “2-converse” theorem and a 2-adic Fontaine–Mazur result. The same day, Alexander Kozachinskiy, Hector Pasten and Xavier Vidaux posted a conditional definition, assuming abc, Dickson’s conjecture on prime patterns, and finiteness of the 2-parts of Shafarevich–Tate groups. They describe their paper as “an entry point” to the new work.</p>
+
+  <div class="intuition">
+    <h4>The intuition: making a polynomial count</h4>
+    <ol>
+      <li><strong>Diophantine means “a shadow of a solution set”.</strong> A set <span class="math">S</span> of rationals is Diophantine if <span class="math">q</span> is in <span class="math">S</span> exactly when some fixed equation <span class="math">P</span>(<span class="math">q</span>, <span class="math">w</span><sub>1</sub>, …, <span class="math">w</span><sub>m</sub>) = 0 has a rational solution <span class="math">w</span>. For example, the nonnegative rationals are Diophantine, because <span class="math">q</span> ≥ 0 exactly when <span class="math">q</span> is a sum of four rational squares.</li>
+      <li><strong>Why ℤ is the prize.</strong> Matiyasevich proved in 1970, completing work by Davis, Putnam and Robinson, that every listable set of integers is Diophantine over ℤ, so integer solvability is undecidable. If ℤ is Diophantine in ℚ, you can take any integer equation, add the condition “each unknown is an integer” using the extra variables of <span class="math">P</span>, and get a rational equation that is solvable exactly when the original one is. So rational solvability is undecidable too.</li>
+      <li><strong>The last quantifier.</strong> Julia Robinson defined ℤ inside ℚ in 1949, but her definition used “for all” as well as “there exists”. Poonen in 2009 and Koenigsmann in 2016 cut the number of universal quantifiers down to one, which is the same as saying the <em>non</em>-integers are Diophantine. The open problem was removing that last “for all”. A conjecture of Barry Mazur pointed the other way. It predicts that the rational points of any variety are tame on the real line, falling into finitely many pieces, whereas ℤ is infinitely many isolated points. If the new proofs hold, Mazur’s conjecture is false.</li>
+      <li><strong>Elliptic curves can count.</strong> Take an elliptic curve whose rational points are generated by a single point <span class="math">P</span>, so the multiples <span class="math">nP</span> list them all. The denominators of <span class="math">nP</span> form a divisibility sequence: a prime <span class="math">p</span> divides the denominator exactly when <span class="math">n</span> is a multiple of a fixed number that depends on <span class="math">p</span>. Divisibility of denominators therefore records divisibility of the index <span class="math">n</span>, and this is how integer arithmetic gets into ℚ. The route goes back to Thanases Pheidas.</li>
+      <li><strong>Closing the gap.</strong> Local conditions at well-chosen primes force a free rational parameter <span class="math">t</span> to lie close to some index <span class="math">n</span>. A height argument then leaves only finitely many non-integers, which are handled separately. Burungale needs an infinite supply of curves with rank exactly one. He gets them from quadratic twists of the congruent-number curve, using a rank-one criterion of Tian, Yuan and Zhang, and he finds the right primes with Green, Tao and Ziegler’s theorem on prime patterns.</li>
+    </ol>
+  </div>
+
+  <div class="take">
+    <h4>What it does and does not mean</h4>
+    <p>Everything here is a preprint posted within the past ten days, and I found no specialist verdict on any of them. Glazer’s Lean formalization is incomplete: the main declaration still contains a <code>sorry</code>. The repository itself says its AI audits and finite checks are not peer review. OpenAI’s original manuscript is still unformalized and unreviewed. Sun’s abstract presents his result as an improvement on the Conant group’s count, not as an independent proof. For cryptography, nothing changes. Undecidability is a worst-case statement about all equations at once. Cryptography relies on particular equations, such as elliptic curves over finite fields, and none of this makes any particular equation easier to solve. <span class="mine">My read:</span> the strongest evidence so far is Burungale’s independent route, which doesn’t depend on OpenAI’s new inputs. The pattern is new too: an AI claim named a target and a route, and human proofs followed within five weeks. If they hold, Pasten and coauthors note, even the set of powers of two is Diophantine in ℚ, contradicting a conjecture of Corvaja and Zannier.</p>
+  </div>
+
+  <p class="src">Sources: <a href="https://arxiv.org/abs/2611.16130">Burungale, arXiv 2611.16130</a>, <a href="https://arxiv.org/abs/2611.14605">Sun, arXiv 2611.14605</a>, <a href="https://arxiv.org/abs/2611.17124">Kozachinskiy, Pasten and Vidaux, arXiv 2611.17124</a>, <a href="https://github.com/elliotglazer/diophantine-z-q">Glazer et al. repository and version table</a>, <a href="https://x.com/ElliotGlazer/status/2118403066198376903">Glazer’s announcement on X</a>, <a href="https://www.emergentmind.com/openai-math-explorer/results/004">index entry for OpenAI’s manuscript</a>.</p>
+</article>
+
+<article id="formal">
+  <h3>Formalization week: Fermat in a day, Faltings, Weil and ternary Goldbach</h3>
+  <ul class="chips"><li class="chip co">Company claim: Anthropic, Axiom</li><li class="chip lean">Machine-checked: Lean, no outside rebuild yet</li></ul>
+  <p>On 9 November, Anthropic described a toy experiment in which 1,000 agents running an early version of Claude Fable 5.2 reproved Fermat’s Last Theorem in Lean in 28.7 hours, with no researcher steering. The agents were given 59 milestone statements, a proof sketch and 47 lemmas from September’s run. That earlier proof took dozens of agents 11 days and runs to 13 million lines. The new one is about a seventh of that length. Axiom followed its 4 November Stacks Project release with the four Weil conjectures on 6 November and Faltings’ theorem (the Mordell conjecture) on 12 November. The Faltings proof is about 110,000 lines of Lean on top of some 6.4 million lines of Stacks library, and it follows the Bombieri–Vojta route. Separately, a public repository by the GitHub user calr3 now gives a <code>sorry</code>-free Lean proof of Helfgott’s 2013 theorem that every odd number above 5 is a sum of three primes. <em>Quanta</em> reported it on 10 November.</p>
+  <div class="intuition">
+    <h4>The intuition: what a Lean certificate actually certifies</h4>
+    <ol>
+      <li><strong>The kernel checks every step</strong> from Lean’s axioms. What it can’t check is everything you feed it: the statement, the definitions and any hypotheses.</li>
+      <li><strong>Goldbach comes with two hypotheses.</strong> The main theorem assumes two published computations, Platt’s numerical check of the generalized Riemann hypothesis and the verification of binary Goldbach up to 4·10<sup>18</sup>. Odd numbers below 10<sup>27</sup> are handled by a ladder of about 250 million primes that the kernel itself checks, without the faster but less trusted <code>native_decide</code>.</li>
+      <li><strong>Bombieri–Vojta in one breath.</strong> Map the rational points of a curve of genus at least two into a lattice. Mumford’s gap principle says that points pointing in nearly the same direction have heights that grow geometrically. Vojta’s inequality, proved with an auxiliary polynomial, says two such points can’t both have large and very different heights. Together, the two leave only finitely many points.</li>
+    </ol>
+  </div>
+  <p><span class="mine">My take:</span> the Fermat rerun is the clearest signal. A directed 11-day campaign became an unsupervised one-day job, although the agents were handed the milestones. No outsider has rebuilt Axiom’s results or audited their statements, and the Goldbach README says its statement-comparison check hasn’t been rerun on the current version.</p>
+  <p class="src">Sources: <a href="https://claude.dev/blog/safely-scaling-multi-agent-teams-with-fable-5-2/">Anthropic, scaling multi-agent teams (9 Nov)</a>, <a href="https://www.anthropic.com/research/formalizing-fermats-last-theorem">Anthropic, September FLT formalization</a>, <a href="https://axiommath.ai/research/faltings-theorem-formalized/">Axiom, Faltings’ theorem</a>, <a href="https://axiommath.ai/research/the-weil-conjectures-formalized-in-lean/">Axiom, Weil conjectures</a>, <a href="https://github.com/calr3/ternary-goldbach">ternary Goldbach repository</a>, <a href="https://www.quantamagazine.org/updates/transformation/">Quanta updates page</a>.</p>
+</article>
+
+<article id="sha">
+  <h3>SHA-256 collisions below the birthday bound reach 39 of 64 steps</h3>
+  <ul class="chips"><li class="chip pre">Preprint: IACR ePrint 2026/2867</li></ul>
+  <p>On 11 November, Jiaying Gong, Yongzhuang Wei, Fengrong Zhang and Bohua Wei (Guilin University of Electronic Technology and Xidian University) submitted a paper to ePrint, and it went public on 13 November. It estimates that collisions for SHA-256 reduced to 39 of its 64 steps cost about 2<sup>108.8</sup> compressions per expected collision, below the generic 2<sup>128</sup> birthday bound. The previous best classical collision attack, by Li and coauthors, reached 38 steps at about 2<sup>104.3</sup>, and this paper cuts that to 2<sup>90.9</sup>. These are cost estimates. No collision was computed, and the paper doesn’t mention AI.</p>
+  <div class="intuition">
+    <h4>The intuition: stop gambling on the expanded message</h4>
+    <p>A differential attack fixes a path for how a small difference moves through the steps, and each step adds conditions on the internal state. The first 16 message words are free to choose, but from step 16 on the words are computed from earlier ones, so conditions there usually have to be met by luck. The new trick, “joint message-word pinning”, picks state words that carry no direct conditions so that expanded words <span class="math">W</span><sub>16</sub> and <span class="math">W</span><sub>17</sub> come out exactly as the path needs.</p>
+  </div>
+  <p><strong>For deployed systems:</strong> nothing changes. Full SHA-256 has 64 steps, so 25 steps of margin remain, and the attack costs are still astronomical. <span class="mine">My take:</span> a 13-bit gain at 38 steps suggests the step-reduced estimates still have slack. Watch the margin, not the headline.</p>
+  <p class="src">Sources: <a href="https://eprint.iacr.org/2026/2867">Gong, Wei, Zhang and Wei, ePrint 2026/2867</a>.</p>
+</article>
+
+<article id="boolean">
+  <h3>Balanced Boolean functions in 10 variables top out at nonlinearity 492</h3>
+  <ul class="chips"><li class="chip pre">Preprint: IACR ePrint 2026/2797</li></ul>
+  <p>Youle Xu and Qichun Wang posted the paper on 6 November and revised it on 11 November. It claims to settle Dobbertin’s 1994 conjecture in dimension 10. Nonlinearity is the distance from a Boolean function to the nearest affine function, and high nonlinearity helps ciphers resist linear cryptanalysis. In 10 variables, bent functions reach 496, but they are never balanced. Dobbertin’s construction gives balanced functions with 2<sup>9</sup> − 2<sup>5</sup> + 12 = 492, where 12 is the best value for balanced functions in 5 variables. The nonlinearity of a balanced function is even, so the only open value was 494, and the paper rules it out.</p>
+  <div class="intuition">
+    <h4>The intuition: Parseval leaves room, arithmetic closes it</h4>
+    <p>The nonlinearity is 2<sup>9</sup> minus half the largest Walsh coefficient in absolute value. Parseval fixes the sum of the 1,024 squared coefficients at 2<sup>20</sup>, so the largest must be at least 32. Nonlinearity 494 would need every coefficient to be at most 36 in absolute value, and counting alone allows that. The authors add a quadratic-residue constraint on the spectrum and track how energy splits across four 8-variable sub-functions, keeping signs. That leaves a single case, which a product inequality and a parity argument eliminate.</p>
+  </div>
+  <p><span class="mine">My take:</span> this is a design bound with no effect on any deployed cipher. It’s a human result, and with its finite, case-heavy flavor, it’s a natural candidate for a Lean check.</p>
+  <p class="src">Sources: <a href="https://eprint.iacr.org/2026/2797">Xu and Wang, ePrint 2026/2797</a>.</p>
+</article>
+
+<article id="radar">
+  <h3>On the radar: open claims, one week on</h3>
+  <ul class="chips"><li class="chip rev">Expert review: examining, not endorsing</li></ul>
+  <p>On 12 November, the ETH discussion blog posted the prompt OpenAI used. It asked for an unconditional refutation of the deterministic <em>Strong</em> Exponential Time Hypothesis, with a specific running-time target. There is still no verdict. For Aaronson–Ambainis, PSI says the Stanford group has sent comments and is writing a shorter exposition, but I found nothing from the group directly. No named harmonic analyst has yet assessed OpenAI’s Kakeya claim.</p>
+  <p class="src">Sources: <a href="https://ethdiscussion.blog/">ETH discussion blog</a>, <a href="https://thequantuminsider.com/2026/11/06/ai-assisted-proof-settles-longstanding-question-about-quantum-speedups/">Quantum Insider on PSI</a>.</p>
+</article>
+
+<h2 class="group"><span>Physics &amp; chemistry</span><span>about 30%</span></h2>
+
+<article id="yangmills" class="sci">
+  <h3>Follow-up: the Yang–Mills Lean proof is public, with a precise scope</h3>
+  <ul class="chips"><li class="chip co">Company claim: OpenAI</li><li class="chip lean">Machine-checked: Lean, code now public</li><li class="chip rev">Expert review: OpenAI-appointed committee affirms existence only</li></ul>
+  <p><strong>What changed.</strong> On 10 November, the shepherding committee chaired by David Gross published two GitHub repositories, one with the full Lean code OpenAI submitted on 28 October and one with its assessment. The committee’s finding is that the code builds a relativistic quantum field theory satisfying the Wightman axioms, as a scaling limit of four-dimensional Wilson lattice gauge theory, for any simple compact gauge group. It does not show that the infinite-volume limit is unique or that there is a mass gap, and QCD isn’t addressed. The 1,147-page human-readable proof is still unreleased. Scott Armstrong of NYU welcomed the release but told <em>Scientific American</em>: “This review can be done more efficiently and quickly in the open.” The repository lists two more submissions as work in progress, a second one from OpenAI (4 November) and one from Levent Alpöge and Ethan Sussman (15 November).</p>
+  <div class="intuition">
+    <h4>The intuition: from a grid to a continuum</h4>
+    <ol>
+      <li><strong>Lattice.</strong> Wilson put the gauge field on the edges of a four-dimensional grid as group elements. On a finite grid, that gives an honest probability measure.</li>
+      <li><strong>Continuum limit.</strong> Shrink the spacing while tuning the coupling toward zero, as asymptotic freedom dictates, and show that the correlation functions converge.</li>
+      <li><strong>Reconstruction.</strong> Euclidean correlations that satisfy the Osterwalder–Schrader axioms, notably reflection positivity, rebuild a Hilbert space and a relativistic Wightman theory.</li>
+      <li><strong>What’s missing.</strong> The mass gap says every excitation above the vacuum costs a fixed minimum energy, which means correlations decay uniformly. Nothing here proves that.</li>
+    </ol>
+  </div>
+  <p><span class="mine">My read:</span> the existence half of the Millennium problem now has a public artifact that anyone can inspect. The open question has moved to whether the Lean definitions of the Wightman axioms are faithful. The committee says they match the standard problem statements, but OpenAI appointed it, so outside audits of those definitions are now the thing to watch.</p>
+  <p class="src">Sources: <a href="https://github.com/yang-mills-group/YM">committee assessment repository</a>, <a href="https://github.com/yang-mills-group/OpenAI-YM-20261028">OpenAI Lean submission</a>, <a href="https://www.kitp.ucsb.edu/sites/default/files/3rd-Statement-About-Quantum-YangMills-Theory_Nov-9.pdf">third committee statement</a>, <a href="https://www.scientificamerican.com/article/openais-shepherds-affirm-blockbuster-physics-result/">Scientific American (11 Nov)</a>.</p>
+</article>
+
+<article id="qprog" class="sci">
+  <h3>DeepMind’s agents write quantum programs with Lean-checked correctness and cost</h3>
+  <ul class="chips"><li class="chip pre">Preprint: arXiv 2611.09822</li><li class="chip co">Company claim: Google DeepMind and Google Quantum AI</li></ul>
+  <p>On 6 November (revised 9 November), 25 authors, including Ryan Babbush, Sergio Boixo and Pushmeet Kohli, described a Lean library in which teams of Gemini 4 agents write quantum programs against formal specifications. Lean then proves that each program is correct and that its logical cost, measured as qubits times T gates, stays under a stated bound. The largest gain is a 25-bit fixed-point arcsine, used to load numbers into amplitudes, which needs 3,698 T gates on 100 qubits. That is 290 times cheaper than a published construction, though that construction targeted a looser error. Simulations relevant to fusion, photochemistry and drug metabolism get cheaper by about 11, 8 and 2.5 times. The library is “to be open sourced shortly”, so it isn’t public yet.</p>
+  <div class="intuition">
+    <h4>The intuition: you can’t test a quantum program, so prove it</h4>
+    <p>A classical computer can only simulate small instances, so testing says little about a 4,000-qubit circuit. Here the specification states which unitary to approximate and to what error, and it requires the ancilla qubits to come back to zero. Quantum Hoare logic works backward from that postcondition to the weakest precondition the program needs. Because the checker verifies the cost bound too, an agent can’t win by cheating on either side.</p>
+  </div>
+  <p><span class="mine">My read:</span> the costs are logical, before error-correction overhead, and the baselines are the authors’ choice. The paper doesn’t touch modular exponentiation, so RSA and elliptic-curve resource estimates for Shor’s algorithm are unchanged. The method is a natural fit for that arithmetic, though, and those estimates drive migration timelines.</p>
+  <p class="src">Sources: <a href="https://arxiv.org/abs/2611.09822">Shirobokov et al., arXiv 2611.09822</a>.</p>
+</article>
+
+<details class="script" id="script">
+  <summary>Read the audio script</summary>
+  <p class="pnote">This is the text of the audio briefing, if you’d rather skim it.</p>
+  <button class="ib copybtn" id="copyBtn">Copy script</button>
+  <div class="sc" id="scriptText">
+    <div data-seg="0" data-title="Intro" data-kind="math" data-anchor="">
+      <p>Welcome to Frontier Notes, issue four, for Monday, November sixteenth. I’m glad you’re here. This week, human mathematicians answer an AI claim about Hilbert’s tenth problem. After that, a busy week for computer-checked proofs, two cryptography results, the Yang–Mills code going public, and verified quantum programs.</p>
+    </div>
+    <div data-seg="1" data-title="Integers in rationals" data-kind="math" data-anchor="hilbert">
+      <p>The deep dive. In October, OpenAI claimed that no algorithm can decide whether a polynomial equation has a rational solution. This week, several mathematicians went further. They posted proofs that the whole numbers can be picked out of the fractions by a single polynomial equation of degree four.</p>
+      <p>The trick uses elliptic curves. Multiples of one point on a curve behave like a counter, and the primes dividing their denominators keep track of the count.</p>
+      <p>Ashay Burungale posted an independent proof, and Zhi-Wei Sun got the equation down to twenty-six unknowns. These are all preprints, with no expert verdict yet and no complete computer check. It changes nothing for deployed cryptography.</p>
+    </div>
+    <div data-seg="2" data-title="Formalization" data-kind="math" data-anchor="formal">
+      <p>Next, formal proofs. Anthropic says a thousand Claude agents reproved Fermat’s Last Theorem in Lean in under thirty hours, a job that took eleven days in September. Axiom formalized Faltings’ theorem and the Weil conjectures. And the ternary Goldbach theorem now has a Lean proof that assumes two published computations. These are company claims with machine-checked proofs, and no outsider has rebuilt them yet.</p>
+    </div>
+    <div data-seg="3" data-title="SHA-256" data-kind="math" data-anchor="sha">
+      <p>In cryptanalysis, a preprint estimates that collisions for SHA-256, cut down to thirty-nine of its sixty-four steps, now cost less than a generic attack. The trick is to solve for two message words directly instead of hoping they come out right. Full SHA-256 is not affected.</p>
+    </div>
+    <div data-seg="4" data-title="Boolean functions" data-kind="math" data-anchor="boolean">
+      <p>Another preprint settles a question from cipher design. A balanced Boolean function of ten variables can have nonlinearity at most four hundred ninety-two, which confirms a conjecture from nineteen ninety-four.</p>
+    </div>
+    <div data-seg="5" data-title="Status check" data-kind="math" data-anchor="radar">
+      <p>A quick status check. The Exponential Time Hypothesis review posted the prompt OpenAI used, but there is still no verdict. And there is still no direct word from the Stanford group reading the quantum query proof.</p>
+    </div>
+    <div data-seg="6" data-title="Yang–Mills" data-kind="sci" data-anchor="yangmills">
+      <p>Physics. The committee led by David Gross published OpenAI’s Lean code for Yang–Mills theory. It says the code shows that the theory exists as a limit of lattice models, but it does not prove the mass gap. This is a company claim with a machine-checked proof, affirmed by a committee that OpenAI appointed. The long human-readable proof is still not public.</p>
+    </div>
+    <div data-seg="7" data-title="Quantum programs" data-kind="sci" data-anchor="qprog">
+      <p>And finally, Google DeepMind’s agents wrote quantum programs whose correctness and cost are checked in Lean. They cut the cost of chemistry and fusion simulations by up to about ten times. It’s a preprint and a company claim, and the code is not yet released.</p>
+      <p>That’s the briefing. The written version explains how an elliptic curve can count, and what a Lean proof does and does not certify.</p>
+    </div>
+  </div>
+</details>
+
+</main>
+
+<footer>
+  <div class="wrap" style="padding:0">Frontier Notes, issue 4. Compiled by Claude from public announcements, preprints, journals and social media, as of 16 November 2026. Labels describe the status of each claim, not my belief in it; items marked “my read” or “my take” are my own analysis.</div>
+</footer>
+
+<script>
+(function(){
+  var aud = document.getElementById('aud');
+  var meta = {starts:[], dur:0};
+  try{ meta = JSON.parse(document.getElementById('audio-meta').textContent); }catch(e){}
+  var segNodes = Array.prototype.slice.call(document.querySelectorAll('#scriptText [data-seg]'));
+  var titles = segNodes.map(function(n){ return n.getAttribute('data-title'); });
+  var kinds = segNodes.map(function(n){ return n.getAttribute('data-kind') || 'math'; });
+  var anchors = segNodes.map(function(n){ return n.getAttribute('data-anchor') || null; });
+  var dur = meta.dur || 1;
+  var starts = (meta.starts && meta.starts.length === titles.length) ? meta.starts : titles.map(function(_,i){ return i*dur/titles.length; });
+  if(!meta.dur){ document.getElementById('listen').style.display = 'none'; }
+  var track = document.getElementById('track');
+  var btns = [];
+  function segEnd(i){ return i+1 < starts.length ? starts[i+1] : (aud.duration || dur); }
+  titles.forEach(function(t,i){
+    var b = document.createElement('button');
+    b.className = 'seg'; b.setAttribute('data-kind', kinds[i]);
+    b.style.flex = String(Math.max((segEnd(i)-starts[i])/dur, 0.07));
+    b.setAttribute('aria-label','Play from: '+t);
+    b.innerHTML = '<span class="fill"></span><span class="lbl"></span>';
+    b.querySelector('.lbl').textContent = t;
+    b.addEventListener('click', function(){ aud.currentTime = starts[i] + 0.01; play(); });
+    track.appendChild(b); btns.push(b);
+  });
+  var playBtn = document.getElementById('playBtn');
+  var icoPlay = document.getElementById('icoPlay'), icoPause = document.getElementById('icoPause');
+  var nowTitle = document.getElementById('nowTitle'), nowSub = document.getElementById('nowSub');
+  var rateSel = document.getElementById('rate');
+  function store(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  function load(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  var r = load('fn-rate'); if(r){ rateSel.value = r; }
+  function applyRate(){ aud.playbackRate = parseFloat(rateSel.value) || 1; }
+  applyRate();
+  function cur(){ var t = aud.currentTime, i = 0; for(var k=0;k<starts.length;k++){ if(t >= starts[k]) i = k; } return i; }
+  function fmt(s){ s = Math.max(0, Math.floor(s)); return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2); }
+  function paint(){
+    var i = cur(), t = aud.currentTime, playing = !aud.paused && !aud.ended;
+    btns.forEach(function(b,k){
+      var f = b.querySelector('.fill');
+      var pct = k < i ? 100 : (k > i ? 0 : Math.min(100, 100*(t-starts[k])/(segEnd(k)-starts[k])));
+      f.style.width = pct + '%';
+      b.classList.toggle('done', k < i);
+      b.classList.toggle('active', k === i && t > 0.05);
+    });
+    if(t < 0.05 && !playing){ nowTitle.textContent = 'Audio briefing, about 3 minutes'; nowSub.textContent = 'Tap a segment to jump to a story'; }
+    else { nowTitle.textContent = (playing ? 'Playing: ' : 'Paused: ') + titles[i]; nowSub.textContent = 'Story ' + (i+1) + ' of ' + titles.length + ', ' + fmt(t) + ' / ' + fmt(aud.duration || dur); }
+    icoPlay.style.display = playing ? 'none' : ''; icoPause.style.display = playing ? '' : 'none';
+    playBtn.setAttribute('aria-label', playing ? 'Pause audio briefing' : 'Play audio briefing');
+  }
+  function play(){ applyRate(); var p = aud.play(); if(p && p.catch) p.catch(function(){ nowSub.textContent = 'Tap play again to start audio'; }); }
+  playBtn.addEventListener('click', function(){ if(aud.paused) play(); else aud.pause(); });
+  document.getElementById('prevBtn').addEventListener('click', function(){
+    var i = cur(); var target = (aud.currentTime - starts[i] > 3) ? i : Math.max(0, i-1);
+    aud.currentTime = starts[target] + 0.01; paint();
+  });
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    var i = Math.min(starts.length-1, cur()+1); aud.currentTime = starts[i] + 0.01; paint();
+  });
+  rateSel.addEventListener('change', function(){ store('fn-rate', rateSel.value); applyRate(); });
+  ['timeupdate','play','pause','ended','seeked','loadedmetadata'].forEach(function(e){ aud.addEventListener(e, paint); });
+  aud.addEventListener('ended', function(){ nowTitle.textContent = 'Finished. Thanks for listening'; });
+  if('mediaSession' in navigator){
+    try{
+      navigator.mediaSession.metadata = new MediaMetadata({title:document.title, artist:'Frontier Notes', album:'Audio briefing'});
+      navigator.mediaSession.setActionHandler('play', play);
+      navigator.mediaSession.setActionHandler('pause', function(){ aud.pause(); });
+      navigator.mediaSession.setActionHandler('nexttrack', function(){ document.getElementById('nextBtn').click(); });
+      navigator.mediaSession.setActionHandler('previoustrack', function(){ document.getElementById('prevBtn').click(); });
+      navigator.mediaSession.setActionHandler('seekbackward', function(){ aud.currentTime = Math.max(0, aud.currentTime-15); });
+      navigator.mediaSession.setActionHandler('seekforward', function(){ aud.currentTime = Math.min(aud.duration||dur, aud.currentTime+15); });
+    }catch(e){}
+  }
+  document.getElementById('copyBtn').addEventListener('click', function(){
+    var text = document.getElementById('scriptText').innerText; var btn = this;
+    function ok(){ btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent='Copy script'; }, 1800); }
+    function fallback(){ var rg = document.createRange(); rg.selectNodeContents(document.getElementById('scriptText')); var s = window.getSelection(); s.removeAllRanges(); s.addRange(rg); btn.textContent = 'Selected. Copy it from the menu'; }
+    try{ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(ok, fallback); } else fallback(); }catch(e){ fallback(); }
+  });
+  paint();
+  var hsh = (location.hash||'').replace('#','');
+  if(hsh){ var el = document.getElementById(hsh); if(el){ if(hsh==='script') el.open = true; setTimeout(function(){ el.scrollIntoView(); }, 50); } }
+})();
+</script>
+</body>
+</html>

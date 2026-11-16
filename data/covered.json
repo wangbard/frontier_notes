@@ -2,7 +2,8 @@
   "issues": [
     "2026-10-27",
     "2026-11-02",
-    "2026-11-09"
+    "2026-11-09",
+    "2026-11-16"
   ],
   "items": [
     {
@@ -191,23 +192,85 @@
         "Preprint",
         "Company claim"
       ]
+    },
+    {
+      "title": "Z is Diophantine in Q: Burungale (unconditional), Sun (26 unknowns), Kozachinskiy-Pasten-Vidaux (conditional), Glazer et al. polynomial shrinking to 196 variables; after OpenAI's HTP-over-Q claim",
+      "url": "https://arxiv.org/abs/2611.16130",
+      "date": "2026-11-12",
+      "labels": [
+        "Preprint",
+        "Company claim",
+        "Expert review"
+      ]
+    },
+    {
+      "title": "Formalization week: Anthropic FLT rerun in 28.7 hours; Axiom Faltings' theorem and Weil conjectures; ternary Goldbach in Lean (conditional on two computations)",
+      "url": "https://claude.dev/blog/safely-scaling-multi-agent-teams-with-fable-5-2/",
+      "date": "2026-11-12",
+      "labels": [
+        "Company claim",
+        "Machine-checked"
+      ]
+    },
+    {
+      "title": "Gong, Wei, Zhang, Wei: 39-step SHA-256 collisions below the birthday bound",
+      "url": "https://eprint.iacr.org/2026/2867",
+      "date": "2026-11-13",
+      "labels": [
+        "Preprint"
+      ]
+    },
+    {
+      "title": "Xu, Wang: maximum nonlinearity of balanced 10-variable Boolean functions is 492 (Dobbertin conjecture n=10)",
+      "url": "https://eprint.iacr.org/2026/2797",
+      "date": "2026-11-11",
+      "labels": [
+        "Preprint"
+      ]
+    },
+    {
+      "title": "Status check: ETH blog posts OpenAI prompt; PSI says Stanford exposition in progress; Kakeya",
+      "url": "https://ethdiscussion.blog/",
+      "date": "2026-11-12",
+      "labels": [
+        "Expert review"
+      ]
+    },
+    {
+      "title": "Follow-up: Yang-Mills committee publishes OpenAI Lean code and assessment (existence only)",
+      "url": "https://github.com/yang-mills-group/YM",
+      "date": "2026-11-10",
+      "labels": [
+        "Company claim",
+        "Machine-checked",
+        "Expert review"
+      ]
+    },
+    {
+      "title": "DeepMind: discovering formally verified quantum programs with AI (Gemini 4 agents, Lean)",
+      "url": "https://arxiv.org/abs/2611.09822",
+      "date": "2026-11-06",
+      "labels": [
+        "Preprint",
+        "Company claim"
+      ]
     }
   ],
   "open_claims": [
     {
       "claim": "ETH is false (OpenAI and Anthropic)",
-      "status": "Lean-checked; both developments independently replayed (Toledo, kernel + nanoda), machine-model translation informal; review group (Impagliazzo, Paturi, Williams) running a discussion blog, not endorsing; simpler proofs by Kintali and O'Donnell; Fortnow: safe to assume (opinion); as of 2026-11-09 blog collecting Lean replications (Zane) and consequences (Paturi, 1 Nov), still no verdict",
+      "status": "Lean-checked; both developments independently replayed (Toledo, kernel + nanoda), machine-model translation informal; review group (Impagliazzo, Paturi, Williams) running a discussion blog, not endorsing; simpler proofs by Kintali and O'Donnell; Fortnow: safe to assume (opinion); as of 2026-11-09 blog collecting Lean replications (Zane) and consequences (Paturi, 1 Nov), still no verdict; 12 Nov: blog posted OpenAI's prompt (asked for refutation of deterministic SETH with specific target); still no verdict as of 2026-11-16",
       "watch": "review group statement or virtual meeting, errors found, conference announcement"
     },
     {
       "claim": "Local smoothing, Kakeya and Stein restriction in all dimensions (OpenAI)",
-      "status": "Lean proof per OpenAI; no outside expert verdict found as of 2026-11-09",
+      "status": "Lean proof per OpenAI; no outside expert verdict found as of 2026-11-16",
       "watch": "harmonic analysts' comments (Guth, Wang, Zahl, Tao), whether formal statement matches the conjecture"
     },
     {
       "claim": "Existence of QCD and pure Yang-Mills in 4D (OpenAI)",
-      "status": "Committee (Gross chair, Douglas, Jaffe, Klebanov, Nekrasov) says it 'appears to be an important step'; plans to validate Lean definitions, then release Lean proof, then assessment with 1,147-page proofs; mass gap and confinement open; still unreleased as of 2026-11-09; AGMAI (26 Oct) recommended immediate release",
-      "watch": "Lean release, committee assessment"
+      "status": "Lean code public since 10 Nov (github.com/yang-mills-group); committee (Gross chair) assessment: Wightman theory exists as scaling limit of 4D Wilson lattice theory for any simple compact group; no uniqueness of infinite-volume limit, no mass gap, QCD not addressed; 1,147-page proof unreleased; Armstrong urges open review; further submissions (OpenAI 4 Nov, Alpoge-Sussman 15 Nov) listed as work in progress",
+      "watch": "outside audit of Lean Wightman definitions, natural-language proof release, QCD materials, Alpoge-Sussman assessment"
     },
     {
       "claim": "Quasi-Riemann hypothesis: zeta zeros in strip 1/8-7/8 (Lean) and 1/12-11/12 (informal) (OpenAI)",
@@ -216,7 +279,7 @@
     },
     {
       "claim": "Other October 6 release claims, incl. omega <= 9/4",
-      "status": "unverified individually, except Landau-Siegel (now separate entry)",
+      "status": "unverified individually, except Landau-Siegel and Hilbert's tenth over Q (now separate entries)",
       "watch": "specialist verdicts on individual claims"
     },
     {
@@ -241,7 +304,7 @@
     },
     {
       "claim": "Aaronson-Ambainis conjecture: influence >= c Var^{5/2}/d^6 (PSI, non-public Anthropic model)",
-      "status": "Lean-checked (standard axioms, lean4lean second check); Aaronson believes it correct (blog, 8 Nov); PSI says Stanford group (Blanc, Docter, Strassle, Tan) reviewed it, not confirmed by them directly",
+      "status": "Lean-checked (standard axioms, lean4lean second check); Aaronson believes it correct (blog, 8 Nov); PSI says Stanford group (Blanc, Docter, Strassle, Tan) reviewed it, not confirmed by them directly; as of 2026-11-16 PSI says Stanford group sent comments and is writing exposition; nothing from the group directly",
       "watch": "Stanford exposition, audit of PrintedConjecture statement, peer review"
     },
     {
@@ -258,6 +321,36 @@
       "claim": "Mezard-Parisi formula for random K-SAT / diluted even p-spin (Panchenko via ChatGPT Astra; separate OpenAI proof)",
       "status": "preprint, human-checked by author; no outside review found",
       "watch": "specialist reaction, comparison with OpenAI's proof"
+    },
+    {
+      "claim": "Hilbert's tenth problem over Q is undecidable; Z is Diophantine in Q (OpenAI manuscript; Glazer et al.; Burungale; Sun; Kozachinskiy-Pasten-Vidaux conditional)",
+      "status": "OpenAI 62-page manuscript unformalized and unreviewed; Glazer et al. polynomial down to 196 variables, degree 4, Lean incomplete (sorry), AI-audited only; Sun 26 unknowns (16 under abc) improving on Conant et al.; Burungale independent unconditional proof avoiding OpenAI's new inputs (12 Nov); no specialist verdict as of 2026-11-16",
+      "watch": "expert assessment of Burungale's proof, Lean completion, peer review; consequences (Mazur's conjecture false)"
+    },
+    {
+      "claim": "Anthropic FLT reproof in 28.7 h by 1,000 agents; Axiom Faltings (Bombieri-Vojta) and Weil conjectures in Lean",
+      "status": "kernel-checked per companies; no outside rebuild; statement audits not reported (Axiom)",
+      "watch": "independent rebuilds, statement fidelity review"
+    },
+    {
+      "claim": "Ternary Goldbach in Lean (calr3 repo)",
+      "status": "sorry-free, standard axioms, conditional on Platt GRH computation and binary Goldbach to 4e18; Comparator not rerun on current version",
+      "watch": "Comparator run, discharge of numerical hypotheses"
+    },
+    {
+      "claim": "Lean-verified quantum programs, up to 290x cheaper arcsin and ~11x/8x/2.5x simulations (DeepMind)",
+      "status": "preprint; library not yet open-sourced; logical costs only; baselines chosen by authors",
+      "watch": "code release, application to Shor arithmetic"
+    },
+    {
+      "claim": "39-step SHA-256 collisions below birthday bound (Gong et al.)",
+      "status": "preprint, cost estimates only, no collision computed",
+      "watch": "implementation, cryptanalysts' assessment"
+    },
+    {
+      "claim": "Max nonlinearity of balanced 10-variable Boolean functions is 492 (Xu, Wang)",
+      "status": "preprint, no outside review",
+      "watch": "expert check, formal verification"
     }
   ]
 }

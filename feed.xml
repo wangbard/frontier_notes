@@ -10,6 +10,16 @@
     <itunes:category text="Science"/>
     <itunes:explicit>false</itunes:explicit>
     <item>
+      <title>The integers are Diophantine in the rationals, say a week of human proofs</title>
+      <description>After OpenAI’s unreviewed claim on Hilbert’s tenth problem over ℚ, human mathematicians post proofs that ℤ is Diophantine in ℚ. Also: Fermat reproved in a day, Faltings and Weil in Lean, ternary Goldbach formalized, 39-step SHA-256 collisions, nonlinearity 492, the public Yang–Mills Lean code, and verified quantum programs. Full text: https://wangbard.github.io/frontier_notes/issues/2026-11-16.html</description>
+      <link>https://wangbard.github.io/frontier_notes/issues/2026-11-16.html</link>
+      <guid isPermaLink="false">frontier-notes-2026-11-16</guid>
+      <pubDate>Mon, 16 Nov 2026 07:00:00 +0000</pubDate>
+      <enclosure url="https://wangbard.github.io/frontier_notes/audio/2026-11-16.mp3" length="1015677" type="audio/mpeg"/>
+      <itunes:duration>00:02:49</itunes:duration>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
+    <item>
       <title>Quantum speedups need structure: Aaronson–Ambainis proved</title>
       <description>A Lean-checked proof, found with an unreleased Claude model, settles the 2008 Aaronson–Ambainis conjecture, with no effect on Shor or deployed crypto. Also: DeepMind cheapens attacks on 1024-bit RSA, the shrinking Landau–Siegel proof, Kaiburr, helium can’t bind two extra electrons, and the Mézard–Parisi formula. Full text: https://wangbard.github.io/frontier_notes/issues/2026-11-09.html</description>
       <link>https://wangbard.github.io/frontier_notes/issues/2026-11-09.html</link>
