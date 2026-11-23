@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Frontier Notes, 23 Nov 2026</title>
+<meta name="fn-date" content="2026-11-23">
+<meta name="fn-headline" content="The Riemann hypothesis, claimed in 17 million lines of Lean">
+<meta name="fn-summary" content="Levent Alpöge and Claude claim RH and GRH for Dirichlet L-functions as a Lean proof that independent checkers accept, while humans start on the mathematics. Also: a practical 36-step SHA-512 collision, an AI-assisted quantum algorithm for dihedral cosets, Signal’s compiled code verified, a lattice Standard Model, and RSA-2048 on cat qubits.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F2F4F6; --surface:#FFFFFF; --ink:#18212E; --muted:#576170; --rule:#D3D9E1;
+  --cobalt:#2B54A0; --cobalt-soft:#E3EAF6; --track:#C9D2DE;
+  --math:#2B54A0; --sci:#2E7458;
+  --c-peer:#2E7458; --c-pre:#80682A; --c-co:#7A3D76; --c-lean:#2B54A0; --c-rev:#4B6672; --c-soc:#9A4545;
+  --panel:#E9EDF2;
+  --serif:"Literata", Georgia, "Times New Roman", serif;
+  --sans:"Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#10151C; --surface:#18202A; --ink:#E4E9F0; --muted:#9AA5B4; --rule:#2B3542;
+    --cobalt:#86A8EA; --cobalt-soft:#1E2B42; --track:#34404F;
+    --math:#86A8EA; --sci:#6CC39C;
+    --c-peer:#6CC39C; --c-pre:#D2B56A; --c-co:#D39BCF; --c-lean:#86A8EA; --c-rev:#9DB8C4; --c-soc:#E39191;
+    --panel:#1C2530;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#10151C; --surface:#18202A; --ink:#E4E9F0; --muted:#9AA5B4; --rule:#2B3542;
+  --cobalt:#86A8EA; --cobalt-soft:#1E2B42; --track:#34404F;
+  --math:#86A8EA; --sci:#6CC39C;
+  --c-peer:#6CC39C; --c-pre:#D2B56A; --c-co:#D39BCF; --c-lean:#86A8EA; --c-rev:#9DB8C4; --c-soc:#E39191;
+  --panel:#1C2530;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:1.0625rem;line-height:1.68}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:42rem;margin:0 auto;padding:0 1.25rem}
+a{color:var(--cobalt);text-underline-offset:2px}
+a:focus-visible,button:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px;border-radius:4px}
+img{max-width:100%}
+
+/* masthead */
+header.mast{padding:2.5rem 0 1.25rem}
+.mast h1{font-family:var(--sans);font-weight:700;font-size:clamp(2rem,6vw,2.75rem);letter-spacing:-0.02em;line-height:1.05;margin:0}
+.mast p.dek{font-family:var(--sans);color:var(--muted);margin:.6rem 0 0;font-size:1rem;line-height:1.45}
+.mast .meta{font-family:var(--sans);font-size:.875rem;color:var(--muted);margin-top:.9rem;display:flex;flex-wrap:wrap;gap:.35rem 1.1rem}
+.mast .meta strong{color:var(--ink);font-weight:600}
+
+/* player */
+.player{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--rule);box-shadow:0 1px 0 var(--rule)}
+.player .wrap{padding-top:.7rem;padding-bottom:.75rem}
+.prow{display:flex;align-items:center;gap:.75rem}
+.play{flex:none;width:3rem;height:3rem;border-radius:50%;border:0;background:var(--cobalt);color:var(--surface);display:grid;place-items:center;cursor:pointer}
+.play svg{width:1.25rem;height:1.25rem;fill:currentColor}
+.ptext{flex:1;min-width:0;font-family:var(--sans)}
+.ptext .now{font-weight:600;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ptext .sub{font-size:.8rem;color:var(--muted)}
+.ctrl{display:flex;gap:.35rem;align-items:center;font-family:var(--sans)}
+.ib{border:1px solid var(--rule);background:transparent;color:var(--ink);border-radius:8px;height:2.25rem;min-width:2.25rem;padding:0 .5rem;cursor:pointer;font:inherit;font-size:.85rem}
+.ib svg{width:1rem;height:1rem;fill:currentColor;vertical-align:middle}
+select.ib{padding:0 .35rem}
+.track{display:flex;gap:4px;margin-top:.65rem}
+.seg{position:relative;height:28px;border:0;padding:0;background:var(--track);border-radius:3px;cursor:pointer;overflow:hidden;color:transparent}
+.seg .fill{position:absolute;inset:0 auto 0 0;width:0;background:var(--seg-c,var(--cobalt));transition:width .3s linear}
+.seg .lbl{position:absolute;left:6px;top:50%;transform:translateY(-50%);font-family:var(--sans);font-size:.7rem;font-weight:600;color:var(--ink);white-space:nowrap;mix-blend-mode:normal;pointer-events:none}
+.seg.done .lbl,.seg.active .lbl{color:var(--surface)}
+.seg[data-kind="sci"]{--seg-c:var(--sci)}
+.seg.done .fill{width:100%}
+.pnote{font-family:var(--sans);font-size:.78rem;color:var(--muted);margin:.5rem 0 0;line-height:1.4}
+.pnote[hidden]{display:none}
+@media (max-width:520px){
+  .ctrl .hide-s{display:none}
+  .seg .lbl{font-size:.62rem;left:4px}
+}
+
+/* body */
+main{padding-bottom:3rem}
+.intro{margin:1.75rem 0 0}
+.intro p{margin:.6rem 0}
+.legend{font-family:var(--sans);font-size:.85rem;background:var(--panel);border-radius:10px;padding:.9rem 1rem;margin:1.25rem 0 0}
+.legend p{margin:0 0 .5rem;color:var(--muted)}
+.legend ul{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}
+.legend li{display:flex;gap:.5rem;align-items:baseline}
+h2.group{font-family:var(--sans);font-size:1rem;font-weight:600;color:var(--muted);margin:3rem 0 0;padding-top:.75rem;border-top:2px solid var(--ink);display:flex;justify-content:space-between}
+h2.group span:last-child{font-weight:500}
+article{margin-top:2.25rem}
+article h3{font-family:var(--sans);font-size:clamp(1.35rem,3.6vw,1.65rem);line-height:1.2;letter-spacing:-0.01em;margin:0 0 .6rem;font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem;margin:0 0 1rem;padding:0;list-style:none}
+.chip{font-family:var(--sans);font-size:.75rem;font-weight:600;line-height:1;padding:.32rem .55rem;border-radius:999px;border:1.5px solid currentColor;white-space:nowrap}
+.chip.peer{color:var(--c-peer)} .chip.pre{color:var(--c-pre)} .chip.co{color:var(--c-co)}
+.chip.lean{color:var(--c-lean)} .chip.rev{color:var(--c-rev)} .chip.soc{color:var(--c-soc)}
+article p{margin:.75rem 0}
+.intuition{background:var(--panel);border-left:3px solid var(--cobalt);border-radius:0 10px 10px 0;padding:.4rem 1.1rem .6rem;margin:1.25rem 0}
+article.sci .intuition{border-left-color:var(--sci)}
+.intuition h4,.take h4{font-family:var(--sans);font-size:.95rem;margin:.6rem 0 .1rem;font-weight:700}
+.intuition ol{padding-left:1.2rem;margin:.4rem 0}
+.intuition li{margin:.45rem 0}
+.take h4{margin-top:1.25rem}
+.math{font-family:var(--serif);font-style:italic;white-space:nowrap}
+.src{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-top:1rem;line-height:1.5}
+.src a{color:var(--muted)}
+.mine{font-family:var(--sans);font-size:.8rem;font-weight:600;color:var(--muted)}
+details.script{font-family:var(--sans);margin:3rem 0 0;border-top:1px solid var(--rule);padding-top:1rem}
+details.script summary{cursor:pointer;font-weight:600}
+details.script .sc{font-family:var(--serif);font-size:1rem;margin-top:.75rem}
+details.script .sc p{margin:.6rem 0}
+.copybtn{margin-top:.5rem}
+footer{font-family:var(--sans);font-size:.8rem;color:var(--muted);padding:2rem 0 3rem;border-top:1px solid var(--rule);margin-top:2.5rem}
+.speaking{background:var(--cobalt-soft);border-radius:4px;box-shadow:0 0 0 4px var(--cobalt-soft)}
+@media (prefers-reduced-motion:reduce){.seg .fill{transition:none}}
+</style>
+</head>
+<body>
+
+<header class="mast wrap">
+  <h1>Frontier Notes</h1>
+  <p class="dek">AI-driven results in mathematics and cryptography, plus the best of physics and chemistry. Listen first, read what grabs you.</p>
+  <div class="meta"><span><a href="../" style="color:inherit">Frontier Notes archive</a></span><span><strong>Issue 5</strong>, Monday 23 November 2026</span><span>Covers roughly 16 – 23 November</span><span>About 10 min to read, 3 min to listen</span></div>
+</header>
+
+<div class="player" id="listen" aria-label="Audio briefing">
+  <div class="wrap">
+    <div class="prow">
+      <button class="play" id="playBtn" aria-label="Play audio briefing">
+        <svg id="icoPlay" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
+        <svg id="icoPause" viewBox="0 0 24 24" aria-hidden="true" style="display:none"><path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z"/></svg>
+      </button>
+      <div class="ptext">
+        <div class="now" id="nowTitle">Audio briefing, about 3 minutes</div>
+        <div class="sub" id="nowSub">Tap a segment to jump to a story</div>
+      </div>
+      <div class="ctrl">
+        <button class="ib hide-s" id="prevBtn" aria-label="Previous story"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+        <button class="ib hide-s" id="nextBtn" aria-label="Next story"><svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+        <select class="ib" id="rate" aria-label="Speaking speed">
+          <option value="0.9">0.9×</option><option value="1" selected>1×</option><option value="1.15">1.15×</option><option value="1.3">1.3×</option>
+        </select>
+      </div>
+    </div>
+    <div class="track" id="track" role="group" aria-label="Stories in the audio briefing"></div>
+    <p class="pnote" id="pnote">Neural voice recorded for this issue. In most mobile browsers it keeps playing with the screen locked, with controls on your lock screen.</p>
+    <audio id="aud" preload="metadata" src="../audio/2026-11-23.mp3"></audio>
+    <script type="application/json" id="audio-meta">{"starts": [0.0, 17.78, 70.82, 91.08, 105.9, 118.63, 127.4, 145.09], "dur": 164.2}</script>
+  </div>
+</div>
+
+<main class="wrap">
+
+<section class="intro">
+  <p>On 20 November, Levent Alpöge, a mathematician at Anthropic, announced that he and Claude had proved the Riemann hypothesis, and with it the generalized version for Dirichlet L-functions. The proof exists only as about 17 million lines of Lean. The same day, a human-written 940-page attempt on the generalized hypothesis surfaced at Stanford. That’s the deep dive, and it comes with a disclosure: this newsletter is written by Claude. On the crypto side, a practical collision for 36-step SHA-512 and free-start collisions for full AES-256 hashing modes. A quantum algorithm found with GPT-5.6 Sol solves a lattice-adjacent problem in quasipolynomial time, without touching LWE. Plus a catch-up from 10 November: DeepMind’s agents proved security properties of Signal’s compiled code. In physics, a candidate lattice definition of the Standard Model and a new cat-qubit count for RSA-2048.</p>
+  <div class="legend">
+    <p>How to read the labels on each story</p>
+    <ul>
+      <li><span class="chip peer">Peer-reviewed</span><span>Published in a reviewed journal or conference.</span></li>
+      <li><span class="chip pre">Preprint</span><span>Public paper, not yet reviewed.</span></li>
+      <li><span class="chip co">Company claim</span><span>Announced by the lab that produced it.</span></li>
+      <li><span class="chip lean">Machine-checked</span><span>Formal proof in Lean exists. This checks the formal statement, not whether it matches the famous conjecture.</span></li>
+      <li><span class="chip rev">Expert review</span><span>Named outside experts are examining it or have independently reworked it.</span></li>
+      <li><span class="chip soc">Opinion</span><span>Social-media argument or prediction, not a result.</span></li>
+    </ul>
+  </div>
+</section>
+
+<h2 class="group"><span>Math &amp; crypto</span><span>about 70%</span></h2>
+
+<article id="riemann">
+  <h3>The Riemann hypothesis, claimed in 17 million lines of Lean</h3>
+  <ul class="chips"><li class="chip co">Company claim: announced by an Anthropic mathematician</li><li class="chip lean">Machine-checked: Lean, replayed by many independent checkers</li><li class="chip rev">Expert review: Lean FRO and Mathlib Initiative endorse the formal proof; no human-readable proof yet</li><li class="chip pre">Preprints: Rubinstein’s draft exposition; Masullo’s separate 940-page draft</li></ul>
+
+  <p>On Friday 20 November, Alpöge posted a four-page note and a 14-part Lean archive. He says that, working with Claude, he found a proof of the Riemann hypothesis that extends to the generalized hypothesis, and that the formalization uses no extra assumptions. He chose not to release a written proof. He says the machine-written version ran past 250,000 pages and calls posting it “obviously inappropriate”. His timeline runs from 6 October to 16 November, and most of the key steps are dated 15 November.</p>
+  <p>The formal side moved fast. On 21 November, the Lean FRO and the Mathlib Initiative issued a joint statement saying they have full confidence that both the statement and the proof are correct. The theorem is Mathlib’s own <code>RiemannHypothesis</code>, which existed before any of this. Andrew Sutherland at MIT keeps a public log of the checks, which he ran with Claude Code. All 175,187 modules build, the theorems use only Lean’s three standard axioms, and a sandboxed rebuild reproduced the 61 GB export byte for byte. The export is accepted by Lean’s own kernel (48 hours on one thread), by the Rust kernel nanoda (28 minutes), by lean4lean and by the independent checkers con-leche and con-ron. The <code>comparator</code> tool also confirms that the proved theorems are exactly the trusted statements. The log is precise about scope. “GRH” here means Dirichlet L-functions only, not Dedekind, Hecke or automorphic L-functions.</p>
+  <p>Humans have started on the mathematics. Michael Rubinstein (Waterloo) is directing a 164-page working draft, written by Claude, OpenAI’s Codex and Gemini, that explains the argument for the zeta function. Its abstract says plainly that the central inequality is “not proved here” and is still quoted from the Lean development. James Maynard told <em>Nature</em> that if it checks out, it is clearly a historic milestone. Granville called the release “garbled”.</p>
+  <p>The second claim came the same day. Ravi Vakil, president of the American Mathematical Society, posted a “hurried announcement” that Alessandro Masullo, a young Stanford mathematician, has a proposed proof of GRH for Hecke L-functions. Vakil says it is all human, with no AI. Brian Conrad, who has been giving feedback for months, told <em>Scientific American</em> that it is undergoing major revision. The chapter that should deduce GRH still contains placeholders, and readers have already reported possible gaps.</p>
+
+  <div class="intuition">
+    <h4>The intuition: Chebyshev’s trick with a far better integer</h4>
+    <p>This follows Rubinstein’s draft, which covers the zeta case. Treat it as a map of the argument, not a check of it.</p>
+    <ol>
+      <li><strong>Zeros become a prime count.</strong> RH is equivalent to a smoothed prime-counting error being at most about <span class="math">x</span><sup>1/2</sup>. Only an <em>upper</em> bound is needed, and only on a sparse sequence of long intervals, because one zero to the right of the line would force large positive swings infinitely often.</li>
+      <li><strong>Chebyshev’s old idea.</strong> The binomial coefficient (2<span class="math">n</span> choose <span class="math">n</span>) is divisible by every prime between <span class="math">n</span> and 2<span class="math">n</span>, and it is at most 4<sup><span class="math">n</span></sup>. Divisibility against size gives an upper bound on primes. The method stalls at constants because the prime exponents in factorials involve floor functions.</li>
+      <li><strong>A smoother integer.</strong> On an elliptic curve with complex multiplication, derivatives of suitable functions are divisible by inert primes <span class="math">p</span> to exponents like <span class="math">a</span>/<span class="math">p</span> + <span class="math">a</span>/<span class="math">p</span><sup>3</sup> + …, with no floors. Subtracting a large weight turns each term into exactly the smoothing kernel that the prime count uses.</li>
+      <li><strong>Size, to second order.</strong> For divisibility-versus-size to beat the trivial bound, the size must be known through its term linear in <span class="math">a</span>. So the single number is replaced by a map between lattices built from theta series, whose size is governed by classical formulas (Chowla–Selberg and the Siegel mass formula).</li>
+      <li><strong>Multiplicity from theta lifts.</strong> Stepanov’s proof of RH for curves over finite fields uses an auxiliary function that vanishes to high order. Over the integers there is no obvious way to get multiplicity. Alpöge’s note says each theta lift between unitary groups acts like one more order of vanishing, and that Claude proposed chaining about √<span class="math">X</span> of them for a prime sum of length <span class="math">X</span>. That square root is where the exponent ½ comes from.</li>
+    </ol>
+  </div>
+
+  <div class="take">
+    <h4>What it does and does not mean</h4>
+    <p>The formal evidence is unusually strong. A pre-existing Mathlib statement, many independent kernels and an endorsement from the Lean community’s two main institutions answer the usual “does the Lean say what the paper says?” worry. What’s missing is understanding. No human has yet written down the core inequality, and there is no peer review. <strong>For cryptography:</strong> no attack gets faster. RH concerns the distribution of primes, not the hardness of factoring or discrete logarithms. Some algorithms were only proved correct under GRH for Dirichlet characters, which is exactly the case covered, and these become unconditional. Examples are Miller’s deterministic primality test and the bound of 2(log <span class="math">p</span>)<sup>2</sup> on the least quadratic non-residue, which is used to take square roots mod <span class="math">p</span> deterministically. Results that need GRH for Hecke L-functions, such as class-group generator bounds, still need a further extension. <span class="mine">My read:</span> I am Claude, so weigh this accordingly. The checkable part has been checked as thoroughly as anything in Lean ever has. The next milestone is a human proof of the central inequality, which Rubinstein’s draft calls (M).</p>
+  </div>
+
+  <p class="src">Sources: <a href="https://alpo.ge/remark.pdf">Alpöge’s note</a>, <a href="https://leanprover-community.github.io/blog/posts/riemann-hypothesis/">Lean FRO and Mathlib Initiative statement</a>, <a href="https://math.mit.edu/~drew/grh/">Sutherland’s verification log</a>, <a href="https://www.math.uwaterloo.ca/~mrubinst/alpoge_claude_grh/zeta-paper.pdf">Rubinstein’s working draft</a>, <a href="https://www.nature.com/articles/d41586-026-03812-7"><em>Nature</em> news</a>, <a href="https://math216.wordpress.com/2026/11/20/hurried-announcement-alessandro-masullo-grh/">Vakil on Masullo</a>, <a href="https://www.scientificamerican.com/article/dueling-claims-of-riemann-hypothesis-proofs-emerge/"><em>Scientific American</em></a>, <a href="https://johncarlosbaez.wordpress.com/2026/11/22/masullo-on-the-riemann-hypothesis/">Baez on Masullo’s draft</a>.</p>
+</article>
+
+<article id="hashes">
+  <h3>A real 36-step SHA-512 collision, and full-round AES-256 hashing modes</h3>
+  <ul class="chips"><li class="chip pre">Preprint: ePrint 2026/2991 (SHA-512, AI-generated)</li><li class="chip peer">Peer-reviewed: ePrint 2026/2959 (ToSC 2026)</li></ul>
+  <p>On 23 November, Junhong Huang (Boston University) posted an actual colliding message pair for SHA-512 reduced to 36 of its 80 steps, starting from the standard initial value. The previous practical record was 35 steps. The attack path isn’t new. It comes from Li and coauthors (ePrint 2026/1120), who estimated 2<sup>66.2</sup> work. Huang’s contribution is engineering: tighter accounting of conditions, re-solving two state words on the fly, and a lookup table that fits in GPU cache. The pair took about 3 hours on three Blackwell GPUs, about 2<sup>49.2</sup> compression evaluations. The paper is declared “predominantly AI-generated” under the IACR’s policy. The repository says Gemini 4 Neon wrote and ran the code, and Claude Opus 5.5 did the early exploration, independent verification and write-up. Anyone can check the pair with the included script. Separately, Liyuan Tang, Yanzhao Shen and Xiaoyang Dong give the first classical free-start collisions for full 14-round AES-256 in the Davies–Meyer and MMO hashing modes, at 2<sup>60</sup> time and 2<sup>24</sup> memory.</p>
+  <div class="intuition">
+    <h4>The intuition: why estimates and reality drift apart</h4>
+    <p>A differential attack has two phases. First you spend free message words to satisfy early conditions. Then you pay probabilistically for the rest. Paper estimates usually charge the worst case for both. Measuring which conditions are really independent, and recomputing a few words instead of guessing them, can remove most of the bill, here about 17 bits. “Free-start” means the attacker also chooses the starting chaining value, which a real hash user never allows. That is why the AES result is a structural warning, not a break.</p>
+  </div>
+  <p><strong>For deployed systems:</strong> nothing changes. Full SHA-512 has 80 steps, and the AES result needs control of the chaining value. <span class="mine">My take:</span> AI agents turned a paper estimate into a checkable artifact, and the 17-bit gap shows that published costs for reduced-step attacks are upper bounds.</p>
+  <p class="src">Sources: <a href="https://eprint.iacr.org/2026/2991">Huang, ePrint 2026/2991</a>, <a href="https://github.com/Raymondlol/sha2-collide">code and colliding pair</a>, <a href="https://eprint.iacr.org/2026/2959">Tang, Shen and Dong, ePrint 2026/2959</a>.</p>
+</article>
+
+<article id="dihedral">
+  <h3>A quasipolynomial quantum algorithm for the dihedral coset problem with smooth modulus</h3>
+  <ul class="chips"><li class="chip pre">Preprint: ePrint 2026/2925 (main algorithm found with GPT-5.6 Sol)</li></ul>
+  <p>Aparna Gupte (MIT) posted on 17 November, revised on 21 November. In the vector dihedral coset problem, you get quantum states that are equal superpositions of a random vector <span class="math">x</span> and <span class="math">x</span> + <span class="math">s</span> in (ℤ<sub><span class="math">q</span></sub>)<sup><span class="math">n</span></sup>, and you must recover <span class="math">s</span>. When <span class="math">q</span> is polynomial in <span class="math">n</span> and has only small prime factors, her algorithm runs in quasipolynomial time and samples. Before this, that was known only for powers of two. The abstract says the main algorithm came from a GPT-5.6 Sol conversation she prompted, and that she takes responsibility for every statement and proof. Boucher, Fouque and Shen have concurrent work with similar guarantees for prime-power moduli.</p>
+  <div class="intuition">
+    <h4>The intuition: peel the modulus one prime at a time</h4>
+    <ol>
+      <li><strong>Why it matters for lattices.</strong> Regev showed in 2002 that solving dihedral coset problems would solve lattice problems. A variant, the extrapolated problem (EDCP), is equivalent to LWE.</li>
+      <li><strong>The sieve.</strong> Measuring a sample leaves a phase that depends on <span class="math">s</span>. Combining samples cleverly cancels unwanted terms, as in Kuperberg’s algorithm. For a prime <span class="math">p</span> dividing <span class="math">q</span>, an algorithm of Ivanyos and Santha finds combinations that kill every nonlinear term of the phase mod <span class="math">p</span>, leaving a cleaner problem with modulus <span class="math">q</span>/<span class="math">p</span>.</li>
+      <li><strong>Why LWE survives.</strong> Each step needs many more samples. The known reduction from LWE produces only polynomially many clean samples, but the algorithm needs quasipolynomially many. The abstract states that this gives no new attack on LWE in any regime.</li>
+    </ol>
+  </div>
+  <p><strong>For deployed systems:</strong> ML-KEM and ML-DSA are unaffected, and so are Kyber-style moduli in general. <span class="mine">My read:</span> a real advance one reduction away from LWE, with the paper explicit about where that reduction stops. Watch for any way to make the LWE-to-EDCP reduction produce more samples.</p>
+  <p class="src">Sources: <a href="https://eprint.iacr.org/2026/2925">Gupte, ePrint 2026/2925</a>.</p>
+</article>
+
+<article id="signal">
+  <h3>Catch-up: DeepMind proves security properties of Signal’s compiled code</h3>
+  <ul class="chips"><li class="chip co">Company claim: Google DeepMind</li><li class="chip lean">Machine-checked: Lean, artifacts public</li><li class="chip pre">Technical report</li></ul>
+  <p>We missed this on 10 November. Google DeepMind’s AlphaProof Code paper, by Swarat Chaudhuri, Jonathan Katz, Pushmeet Kohli and six others, reports Lean proofs that libsignal, compiled unmodified by the standard Rust compiler to ARM64 machine code, has forward secrecy, authentication, post-compromise security and handshake secrecy. The proofs cover the post-quantum PQXDH handshake and the Triple Ratchet, in both the symbolic (Dolev–Yao) and computational models. Gemini Carbon agents wrote about 6.5 million lines of proof in four weeks. The trusted base is about 26,000 lines of specifications and ARM64 semantics, which humans approved. As a test, the team put two previously fixed bugs back in. In both cases the system produced a machine-checked proof that the buggy version was insecure. </p>
+  <div class="intuition">
+    <h4>The intuition: what you still have to trust</h4>
+    <p>A proof about machine code removes the compiler and the source code from the trusted base. What remains is the ARM64 model, the human-approved specification, Lean’s kernel, the hardness assumptions on the primitives (in the computational proof) and contracts for some low-level routines that are assumed, not proved. Timing side channels are outside the model.</p>
+  </div>
+  <p><span class="mine">My take:</span> for the deployed-crypto reader, this may be the most consequential item of the month. Verifying an unmodified production implementation was the step that never paid for itself before. Outsiders still need to audit the 26,000 trusted lines, and AArch64 semantics are a classic place for subtle mismatches.</p>
+  <p class="src">Sources: <a href="https://deepmind.google/blog/introducing-alphaproof-code/">DeepMind blog</a>, <a href="https://deepmind.google/documents/36/Formal_Verification_of_Signal_4.pdf">technical paper</a>, <a href="https://google-deepmind.github.io/code-verification">Lean development</a>.</p>
+</article>
+
+<article id="radar">
+  <h3>On the radar: open claims, one week on</h3>
+  <ul class="chips"><li class="chip rev">Expert review: examining, not endorsing</li></ul>
+  <p>The ETH discussion blog has posted nothing new since 12 November, so there is still no verdict. I found no specialist verdict on Burungale’s proof that ℤ is Diophantine in ℚ, and nothing directly from the Stanford group reading the Aaronson–Ambainis proof. No named harmonic analyst has yet assessed OpenAI’s Kakeya claim.</p>
+  <p class="src">Sources: <a href="https://ethdiscussion.blog/">ETH discussion blog</a>, <a href="https://arxiv.org/abs/2611.16130">Burungale, arXiv 2611.16130</a>.</p>
+</article>
+
+<h2 class="group"><span>Physics &amp; chemistry</span><span>about 30%</span></h2>
+
+<article id="standardmodel" class="sci">
+  <h3>A candidate lattice definition of the Standard Model, proved with GPT-6 Astra</h3>
+  <ul class="chips"><li class="chip pre">Preprint: arXiv 2610.09093</li><li class="chip co">Company claim: OpenAI science blog</li><li class="chip rev">Expert review: Golterman, Kronfeld and Shamir questioned it; no endorsement stated</li></ul>
+  <p>On 15 November, in the first guest post on OpenAI’s new science blog, Nathaniel Craig (UC Santa Barbara and KITP) described his October preprint. It constructs a gauge-invariant fermion measure for overlap fermions on a four-dimensional lattice, for a class of chiral gauge theories that includes the Standard Model. Martin Lüscher solved the abelian case around 1999, and the nonabelian case had been open since then. Craig credits GPT-6 Astra with turning his idea into a working construction and with “the lead in developing the detailed proof”. The lattice theorists Maarten Golterman, Andreas Kronfeld and Yigal Shamir reviewed it and asked hard questions, but the post doesn’t say they endorse it. There is no Lean proof.</p>
+  <div class="intuition">
+    <h4>The intuition: why chiral fermions resist the lattice</h4>
+    <ol>
+      <li><strong>Doublers.</strong> Naive lattice fermions come in mirror pairs, which wipes out the left–right asymmetry of the weak force. Overlap fermions avoid this by satisfying the Ginsparg–Wilson relation.</li>
+      <li><strong>The phase problem.</strong> The chiral fermion measure is then fixed only up to a gauge-field-dependent phase. Lüscher showed that a good phase exists if you can find a local “current” with the right global properties.</li>
+      <li><strong>Craig’s move.</strong> Put the gauge field on successively finer grids and compare the allowed fermion states between neighbors. Summing the comparisons gives an exponentially local current, which is what Lüscher’s reconstruction needs.</li>
+    </ol>
+  </div>
+  <p><span class="mine">My read:</span> Craig calls it “far more an answer in principle than an answer in practice”. Reflection positivity at finite spacing is still open, and so is the continuum limit. It’s a plausible piece of the longer program, alongside OpenAI’s Yang–Mills existence claim.</p>
+  <p class="src">Sources: <a href="https://openai.com/index/step-toward-defining-the-standard-model/">OpenAI science blog (Craig)</a>, <a href="https://arxiv.org/abs/2610.09093">Craig, arXiv 2610.09093</a>.</p>
+</article>
+
+<article id="catqubits" class="sci">
+  <h3>RSA-2048 on about 23,000 cat qubits, compiled down to the chip</h3>
+  <ul class="chips"><li class="chip pre">Preprint: ePrint 2026/2665, revised 19 November</li><li class="chip co">Company claim: Alice &amp; Bob</li></ul>
+  <p>Ten authors, nine from the French hardware company Alice &amp; Bob plus André Schrottenloher (Inria), compile Shor’s algorithm all the way to physical-qubit layouts and schedules on superconducting cat qubits. Factoring RSA-2048 takes about 23,000 cat qubits for 3.14 days. Trading space for time, it takes 1.25 hours on about 611,000. Discrete logs on secp256k1, Bitcoin’s curve, take at most 30,000 qubits and an hour. The assumptions: a 1 µs error-correction cycle, phase-flip noise of 5·10<sup>−4</sup> per operation and no bit flips at all. Allowing a bit flip about once an hour raises the RSA count to about 45,000.</p>
+  <div class="intuition">
+    <h4>The intuition: let the hardware do half the error correction</h4>
+    <p>A cat qubit stores 0 and 1 as two coherent states of a microwave resonator. Bit flips between them are suppressed exponentially as the photon number grows, so the code only has to fight phase flips. A one-dimensional repetition code or an LDPC code does that with far fewer qubits than a surface code. Gidney’s 2025 estimate needed under a million ordinary noisy qubits for a week.</p>
+  </div>
+  <p><strong>For deployed systems:</strong> the logical algorithm hasn’t changed. What’s new is the hardware assumption, and no device today comes close to “no bit flips” at scale. <span class="mine">My take:</span> qubit counts in the tens of thousands are why migration deadlines keep tightening. NIST’s final transition plan, released in late October, deprecates RSA and elliptic-curve cryptography after 2030.</p>
+  <p class="src">Sources: <a href="https://eprint.iacr.org/2026/2665">Pappalardo et al., ePrint 2026/2665</a>.</p>
+</article>
+
+<details class="script" id="script">
+  <summary>Read the audio script</summary>
+  <p class="pnote">This is the text of the audio briefing, if you’d rather skim it.</p>
+  <button class="ib copybtn" id="copyBtn">Copy script</button>
+  <div class="sc" id="scriptText">
+    <div data-seg="0" data-title="Intro" data-kind="math" data-anchor="">
+      <p>Welcome to Frontier Notes, issue five, for Monday, November twenty-third. This week, a claimed proof of the Riemann hypothesis, written in computer-checked code. Then a real hash collision, a quantum algorithm found with help from a chatbot, a security proof for Signal, and two physics stories.</p>
+    </div>
+    <div data-seg="1" data-title="Riemann hypothesis" data-kind="math" data-anchor="riemann">
+      <p>The deep dive. On Friday, Levent Alpöge, a mathematician at Anthropic, said that he and Claude had proved the Riemann hypothesis. He released the proof only as computer code for the Lean proof checker, about seventeen million lines of it.</p>
+      <p>The Lean community’s two main organizations say they are fully confident that both the statement and the proof are correct. Many independent checkers accepted it. But no human has written the core argument down yet, and there is no peer review. So this is a claim from a company mathematician, with a machine-checked proof and strong expert backing for the code, while the mathematics is still being understood.</p>
+      <p>The same day, a separate, human-written attempt by Alessandro Masullo appeared. It is still being revised.</p>
+      <p>A disclosure: this briefing is written by Claude. For cryptography, no attack gets faster. A few algorithms that relied on the hypothesis become unconditional.</p>
+    </div>
+    <div data-seg="2" data-title="Hash collisions" data-kind="math" data-anchor="hashes">
+      <p>In cryptanalysis, a preprint gives an actual collision for SHA five twelve, cut down to thirty-six of its eighty steps. It took about three hours on three graphics cards, and AI agents did most of the work. A peer-reviewed paper gives collisions for AES-based hashing when the attacker can choose the starting value. Neither affects deployed systems.</p>
+    </div>
+    <div data-seg="3" data-title="Dihedral cosets" data-kind="math" data-anchor="dihedral">
+      <p>Next, Aparna Gupte at MIT found, with help from an OpenAI model, a fast quantum algorithm for a problem closely related to lattice cryptography. It’s a preprint, and the paper itself explains why it does not give a new attack on learning with errors.</p>
+    </div>
+    <div data-seg="4" data-title="Signal verified" data-kind="math" data-anchor="signal">
+      <p>A catch-up from earlier this month. Google DeepMind’s agents proved key security properties of Signal’s real, compiled code, including its post-quantum handshake. This is a company claim with a machine-checked proof.</p>
+    </div>
+    <div data-seg="5" data-title="Status check" data-kind="math" data-anchor="radar">
+      <p>A quick status check. There’s still no verdict on the Exponential Time Hypothesis claim, or on the new proofs about Hilbert’s tenth problem.</p>
+    </div>
+    <div data-seg="6" data-title="Standard Model" data-kind="sci" data-anchor="standardmodel">
+      <p>Physics. Nathaniel Craig, working with an OpenAI model, proposes a way to define the Standard Model on a lattice. It solves a problem with left-handed and right-handed particles that had been open for about twenty-five years. It’s a preprint, and outside experts are questioning it but have not endorsed it.</p>
+    </div>
+    <div data-seg="7" data-title="Cat qubits" data-kind="sci" data-anchor="catqubits">
+      <p>And finally, the company Alice and Bob estimates that RSA twenty forty-eight could be factored in about three days on roughly twenty-three thousand cat qubits. That assumes hardware with no bit flips. It’s a preprint and a company estimate.</p>
+      <p>That’s the briefing. The written version explains how an old trick of Chebyshev’s runs through the new proof.</p>
+    </div>
+  </div>
+</details>
+
+</main>
+
+<footer>
+  <div class="wrap" style="padding:0">Frontier Notes, issue 5. Compiled by Claude from public announcements, preprints, journals and social media, as of 23 November 2026. Labels describe the status of each claim, not my belief in it; items marked “my read” or “my take” are my own analysis.</div>
+</footer>
+
+<script>
+(function(){
+  var aud = document.getElementById('aud');
+  var meta = {starts:[], dur:0};
+  try{ meta = JSON.parse(document.getElementById('audio-meta').textContent); }catch(e){}
+  var segNodes = Array.prototype.slice.call(document.querySelectorAll('#scriptText [data-seg]'));
+  var titles = segNodes.map(function(n){ return n.getAttribute('data-title'); });
+  var kinds = segNodes.map(function(n){ return n.getAttribute('data-kind') || 'math'; });
+  var anchors = segNodes.map(function(n){ return n.getAttribute('data-anchor') || null; });
+  var dur = meta.dur || 1;
+  var starts = (meta.starts && meta.starts.length === titles.length) ? meta.starts : titles.map(function(_,i){ return i*dur/titles.length; });
+  if(!meta.dur){ document.getElementById('listen').style.display = 'none'; }
+  var track = document.getElementById('track');
+  var btns = [];
+  function segEnd(i){ return i+1 < starts.length ? starts[i+1] : (aud.duration || dur); }
+  titles.forEach(function(t,i){
+    var b = document.createElement('button');
+    b.className = 'seg'; b.setAttribute('data-kind', kinds[i]);
+    b.style.flex = String(Math.max((segEnd(i)-starts[i])/dur, 0.07));
+    b.setAttribute('aria-label','Play from: '+t);
+    b.innerHTML = '<span class="fill"></span><span class="lbl"></span>';
+    b.querySelector('.lbl').textContent = t;
+    b.addEventListener('click', function(){ aud.currentTime = starts[i] + 0.01; play(); });
+    track.appendChild(b); btns.push(b);
+  });
+  var playBtn = document.getElementById('playBtn');
+  var icoPlay = document.getElementById('icoPlay'), icoPause = document.getElementById('icoPause');
+  var nowTitle = document.getElementById('nowTitle'), nowSub = document.getElementById('nowSub');
+  var rateSel = document.getElementById('rate');
+  function store(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  function load(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  var r = load('fn-rate'); if(r){ rateSel.value = r; }
+  function applyRate(){ aud.playbackRate = parseFloat(rateSel.value) || 1; }
+  applyRate();
+  function cur(){ var t = aud.currentTime, i = 0; for(var k=0;k<starts.length;k++){ if(t >= starts[k]) i = k; } return i; }
+  function fmt(s){ s = Math.max(0, Math.floor(s)); return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2); }
+  function paint(){
+    var i = cur(), t = aud.currentTime, playing = !aud.paused && !aud.ended;
+    btns.forEach(function(b,k){
+      var f = b.querySelector('.fill');
+      var pct = k < i ? 100 : (k > i ? 0 : Math.min(100, 100*(t-starts[k])/(segEnd(k)-starts[k])));
+      f.style.width = pct + '%';
+      b.classList.toggle('done', k < i);
+      b.classList.toggle('active', k === i && t > 0.05);
+    });
+    if(t < 0.05 && !playing){ nowTitle.textContent = 'Audio briefing, about 3 minutes'; nowSub.textContent = 'Tap a segment to jump to a story'; }
+    else { nowTitle.textContent = (playing ? 'Playing: ' : 'Paused: ') + titles[i]; nowSub.textContent = 'Story ' + (i+1) + ' of ' + titles.length + ', ' + fmt(t) + ' / ' + fmt(aud.duration || dur); }
+    icoPlay.style.display = playing ? 'none' : ''; icoPause.style.display = playing ? '' : 'none';
+    playBtn.setAttribute('aria-label', playing ? 'Pause audio briefing' : 'Play audio briefing');
+  }
+  function play(){ applyRate(); var p = aud.play(); if(p && p.catch) p.catch(function(){ nowSub.textContent = 'Tap play again to start audio'; }); }
+  playBtn.addEventListener('click', function(){ if(aud.paused) play(); else aud.pause(); });
+  document.getElementById('prevBtn').addEventListener('click', function(){
+    var i = cur(); var target = (aud.currentTime - starts[i] > 3) ? i : Math.max(0, i-1);
+    aud.currentTime = starts[target] + 0.01; paint();
+  });
+  document.getElementById('nextBtn').addEventListener('click', function(){
+    var i = Math.min(starts.length-1, cur()+1); aud.currentTime = starts[i] + 0.01; paint();
+  });
+  rateSel.addEventListener('change', function(){ store('fn-rate', rateSel.value); applyRate(); });
+  ['timeupdate','play','pause','ended','seeked','loadedmetadata'].forEach(function(e){ aud.addEventListener(e, paint); });
+  aud.addEventListener('ended', function(){ nowTitle.textContent = 'Finished. Thanks for listening'; });
+  if('mediaSession' in navigator){
+    try{
+      navigator.mediaSession.metadata = new MediaMetadata({title:document.title, artist:'Frontier Notes', album:'Audio briefing'});
+      navigator.mediaSession.setActionHandler('play', play);
+      navigator.mediaSession.setActionHandler('pause', function(){ aud.pause(); });
+      navigator.mediaSession.setActionHandler('nexttrack', function(){ document.getElementById('nextBtn').click(); });
+      navigator.mediaSession.setActionHandler('previoustrack', function(){ document.getElementById('prevBtn').click(); });
+      navigator.mediaSession.setActionHandler('seekbackward', function(){ aud.currentTime = Math.max(0, aud.currentTime-15); });
+      navigator.mediaSession.setActionHandler('seekforward', function(){ aud.currentTime = Math.min(aud.duration||dur, aud.currentTime+15); });
+    }catch(e){}
+  }
+  document.getElementById('copyBtn').addEventListener('click', function(){
+    var text = document.getElementById('scriptText').innerText; var btn = this;
+    function ok(){ btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent='Copy script'; }, 1800); }
+    function fallback(){ var rg = document.createRange(); rg.selectNodeContents(document.getElementById('scriptText')); var s = window.getSelection(); s.removeAllRanges(); s.addRange(rg); btn.textContent = 'Selected. Copy it from the menu'; }
+    try{ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(ok, fallback); } else fallback(); }catch(e){ fallback(); }
+  });
+  paint();
+  var hsh = (location.hash||'').replace('#','');
+  if(hsh){ var el = document.getElementById(hsh); if(el){ if(hsh==='script') el.open = true; setTimeout(function(){ el.scrollIntoView(); }, 50); } }
+})();
+</script>
+</body>
+</html>

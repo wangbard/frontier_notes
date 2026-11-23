@@ -3,7 +3,8 @@
     "2026-10-27",
     "2026-11-02",
     "2026-11-09",
-    "2026-11-16"
+    "2026-11-16",
+    "2026-11-23"
   ],
   "items": [
     {
@@ -254,17 +255,82 @@
         "Preprint",
         "Company claim"
       ]
+    },
+    {
+      "title": "Riemann hypothesis and GRH (Dirichlet) claimed by Alpöge with Claude as 17M-line Lean proof; Lean FRO/Mathlib statement; Sutherland checker log; Rubinstein exposition draft; Masullo human GRH draft (Vakil, Conrad)",
+      "url": "https://alpo.ge/remark.pdf",
+      "date": "2026-11-20",
+      "labels": [
+        "Company claim",
+        "Machine-checked",
+        "Expert review",
+        "Preprint"
+      ]
+    },
+    {
+      "title": "Huang: practical collision for 36-step SHA-512 (AI-generated); Tang-Shen-Dong free-start collisions for full AES-256-DM/MMO",
+      "url": "https://eprint.iacr.org/2026/2991",
+      "date": "2026-11-23",
+      "labels": [
+        "Preprint",
+        "Peer-reviewed"
+      ]
+    },
+    {
+      "title": "Gupte: quasipolynomial quantum algorithm for vector dihedral coset problem with smooth modulus (GPT-5.6 Sol)",
+      "url": "https://eprint.iacr.org/2026/2925",
+      "date": "2026-11-17",
+      "labels": [
+        "Preprint"
+      ]
+    },
+    {
+      "title": "DeepMind AlphaProof Code: Lean proofs of security properties of libsignal machine code (PQXDH, Triple Ratchet)",
+      "url": "https://deepmind.google/blog/introducing-alphaproof-code/",
+      "date": "2026-11-10",
+      "labels": [
+        "Company claim",
+        "Machine-checked",
+        "Preprint"
+      ]
+    },
+    {
+      "title": "Status check: ETH blog quiet, no verdicts on Burungale, Aaronson-Ambainis, Kakeya",
+      "url": "https://ethdiscussion.blog/",
+      "date": "2026-11-23",
+      "labels": [
+        "Expert review"
+      ]
+    },
+    {
+      "title": "Craig: gauge-invariant measure for lattice chiral fermions, candidate lattice Standard Model (GPT-6 Astra)",
+      "url": "https://openai.com/index/step-toward-defining-the-standard-model/",
+      "date": "2026-11-15",
+      "labels": [
+        "Preprint",
+        "Company claim",
+        "Expert review"
+      ]
+    },
+    {
+      "title": "Alice & Bob: Shor on cat qubits, RSA-2048 with ~23,000 cat qubits in 3.14 days",
+      "url": "https://eprint.iacr.org/2026/2665",
+      "date": "2026-11-19",
+      "labels": [
+        "Preprint",
+        "Company claim"
+      ]
     }
   ],
   "open_claims": [
     {
       "claim": "ETH is false (OpenAI and Anthropic)",
-      "status": "Lean-checked; both developments independently replayed (Toledo, kernel + nanoda), machine-model translation informal; review group (Impagliazzo, Paturi, Williams) running a discussion blog, not endorsing; simpler proofs by Kintali and O'Donnell; Fortnow: safe to assume (opinion); as of 2026-11-09 blog collecting Lean replications (Zane) and consequences (Paturi, 1 Nov), still no verdict; 12 Nov: blog posted OpenAI's prompt (asked for refutation of deterministic SETH with specific target); still no verdict as of 2026-11-16",
+      "status": "Lean-checked; both developments independently replayed (Toledo, kernel + nanoda), machine-model translation informal; review group (Impagliazzo, Paturi, Williams) running a discussion blog, not endorsing; simpler proofs by Kintali and O'Donnell; Fortnow: safe to assume (opinion); as of 2026-11-09 blog collecting Lean replications (Zane) and consequences (Paturi, 1 Nov), still no verdict; 12 Nov: blog posted OpenAI's prompt (asked for refutation of deterministic SETH with specific target); still no verdict as of 2026-11-16; no new blog posts and no verdict as of 2026-11-23",
       "watch": "review group statement or virtual meeting, errors found, conference announcement"
     },
     {
       "claim": "Local smoothing, Kakeya and Stein restriction in all dimensions (OpenAI)",
-      "status": "Lean proof per OpenAI; no outside expert verdict found as of 2026-11-16",
+      "status": "Lean proof per OpenAI; no outside expert verdict found as of 2026-11-23",
       "watch": "harmonic analysts' comments (Guth, Wang, Zahl, Tao), whether formal statement matches the conjecture"
     },
     {
@@ -304,7 +370,7 @@
     },
     {
       "claim": "Aaronson-Ambainis conjecture: influence >= c Var^{5/2}/d^6 (PSI, non-public Anthropic model)",
-      "status": "Lean-checked (standard axioms, lean4lean second check); Aaronson believes it correct (blog, 8 Nov); PSI says Stanford group (Blanc, Docter, Strassle, Tan) reviewed it, not confirmed by them directly; as of 2026-11-16 PSI says Stanford group sent comments and is writing exposition; nothing from the group directly",
+      "status": "Lean-checked (standard axioms, lean4lean second check); Aaronson believes it correct (blog, 8 Nov); PSI says Stanford group (Blanc, Docter, Strassle, Tan) reviewed it, not confirmed by them directly; as of 2026-11-16 PSI says Stanford group sent comments and is writing exposition; nothing from the group directly; nothing from the group directly as of 2026-11-23",
       "watch": "Stanford exposition, audit of PrintedConjecture statement, peer review"
     },
     {
@@ -324,7 +390,7 @@
     },
     {
       "claim": "Hilbert's tenth problem over Q is undecidable; Z is Diophantine in Q (OpenAI manuscript; Glazer et al.; Burungale; Sun; Kozachinskiy-Pasten-Vidaux conditional)",
-      "status": "OpenAI 62-page manuscript unformalized and unreviewed; Glazer et al. polynomial down to 196 variables, degree 4, Lean incomplete (sorry), AI-audited only; Sun 26 unknowns (16 under abc) improving on Conant et al.; Burungale independent unconditional proof avoiding OpenAI's new inputs (12 Nov); no specialist verdict as of 2026-11-16",
+      "status": "OpenAI 62-page manuscript unformalized and unreviewed; Glazer et al. polynomial down to 196 variables, degree 4, Lean incomplete (sorry), AI-audited only; Sun 26 unknowns (16 under abc) improving on Conant et al.; Burungale independent unconditional proof avoiding OpenAI's new inputs (12 Nov); no specialist verdict as of 2026-11-23",
       "watch": "expert assessment of Burungale's proof, Lean completion, peer review; consequences (Mazur's conjecture false)"
     },
     {
@@ -351,6 +417,31 @@
       "claim": "Max nonlinearity of balanced 10-variable Boolean functions is 492 (Xu, Wang)",
       "status": "preprint, no outside review",
       "watch": "expert check, formal verification"
+    },
+    {
+      "claim": "Riemann hypothesis and GRH for Dirichlet L-functions (Alpöge with Claude, 20 Nov)",
+      "status": "~17M-line Lean proof of Mathlib's RiemannHypothesis plus Dirichlet GRH, standard axioms only; accepted by Lean kernel, nanoda, lean4lean, con-leche, con-ron, comparator (Sutherland log); Lean FRO and Mathlib Initiative joint statement of full confidence (21 Nov); no human-readable proof; Rubinstein-directed AI-written exposition reduces zeta case to inequality (M), not yet proved there; Maynard (to Nature): historic if it checks out; Granville: release 'garbled'; no peer review",
+      "watch": "human proof of (M), simplifications, extension to Hecke/automorphic L-functions, number theorists' verdicts, Alpöge write-up"
+    },
+    {
+      "claim": "GRH for Hecke L-functions (Masullo, human, 940-page draft)",
+      "status": "posted 20 Nov via Vakil; Conrad: undergoing major revision; final chapter has placeholders; possible gaps reported (Naslund, Markushevich-basis issue)",
+      "watch": "revised manuscript, Conrad assessment"
+    },
+    {
+      "claim": "Quasipolynomial quantum algorithm for vector DCP with smooth modulus (Gupte, GPT-5.6 Sol)",
+      "status": "preprint; author states no new attack on LWE; concurrent Boucher-Fouque-Shen for prime powers",
+      "watch": "expert review, any improvement to LWE-to-EDCP sample count"
+    },
+    {
+      "claim": "AlphaProof Code: libsignal machine code satisfies forward secrecy, PCS, authentication (DeepMind)",
+      "status": "company technical report; Lean artifacts public; ~26k trusted lines (specs, AArch64 semantics); no outside audit reported",
+      "watch": "independent rebuild, audit of specifications and ISA model"
+    },
+    {
+      "claim": "Candidate lattice definition of the Standard Model (Craig with GPT-6 Astra)",
+      "status": "preprint; reviewed with questions by Golterman, Kronfeld, Shamir, no endorsement stated; reflection positivity open; no Lean",
+      "watch": "lattice theorists' verdict, reflection positivity"
     }
   ]
 }
